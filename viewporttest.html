@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+        <script src="visualViewport.js"></script>
+
+        <style>
+            html, body {
+                margin: 0px;
+                width: 100%;
+                height: 100%;
+            }
+            #leftfixed {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 5px;
+                height: 100%;
+                background-color: purple;
+                opacity: 0.25;
+            }
+            #topfixed {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 5px;
+                background-color: purple;
+                opacity: 0.25;
+            }
+            #infobox {
+                width: 400px;
+                height: 270px;
+                background-color: red;
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                z-index: 100;
+                transform-origin: top left;
+            }
+            #infobox-content {
+                width: 100%;
+                transform-origin: top left;
+            }
+            #targetBox {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                left: 300px;
+                top: 400px;
+                opacity: 0.5;
+                z-index: 101;
+                background-color: blue;
+            }
+            #crossHair {
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                z-index: 102;
+                background-color: cyan;
+                opacity: 0.5;
+                pointer-events: none;
+            }
+            #crossHairUnscaled {
+                width: 10px;
+                height: 10px;
+                position: absolute;
+                z-index: 102;
+                background-color: magenta;
+                opacity: 0.5;
+                pointer-events: none;
+            }
+            #spacer {
+                width: 10px;
+                height: 1000px;
+                position: absolute;
+                left: 0px;
+                top: 1000px;
+                display: none;
+            }
+        </style>
+        <script>
+            var infobox;
+            var contentbox;
+            var targetbox;
+            var crossHair;
+            var crossHairUnscaled;
+
+            var touchCoords = "N/A";
+            var mouseCoords = "N/A";
+
+            var updateInfoBox = function() {
+                infobox.style.left = window.scrollX + 'px';
+                infobox.style.top = window.scrollY + 'px';
+                var maxX = document.documentElement.scrollWidth - 10;
+                var maxY = document.documentElement.scrollHeight - 10;
+                crossHair.style.left = Math.min(window.scrollX + (300 - 5)/window.visualViewport.scale, maxX) + 'px'
+                crossHair.style.top = Math.min(window.scrollY + (400 - 5)/window.visualViewport.scale, maxY) + 'px';
+                crossHairUnscaled.style.left = Math.min(window.scrollX + (300 - 5), maxX) + 'px';
+                crossHairUnscaled.style.top = Math.min(window.scrollY + (400 - 5), maxY) + 'px';
+
+                infobox.style.transform = "scale(" + 1/window.visualViewport.scale + ")";
+
+                contentbox.innerText = "Scale: " + Number((window.visualViewport.scale).toFixed(2)) + "\n";
+                var layoutRect = document.documentElement.getBoundingClientRect();
+                contentbox.innerText += "Layout Viewport Pos: " + (-layoutRect.left) + ", " + (-layoutRect.top) + "\n";
+                contentbox.innerText += "window.scroll(X,Y): " + window.scrollX + ", " + window.scrollY + "\n";
+                contentbox.innerText += "scrollingElement.scroll(Top,Left): " + document.scrollingElement.scrollLeft + ", " + document.scrollingElement.scrollTop + "\n";
+                contentbox.innerText += "window.inner(Width,Height): " + window.innerWidth + ", " + window.innerHeight + "\n";
+
+                var rect = targetbox.getBoundingClientRect();
+                contentbox.innerText += "target.getBoundingClientRect: " + rect.left + ", " + rect.top + " - " + rect.width + ", " + rect.height + "\n";
+
+                contentbox.innerText += "fixedEdges: " + document.getElementById('leftfixed').getBoundingClientRect().left + ", " +
+                    document.getElementById('topfixed').getBoundingClientRect().top + "\n";
+
+                var elem = document.elementFromPoint(301, 401);
+                var id = "N/A";
+                if (elem)
+                    id = elem.id;
+                contentbox.innerText += "document.elementFromPoint(301, 401): #" + id + " (" + elem + ")";
+
+                contentbox.innerText += "\n";
+
+                contentbox.innerText += "Touch client(X,Y): " + touchCoords + "\n";
+                contentbox.innerText += "Mouse client(X,Y): " + mouseCoords + "\n";
+
+            };
+
+            function truncate(num) {
+                return Number((num).toFixed(2));
+            }
+
+            var hitTarget = function(e) {
+                if (e.type === 'touchstart') {
+                    touchCoords = truncate(e.touches[0].clientX) + ", " + truncate(e.touches[0].clientY);
+                } else if(e.type === 'mousedown') {
+                    mouseCoords = truncate(e.clientX) + ", " + truncate(e.clientY);
+                }
+
+                updateInfoBox();
+            };
+
+            function toggleScrolling() {
+                var needsLayoutScrolling = document.getElementById('checkboxHasLayoutScrolling').checked;
+                if (needsLayoutScrolling)
+                    document.getElementById('spacer').style.display = "block";
+                else
+                    document.getElementById('spacer').style.display = "none";
+            }
+
+            function scrollTargetIntoViewIfNeeded() {
+                targetbox.scrollIntoViewIfNeeded();
+            }
+
+            function scrollTargetIntoView() {
+                targetbox.scrollIntoView();
+            }
+
+            function windowScrollTo() {
+                window.scrollTo(300, 400);
+            }
+
+            window.addEventListener('load', function() {
+                infobox = document.getElementById('infobox');
+                contentbox = document.getElementById('infobox-content');
+                targetbox = document.getElementById('targetBox');
+                crossHair = document.getElementById('crossHair');
+                crossHairUnscaled = document.getElementById('crossHairUnscaled');
+
+                window.addEventListener('resize', updateInfoBox);
+                window.addEventListener('scroll', updateInfoBox);
+                window.visualViewport.addEventListener('resize', updateInfoBox);
+                window.visualViewport.addEventListener('scroll', updateInfoBox);
+                targetbox.addEventListener('mousedown', hitTarget);
+                targetbox.addEventListener('touchstart', hitTarget);
+
+                updateInfoBox();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="infobox">
+          <div id="infobox-content"></div>
+          <label><input type="checkbox" onClick="toggleScrolling()" id="checkboxHasLayoutScrolling">Has Layout Scrolling</label>
+          <button name="scrollto" onclick="windowScrollTo()">window.scrollTo(300, 400)</button>
+          <br>
+          <button name="scrolltoElem" onclick="scrollTargetIntoView()">target.scrollIntoView</button>
+          <button name="scrolltoElemNeeded" onclick="scrollTargetIntoViewIfNeeded()">target.scrollIntoViewIfNeeded</button>
+        </div>
+
+        <div id="targetBox">
+          This box is at (300, 400).
+          Touch Me!
+        </div>
+        <div id="crossHair"></div>
+        <div id="crossHairUnscaled"></div>
+        <div id="spacer"></div>
+        <div id="leftfixed"></div>
+        <div id="topfixed"></div>
+    </body>
+</html>
