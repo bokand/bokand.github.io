@@ -90,6 +90,10 @@
             var touchCoords = "N/A";
             var mouseCoords = "N/A";
 
+            function truncate(num) {
+                return Number((num).toFixed(2));
+            }
+
             var updateInfoBox = function() {
                 infobox.style.left = window.scrollX + 'px';
                 infobox.style.top = window.scrollY + 'px';
@@ -104,13 +108,13 @@
 
                 contentbox.innerText = "Scale: " + Number((window.visualViewport.scale).toFixed(2)) + "\n";
                 var layoutRect = document.documentElement.getBoundingClientRect();
-                contentbox.innerText += "Layout Viewport Pos: " + (-layoutRect.left) + ", " + (-layoutRect.top) + "\n";
+                contentbox.innerText += "Layout Viewport Pos: " + truncate(-layoutRect.left) + ", " + truncate(-layoutRect.top) + "\n";
                 contentbox.innerText += "window.scroll(X,Y): " + window.scrollX + ", " + window.scrollY + "\n";
                 contentbox.innerText += "scrollingElement.scroll(Top,Left): " + document.scrollingElement.scrollLeft + ", " + document.scrollingElement.scrollTop + "\n";
                 contentbox.innerText += "window.inner(Width,Height): " + window.innerWidth + ", " + window.innerHeight + "\n";
 
                 var rect = targetbox.getBoundingClientRect();
-                contentbox.innerText += "target.getBoundingClientRect: " + rect.left + ", " + rect.top + " - " + rect.width + ", " + rect.height + "\n";
+                contentbox.innerText += "target.getBoundingClientRect: " + truncate(rect.left) + ", " + truncate(rect.top) + " - " + rect.width + ", " + rect.height + "\n";
 
                 contentbox.innerText += "fixedEdges: " + document.getElementById('leftfixed').getBoundingClientRect().left + ", " +
                     document.getElementById('topfixed').getBoundingClientRect().top + "\n";
@@ -127,10 +131,6 @@
                 contentbox.innerText += "Mouse client(X,Y): " + mouseCoords + "\n";
 
             };
-
-            function truncate(num) {
-                return Number((num).toFixed(2));
-            }
 
             var hitTarget = function(e) {
                 if (e.type === 'touchstart') {
