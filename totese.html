@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<!--
+  http://jsbin.com/totese/
+-->
+<head>
+<style>
+  html {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    height: 100%;
+  }
+
+  .view {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    background: #f1f1f1;
+    overflow: auto;
+  }
+
+  .view.not-there {
+    display: none;
+  }
+
+  .view.invisible {
+    visibility: hidden;
+  }
+
+  .view-header {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: #db4437;
+    color: #fff;
+    padding: 0 8px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    box-orient: horizontal;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .view-header-back {
+    margin-right: 8px;
+    padding: 0 8px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  .view-header-back path {
+    fill: #fff;
+  }
+
+  .view-body {
+    position: relative;
+    min-height: 100%;
+  }
+
+  .view-header-gap {
+    height: 48px; /* same as header's height */
+  }
+
+  .view-content {
+    position: relative;
+    min-height: 100%;
+  }
+
+
+  .dialog-outer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .dialog-inner {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    bottom: 10%;
+    right: 10%;
+    background: #fff;
+  }
+
+  .dialog-header {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: cyan;
+    color: #222;
+    padding: 0 8px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    box-orient: horizontal;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+  }
+
+  .dialog-title {
+    -moz-flex-grow: 1;
+    -ms-flex-grow: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+  }
+
+  .dialog-close {
+    padding: 0 8px;
+    -moz-flex-shrink: 0;
+    -ms-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .dialog-body {
+    position: absolute;
+    top: 48px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    padding: 8px;
+  }
+
+
+  .stream {
+    padding: 8px 0;
+  }
+
+  .post {
+    margin: 8px auto;
+    padding: 8px;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #aaa;
+  }
+
+  .post-content {
+    margin: 16px 0;
+  }
+
+  .post-image {
+    width: 100%;
+    height: auto;
+  }
+</style>
+  <meta name="description" content="MiniApp - Natural">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <title>MiniApp - Natural</title>
+  <script>
+    function imageUrl(path) {
+      return 'https://lh3.googleusercontent.com/' + path;
+    }
+
+    function get(container, sel) {
+      return container.querySelector(sel);
+    }
+
+    function makeRootScroller(element) {
+      if (typeof(document.rootScroller) !== 'undefined')
+          document.rootScroller = element;
+    }
+
+    function anim(duration, mutate, complete) {
+      var startTime = new Date().getTime();
+      var endTime = startTime + duration;
+
+      function step() {
+        var now = new Date().getTime();
+        var norm = (now - startTime) / duration;
+        norm = Math.min(1, norm);
+        mutate(norm);
+        if (norm < 1) {
+          requestAnimationFrame(step);
+        } else {
+          complete();
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function openDialog() {
+      var template = get(document, '#dialog-template .dialog-outer');
+      var node = template.cloneNode(true);
+      function close() {
+        // document.body.style.overflow = '';
+        document.body.removeChild(node);
+      }
+      node.onclick = close;
+
+      get(node, '.dialog-close').onclick = close;
+
+      var inner = get(node, '.dialog-inner');
+      inner.onclick = function(e) {
+        e.stopPropagation();
+      };
+
+      document.body.appendChild(node);
+      // document.body.style.overflow = 'hidden';
+    }
+
+    function transitionView(fromViewId, toViewId) {
+      var fromView = get(document, '#' + fromViewId);
+      var toView = get(document, '#' + toViewId);
+
+      toView.style.opacity = 0;
+      toView.classList.remove('not-there');
+
+      anim(1000, function step(time) {
+        if (time < 0.5) {
+          fromView.style.opacity = 1 - time * 2;
+        } else {
+          fromView.style.opacity = 0;
+          toView.style.opacity = (time - 0.5) * 2;
+        }
+      }, function complete() {
+        fromView.classList.add('not-there');
+        fromView.style.opacity = 1;
+        toView.style.opacity = 1;
+        makeRootScroller(toView);
+      });
+    }
+
+    function openOneUp(post) {
+      var node = createPostUi(post);
+      var parent = get(document, '#post-view .view-content');
+      var oldNode = get(parent, '.post');
+      if (oldNode) {
+        parent.removeChild(oldNode);
+      }
+      parent.appendChild(node);
+
+      transitionView('stream-view', 'post-view');
+    }
+
+    function closeOneUp() {
+      transitionView('post-view', 'stream-view');
+    }
+
+    function createPostUi(post) {
+      var template = get(document, '#post-template .post');
+      var node = template.cloneNode(true);
+      get(node, '.post-image').src = imageUrl(post.image);
+      get(node, '.post-content').textContent = post.content;
+      get(node, '.post-dialog-button').onclick = function(e) {
+        e.stopPropagation();
+        openDialog();
+      };
+      return node;
+    }
+
+    function buildStream() {
+      var stream = get(document, '#stream');
+      window.STREAM.forEach(function(post) {
+        var node = createPostUi(post);
+        node.onclick = function() {
+          openOneUp(post);
+        };
+        stream.appendChild(node);
+      });
+    }
+
+    window.addEventListener('load', function() {
+      buildStream();
+      get(document, '.view-header-back').onclick = closeOneUp;
+      makeRootScroller(get(document, '#stream-view'));
+    });
+
+
+    window.STREAM = [
+      {
+        image: '-LfvKLKc9mrU/VQm9nQ34b8I/AAAAAAAAAeo/nRwraw0MzI4/photo.jpg',
+        content: 'See if you\'ve got what it takes to head into a box—or just get a taste of the workout class without all that pressure. Strong Ankle Workout',
+      },
+      {
+        image: 'cRi-q75UOhpZruPlICKz3pGm_7SJedtEV7k7eh1X3jk',
+        content: 'A mobile game is a video game played on a mobile phone, smartphone, PDA, tablet computer, portable media player or calculator. This does not include games played on dedicated handheld video game systems such as Nintendo 3DS or PlayStation Vita.',
+      },
+      {
+        image: '-IiyBch2wY4_uLWTEoq7NCU24kkYDw3vrRVxysXdJ7A',
+        content: 'The furniture and rugs in a room offer a decorating framework; flesh out the look with home decor. By adding a few decor pieces here and there, you can create a warm, welcoming look that captures your personality.',
+      },
+      {
+        image: 'dqgfoArLAUNkowY5NfxdJy-stvlZ43bilAj0td6ea8Y',
+        content: 'George (Paul Rudd) and Linda (Jennifer Aniston) have overextended, overstressed lives in Manhattan. After George loses his job, he and Linda have little choice but to move to Atlanta and stay with his terrible',
+      },
+      {
+        image: '3yP4Pk_JbXV7x9ym43YpAwbOswZA2B0IOm9qoH76qyw',
+        content: 'South by Southwest is a set of film, interactive, and music festivals and conferences that take place early each year in mid-March in Austin, Texas, United States. It began in 1987, and has continued to grow in both scope and size every year.'
+      },
+      {
+        image: 'DDer5EcuYxBtOlAsCzWxc8HHzAphgV9phX-5spVs64Q',
+        content: 'The National Collegiate Athletic Association (NCAA) Men\'s Division I Basketball Tournament is a single-elimination tournament played each spring in the United States, currently featuring 68 college basketball teams, to determine the national championship of the major college basketball teams. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in porta mi. Integer vitae ante sed velit tristique finibus. Pellentesque a tristique leo. Nulla tristique erat nec cursus eleifend. Proin ullamcorper efficitur lacus. Curabitur consequat at magna vitae venenatis. Nullam porta libero egestas enim vulputate gravida. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse pellentesque urna a turpis laoreet varius. Integer tempus, mauris ac luctus convallis, lacus nisl dignissim libero, ut placerat eros libero ut diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris placerat bibendum nulla accumsan tempus. Cras hendrerit vulputate mauris, at iaculis ante venenatis nec. Ut lacinia facilisis libero eu dignissim. Morbi elit tellus, tincidunt sed hendrerit vel, consequat eu elit. Suspendisse eget ligula at quam congue scelerisque id nec leo. Quisque sit amet orci et justo hendrerit eleifend nec ut tortor. Sed non imperdiet sapien, nec vestibulum est.'
+      },
+    ];
+  </script>
+</head>
+<body>
+  <div class="view" id="stream-view">
+    <div class="view-header">
+      <div>Stream</div>
+    </div>
+    <div class="view-body">
+      <div class="view-header-gap"></div>
+      <div class="view-content">
+        <div class="stream" id="stream">
+          <!-- Content goes here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view not-there" id="post-view">
+    <div class="view-header">
+      <div class="view-header-back">
+        <svg viewBox="0 0 24 24" height="100%" width="100%">
+          <g>
+            <path d="M20,11H7.8l5.6-5.6L12,4l-8,8l8,8l1.4-1.4L7.8,13H20V11z"></path>
+          </g>
+        </svg>
+      </div>
+      <div>Post</div>
+    </div>
+    <div class="view-body">
+      <div class="view-header-gap"></div>
+      <div class="view-content">
+        <!-- Content goes here -->
+      </div>
+    </div>
+  </div>  
+  
+  <div id="templates" style="display: none;">
+    <div id="post-template">
+      <div class="post">
+        <div class="post-content">
+        </div>
+        <div class="post-image-holder">
+          <img class="post-image" src="">
+        </div>
+        <button class="post-dialog-button">Show dialog</button>
+      </div>
+    </div>
+    
+    <div id="dialog-template">
+      <div class="dialog-outer">
+        <div class="dialog-inner">
+          <div class="dialog-header">
+            <div class="dialog-title">
+              Dialog
+            </div>
+            <div class="dialog-close">
+              &#x00D7;
+            </div>
+          </div>
+          <div class="dialog-body">
+            The content in dialog also can scroll.
+            <p>One</p><p>Two</p><p>Three</p>
+            <p>One</p><p>Two</p><p>Three</p>
+            <p>One</p><p>Two</p><p>Three</p>
+            <p>One</p><p>Two</p><p>Three</p>
+            <p>One</p><p>Two</p><p>Three</p>
+            <p>One</p><p>Two</p><p>Three</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
