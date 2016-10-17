@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="user-scalable=no,minimum-scale=1">
+        <style type="text/css">
+            #greenbox {
+                width: 100%;
+                height: 100px;
+                background: green;
+                padding: 0px;
+                margin: 0px;
+            }
+            #bluebox {
+                width: 200px;
+                height: 100px;
+                background: blue;
+                padding: 0px;
+                margin: 0px;
+            }
+            #redbox {
+                width: 200px;
+                height: 100px;
+                background: red;
+                padding: 0px;
+                margin: 0px;
+            }
+        </style>
+		<script>
+	      function handler(ev) {
+		    //console.log('InnerKeyEvent: Target[' + ev.target + '] CurrentTarget[' + ev.currentTarget +']');
+		  }
+		  
+		  function wheelHandler(ev) {
+		    //console.log('InnerWheel: Target[' + ev.target + '] CurrentTarget[' + ev.currentTarget +']');
+		  }
+		  
+		  addEventListener('load', function() {
+		      document.getElementById('container').addEventListener('keypress', handler);
+			  document.getElementById('innerContainer').addEventListener('keypress', handler);
+			  document.body.addEventListener('keypress', handler);
+			  document.documentElement.addEventListener('keypress', handler);
+			  
+			  document.getElementById('container').addEventListener('wheel', wheelHandler);
+			  document.getElementById('innerContainer').addEventListener('wheel', wheelHandler);
+			  document.body.addEventListener('wheel', wheelHandler);
+			  document.documentElement.addEventListener('wheel', wheelHandler);
+
+        if (document.setRootScroller)
+            document.setRootScroller(document.getElementById('container'));
+		  });
+		</script>
+    </head>
+    <body>
+        <div id="container" style="background-color: white; height: 500px; width: 300px; overflow-y: scroll">
+		    <input type="text">
+            <div id="innerContainer" style="height: 300px; width: 200px; overflow-y: scroll">
+			    <input type="text">
+                <div id="bluebox"></div><div id="redbox"></div>
+                <div id="bluebox"></div><div id="redbox"></div>
+                <div id="bluebox"></div><div id="redbox"></div>
+                <div id="bluebox"></div><div id="redbox"></div>
+                <div id="bluebox"></div><div id="redbox"></div>
+            </div>
+            <div id="greenbox"></div><div id="redbox"></div>
+            <div id="greenbox"></div><div id="redbox"></div>
+            <div id="greenbox"></div><div id="redbox"></div>
+            <div id="greenbox"></div><div id="redbox"></div>
+        </div>
+        <div style="width:100px; height:2000px; background: green;"></div>
+        <div style="width:100%; height: 100px; background-color: yellow; position: fixed; left: 0px; top: 0px;"></div>
+    </body>
+</html>
