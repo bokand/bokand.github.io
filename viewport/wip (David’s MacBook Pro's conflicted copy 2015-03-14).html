@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script>
+      var imgForbes;
+      var imgHeader;
+
+      var forbesLoaded = false;
+      var headerLoaded = false;
+
+      var vWidth = 500;
+      var vHeight = 348;
+
+      var oWidth = 500;
+      var oHeight = 619;
+
+      var canvasViewport;
+      var canvasOverview;
+      var rangePageScale;
+
+      var scaleMinimum = 1;
+      var scaleMaximum = 4;
+
+      var scrollOuterFirst = true;
+      var virtualViewportOn = true;
+
+      function init() {
+        imgForbes = new Image();
+        imgHeader = new Image();
+
+        imgForbes.addEventListener('load', function() {
+          forbesLoaded = true;
+        }, false);
+
+        imgHeader.addEventListener('load', function() {
+          headerLoaded = true;
+        });
+
+        imgForbes.src = 'forbes.png';
+        imgHeader.src = 'header.png';
+
+        canvasViewport = document.getElementById('canvasViewport');
+        canvasViewport.width = vWidth;
+        canvasViewport.height = vHeight;
+
+        addEventListener('mousedown', viewportMouseDown);
+        addEventListener('mousemove', viewportMouseMove);
+        addEventListener('mouseup', viewportMouseUp);
+        addEventListener('keydown', keyDown);
+        addEventListener('keyup', keyUp);
+
+        canvasOverview = document.getElementById('canvasOverview');
+        canvasOverview.width = oWidth;
+        canvasOverview.height = oHeight;
+
+        var browserBar = document.getElementById('browserBar');
+        browserBar.width = vWidth + 2;
+
+        rangePageScale = document.getElementById('rangePageScale');
+        rangePageScale.min = scaleMinimum;
+        rangePageScale.max = scaleMaximum;
+
+        rangePageScale.addEventListener('input', scaleChanged);
+        document.getElementById('checkboxScrollOuterFirst').addEventListener('change', scrollOrderChanged);
+        document.getElementById('checkboxVirtualViewportOn').addEventListener('change', virtualViewportOnChanged);
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function virtualViewportOnChanged() {
+        virtualViewportOn = document.getElementById('checkboxVirtualViewportOn').checked;
+        requestAnimationFrame(drawFrame);
+      }
+
+      function scrollOrderChanged() {
+        scrollOuterFirst = document.getElementById('checkboxScrollOuterFirst').checked;
+      }
+
+      function scaleChanged() {
+        pageScale = document.getElementById('rangePageScale').value;
+        requestAnimationFrame(drawFrame);
+      }
+
+      var shiftDown = false;
+      function keyDown(e) {
+        if (e.keyIdentifier === 'Shift') {
+          shiftDown = true;
+        }
+      }
+
+      function keyUp(e) {
+        if (e.keyIdentifier === 'Shift') {
+          shiftDown = false;
+        }
+      }
+
+      var isMoving = false;
+      var lastPos;
+      function viewportMouseDown(e) {
+        var canvasViewportRect = canvasViewport.getBoundingClientRect();
+
+        if (canvasViewportRect.left <= e.clientX && canvasViewportRect.right >= e.clientX &&
+            canvasViewportRect.top <= e.clientY && canvasViewportRect.bottom >= e.clientY) {
+          e.preventDefault();
+          lastPos = { x: e.clientX,
+                      y: e.clientY }
+          isMoving = true;
+        }
+      }
+
+      function viewportMouseMove(e) {
+        if (isMoving) {
+          var dx = e.clientX - lastPos.x;
+          var dy = e.clientY - lastPos.y;
+          lastPos = { x: e.clientX,
+                      y: e.clientY }
+
+          var totalScale = pageScale * screenScale;
+
+          if (shiftDown) {
+            changeScale(pageScale + dy*0.01);
+          } else {
+            move(-dx/totalScale, -dy/totalScale, 1);
+          }
+        }
+      }
+
+      function changeScale(s) {
+        pageScale = s;
+
+        if (pageScale > scaleMaximum)
+          pageScale = scaleMaximum;
+        if (pageScale < scaleMinimum)
+          pageScale = scaleMinimum;
+
+        rangePageScale.value = pageScale;
+        requestAnimationFrame(drawFrame);
+      }
+
+      function viewportMouseUp(e) {
+        isMoving = false;
+        lastPos = null;
+      }
+
+      var headerWidth = 2872;
+      var headerHeight = 142;
+      var pageWidth = 2870;
+      var pageHeight = 3555;
+
+      var viewportWidth = 2872;
+      var viewportHeight = 2000;
+      var viewportXOffset = 0;
+      var viewportYOffset = 0;
+      var mainFrameXOffset = 0;
+      var mainFrameYOffset = 0;
+
+      var pageScale = 1;
+      var screenScale = vWidth / headerWidth;
+
+      function move(x, y, optStep) {
+        var step = 16;
+        if (optStep)
+          step = optStep;
+
+        if (scrollOuterFirst) {
+          step = scrollOuter(x*step, y*step)
+          scrollInner(step[0], step[1]);
+        } else {
+          step = scrollInner(x*step, y*step)
+          scrollOuter(step[0], step[1]);
+        }
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function scrollOuter(x, y) {
+        var oldX = mainFrameXOffset;
+        var oldY = mainFrameYOffset;
+        mainFrameXOffset += x;
+        mainFrameYOffset += y;
+        clampViewport();
+        return [x - (mainFrameXOffset - oldX), y - (mainFrameYOffset - oldY)];
+      }
+
+      function scrollInner(x, y) {
+        var oldX = viewportXOffset;
+        var oldY = viewportYOffset;
+        viewportXOffset += x;
+        viewportYOffset += y;
+        clampViewport();
+        return [x - (viewportXOffset - oldX), y - (viewportYOffset - oldY)];
+      }
+
+
+      function drawScreen() {
+        var totalScale = pageScale * screenScale;
+        var headerScaledHeight = headerHeight * totalScale;
+        var headerScaledWidth = headerWidth * totalScale;
+        var pageScaledHeight = pageHeight * totalScale;
+        var pageScaledWidth = pageWidth * totalScale;
+
+        var xOffset = (mainFrameXOffset + viewportXOffset)*totalScale;
+        var yOffset = (mainFrameYOffset + viewportYOffset)*totalScale;
+
+        var ctx = canvasViewport.getContext('2d');
+        ctx.drawImage(imgForbes,
+                      0, 0, pageWidth, pageHeight,
+                      -xOffset, headerScaledHeight-yOffset, pageScaledWidth, pageScaledHeight);
+
+        var headerX = 0;
+        var headerY = 0;
+
+        if (virtualViewportOn) {
+          headerX = -viewportXOffset*totalScale;
+          headerY = -viewportYOffset*totalScale;
+        }
+
+        ctx.drawImage(imgHeader,
+                      0, 0, headerWidth, headerHeight,
+                      headerX, headerY, headerScaledWidth, headerScaledHeight);
+      }
+
+      function clampViewport() {
+        if (mainFrameYOffset + viewportHeight > pageHeight)
+          mainFrameYOffset = pageHeight - viewportHeight;
+        else if (mainFrameYOffset < 0)
+          mainFrameYOffset = 0;
+
+        if (mainFrameXOffset + viewportWidth > pageWidth)
+          mainFrameXOffset = pageWidth - viewportWidth;
+        else if (mainFrameXOffset < 0)
+          mainFrameXOffset = 0;
+
+        var viewportRight = viewportXOffset + viewportWidth / pageScale;
+        var viewportBottom = viewportYOffset + viewportHeight / pageScale;
+        var frameRight = viewportWidth;
+        var frameBottom = viewportHeight;
+
+        if (viewportRight > frameRight)
+          viewportXOffset = viewportWidth - viewportWidth / pageScale;
+        else if (viewportXOffset < 0)
+          viewportXOffset = 0;
+
+        if (viewportBottom > frameBottom)
+          viewportYOffset = viewportHeight - viewportHeight / pageScale;
+        else if (viewportYOffset < 0)
+          viewportYOffset = 0;
+      }
+
+      function drawOverview() {
+        var headerWidth = 2872;
+        var headerHeight = 142;
+        var pageWidth = 2870;
+        var pageHeight = 3555;
+
+        var headerScaledHeight = headerHeight * screenScale;
+        var headerScaledWidth = headerWidth * screenScale;
+        var pageScaledHeight = pageHeight * screenScale;
+        var pageScaledWidth = pageWidth * screenScale;
+
+        var mainFrame = {
+          x: mainFrameXOffset * screenScale,
+          y: mainFrameYOffset * screenScale,
+          width: vWidth,
+          height: vHeight
+        }
+
+        var viewport = {
+          x: mainFrame.x + viewportXOffset * screenScale,
+          y: mainFrame.y + viewportYOffset * screenScale,
+          width: viewportWidth * screenScale / pageScale,
+          height: viewportHeight * screenScale / pageScale
+        }
+
+        var ctx = canvasOverview.getContext('2d');
+        ctx.fillStyle = 'rgb(255, 255, 255)';
+        ctx.fillRect(0, 0, headerScaledWidth, headerScaledHeight);
+
+        ctx.drawImage(imgForbes,
+                      0, 0, pageWidth, pageHeight,
+                      0, headerScaledHeight, pageScaledWidth, pageScaledHeight);
+
+        ctx.drawImage(imgHeader,
+                      0, 0, headerWidth, headerHeight,
+                      mainFrame.x, mainFrame.y, headerScaledWidth, headerScaledHeight);
+
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = 'rgb(0, 0, 255)';
+        ctx.strokeRect(mainFrame.x + 3, mainFrame.y + 3, mainFrame.width-6, mainFrame.height - 6);
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgb(255, 0, 0)';
+        ctx.strokeRect(viewport.x + 2, viewport.y + 2, viewport.width - 4, viewport.height - 4);
+
+      }
+
+      function drawFrame() {
+        if (!forbesLoaded || !headerLoaded)
+          requestAnimationFrame(drawFrame);
+
+        clampViewport();
+        drawScreen();
+        drawOverview();
+      }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <div>
+      <h2>Pinch-to-zoom of old</h2>
+      <p>
+        In Chrome's M40 release, we've made a change to how the pinch-to-zoom feature
+        works. The change introduces a new viewport to Chrome, the mysteriously named
+        virtual viewport. This change gives us more rational handling of position:
+        fixed elements and enables some future improvements to the platform.
+      </p>
+
+      <p>
+        To understand why we made this change, it's useful to see the problems in
+        Chrome's old pinch-zoom implementation. Prevoiusly, page scale would be applied
+        to the main frame in the form of scaling the visible content rect returned by
+        <a href="">FrameView::visibleContentRect()</a>. The visible content rect was
+        the viewport rect relative to the page contents. As the user pinch-zooms into
+        the page, the visible content rect would shrink. Most Blink features that rely
+        on the viewport would get it from this method, including position: fixed elements
+        which were attached to this rect in
+        <a href="">FrameView::viewportConstrainedVisibleContentSizeChanged</a>.
+      </p>
+
+      <p>
+        The problem with attaching position: fixed elements to a shrinking viewport is
+        that the elements themselves don't shrink with the viewport. When a user zooms
+        in, the position: fixed elements stay fixed to the viewport but they zoom to fill
+        the entire viewport. Worse still, since position: fixed elements don't have scroll
+        applied to them, any part of a fixed element that grows outside the bounds of the
+        viewport becomes unreachable. On many pages, position: fixed elements are aligned
+        to other inflow elements on the page. Having these elements attahed to a changing
+        viewport breaks the alignment (<a href="">see diving example from MS</a>).
+
+        Clearly, position: fixed elements don't interact well with pinch-zoom. More
+        generally, we'd like to more clearly seperate the concepts of visual and layout
+        viewports (see <a href="">A tale of two viewports</a>). Having page scale applied
+        to the FrameView, which is where layout happens, conflates the two concepts.
+        Seperating these concepts will allow us to solve other longstanding pain points
+        in the platform, e.g. having the on-screen keyboard not reflow the page.
+      </p>
+    </div>
+    <div>
+      <h2>
+        What is the virtual viewport?
+      </h2>
+      <p>
+        If you haven't yet, you should definitely read PPK's
+        <a href="">A tale of two viewports</a>. I'll be using his terminology here.
+      </p>
+      <p>
+        Essentially, the page contents layout into the initial containing block. From the
+        spec <a href="">[1]</a>, the initial containing block (ICB) gets its size from the
+        UA's viewport. Until smartphones came along, this was always the size of the
+        browser window. The situation got more complicated with the introduction of mobile
+        browsers with small screens, where fixing the ICB to the small screen size was
+        impractical. Browser vendors would make the default ICB size larger than the screen
+        size and allow the page author to control the size of the ICB with the viewport
+        ***meta*** tag. This is what we call the <em>layout viewport</em>.
+      </p>
+      <p>
+        By default, Chrome operates in the desktop mode, where the ICB takes on the size of
+        the UA window. It does this by enabling layoutSizeFixedToFrame on the main FrameView.
+        FrameView keeps the dimensions used for the ICB explicitly in a private member,
+        m_layoutSize. When layoutSizeFixedToFrame is enabled, each resize in
+        WebViewImpl::resize will explicitly set m_layoutSize on the main FrameView to the
+        size of the WebView (i.e. the window size). On Android, where --viewportEnabled is
+        specified, layoutSizedFixedToFrame is disabled. If the page specified a layout width
+        in the viewport ***meta*** tag, WebViewImpl will set the main FrameView's
+        m_layoutSize to that; otherwise, it will use a default width, currently 980px.
+      </p>
+      <p>
+        Whereas the <em>visual viewport</em> was represented by FrameView::visibleContentRect,
+        it is now represented by a new class <em>PinchViewport</em>. Page scale is applied to
+        the PinchViewport and doesn't change the size of anything in FrameView. position:
+        fixed elements are still attached to the FrameView's visibleContentRect so zooming in
+        doesn't cause them crowd around the visible viewport.
+      </p>
+      <p>
+        So what is the <em>virtual</em> viewport? We've used virtual viewport to describe this
+        feature as a whole so it doesn't correspond to any concrete concept in Chrome. In the
+        Chrome Compositor, the <em>inner_viewport</em> corresponds to the PinchViewport, and
+        the <em>outer_viewport</em> to the main FrameView.
+      </p>
+    </div>
+    <div>
+      <h2>Implementation Details</h2>
+      <div>
+      -Describe compositor-side layer hierarchy
+      </div>
+      <p>
+        As mentioned, PinchViewport represents the visual viewport inside Blink. The FrameHost
+        class holds a PinchViewport as a member so there's one PinchViewport per page. 
+        PinchViewport has a size and holds the page scale factor, which the user can manipulate
+        by pinch-zooming. The size matches the WebViewImpl's size and the visible rect is
+        calculated by dividing by the page scale.
+      </p>
+      <p>
+        The PinchViewport also has a location. The location is the offset within the main
+        FrameView, in the FrameView's coordinates. The PinchViewport can be scrolled around
+        within the FrameView but it must always be bounded by it. Conceptually, it's simmilar to
+        having scrollable content within a div. For this reason, PinchViewport implements
+        ScrollableArea. To calculate the actual visible content rect, we get the visible size by
+        deviding the PinchViewport size by the scale, and the location by adding the PinchViewport's
+        location to the FrameView's scroll offset.
+        TODO: pic
+      </p>
+      <p>
+        An important detail is how the main FrameView gets its size. Remember, the layout viewport
+        is the size of the <em>content</em> and is controled by FrameView::m_layoutSize. The
+        FrameView itself has a size (a frame rect) and that's where we attach position: fixed
+        elements (also scrollbars). There's a few choices but we decided to set the FrameView's
+        size such that it matches the visual viewport at minimum scale. This way, position: fixed
+        elements will always look natural (the user can't zoom out to see a "virtual" screen with
+        position: fixed elements attached to it). This happens after a layout in
+        WebViewImpl::layoutUpdated since the minimum scale depends on the content width.
+      </p>
+      <p>
+        -Describe the commit cycle, top controls adjustment
+      </p>
+    </div>
+    <div>
+      Future
+      -position:device-fixed
+      -keyboard
+      -top controls?
+    </div>
+    <div>
+      <div style="float: left; margin: 15px 25px 25px 75px">
+        <h2>What Chrome sees</h2>
+        <canvas id="canvasOverview" style="border: solid; border-width: 1px;"></canvas>
+      </div>
+      <div style="float: right; margin: 25px 75px 25px 15px">
+        <h2>What the user sees</h2>
+        <img id="browserBar" style="display: block;" src="browserbar.png">
+        <canvas id="canvasViewport" style="border: solid; border-width: 1px; z-index: 100"></canvas>
+        <div>Use mouse to pan around. Hold shift to pinch-zoom in/out.</div>
+      </div>
+      <br>
+      <div style="text-align: left; position: relative; top: 100px">
+        Page Scale
+        <input id="rangePageScale" type="range" step="0.1" value="1"></input>
+        <br><br>
+        <input id="checkboxScrollOuterFirst" type="checkbox" checked="true">Scroll frame first</input>
+        <input id="checkboxVirtualViewportOn" type="checkbox" checked="true">Virtual Viewport On</input>
+        <br><br><br>
+        <div style="margin: 5px; color: red">PinchViewport</div>
+        <div style="margin: 5px; color: blue">Main FrameView</div>
+      </div>
+    </div>
+  </body>
+</html>

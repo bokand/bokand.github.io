@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script>
+      var browserChrome = 0;
+      var browserEdge = 1;
+      var browserFirefox = 2;
+      var browserSafari = 3;
+
+      var safariThresholdScale = 1.5;
+
+      var imgForbes;
+      var imgHeader;
+
+      var forbesLoaded = false;
+      var headerLoaded = false;
+
+      var vWidth = 500;
+      var vHeight = 348;
+
+      var oWidth = 500;
+      var oHeight = 619;
+
+      var canvasViewport;
+      var canvasOverview;
+      var rangePageScale;
+
+      var scaleMinimum = 1;
+      var scaleMaximum = 4;
+
+      var curBrowser = browserChrome;
+
+      function viewportToContents(coords) {
+        var totalScale = pageScale;
+        var xOffset = (mainFrameXOffset + viewportXOffset)*screenScale + coords.x/pageScale;
+        var yOffset = (mainFrameYOffset + viewportYOffset)*screenScale + coords.y/pageScale;
+        return {
+          x: xOffset,
+          y: yOffset
+        }
+      }
+
+      function init() {
+        imgForbes = new Image();
+        imgHeader = new Image();
+
+        imgForbes.addEventListener('load', function() {
+          forbesLoaded = true;
+        }, false);
+
+        imgHeader.addEventListener('load', function() {
+          headerLoaded = true;
+        });
+
+        imgForbes.src = 'forbes.png';
+        imgHeader.src = 'header.png';
+
+        canvasViewport = document.getElementById('canvasViewport');
+        canvasViewport.width = vWidth;
+        canvasViewport.height = vHeight;
+
+        addEventListener('mousedown', viewportMouseDown);
+        addEventListener('mousemove', viewportMouseMove);
+        addEventListener('mouseup', viewportMouseUp);
+        addEventListener('keydown', keyDown);
+        addEventListener('keyup', keyUp);
+
+        canvasOverview = document.getElementById('canvasOverview');
+        canvasOverview.width = oWidth;
+        canvasOverview.height = oHeight;
+
+        var browserBar = document.getElementById('browserBar');
+        browserBar.width = vWidth + 2;
+
+        rangePageScale = document.getElementById('rangePageScale');
+        rangePageScale.min = scaleMinimum;
+        rangePageScale.max = scaleMaximum;
+
+        rangePageScale.addEventListener('input', scaleChanged);
+        document.getElementById('radioChrome').addEventListener('click', radioClicked);
+        document.getElementById('radioEdge').addEventListener('click', radioClicked);
+        document.getElementById('radioFirefox').addEventListener('click', radioClicked);
+        document.getElementById('radioSafari').addEventListener('click', radioClicked);
+
+        radioClicked();
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function radioClicked() {
+        var explanation;
+        if (document.getElementById('radioChrome').checked) {
+            curBrowser = browserChrome;
+            explanation = 'chromeExplanation';
+        } else if (document.getElementById('radioEdge').checked) {
+            curBrowser = browserEdge;
+            explanation = 'edgeExplanation';
+        } else if (document.getElementById('radioFirefox').checked) {
+            curBrowser = browserFirefox;
+            explanation = 'firefoxExplanation';
+        } else if (document.getElementById('radioSafari').checked) {
+            curBrowser = browserSafari;
+            explanation = 'safariExplanation';
+        } else {
+            console.error('Whoops');
+        }
+        var explanationElems = document.getElementsByClassName('explanation');
+        for (var i = 0; i < explanationElems.length; ++i) {
+            explanationElems[i].style.display = 'none';
+        }
+        document.getElementById(explanation).style.display = 'block';
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function scaleChanged() {
+        pageScale = document.getElementById('rangePageScale').value;
+        requestAnimationFrame(drawFrame);
+      }
+
+      var shiftDown = false;
+      function keyDown(e) {
+        if (e.keyCode === 16) {
+          shiftDown = true;
+        }
+      }
+
+      function keyUp(e) {
+        if (e.keyCode === 16) {
+          shiftDown = false;
+        }
+      }
+
+      var isMoving = false;
+      var mouseDownPosition = {
+        x: 0,
+        y: 0
+      };
+      var mouseDownPositionInContent = {
+        x: 0,
+        y: 0
+      };
+      var lastPos;
+      function viewportMouseDown(e) {
+        var canvasViewportRect = canvasViewport.getBoundingClientRect();
+
+        if (canvasViewportRect.left <= e.clientX && canvasViewportRect.right >= e.clientX &&
+            canvasViewportRect.top <= e.clientY && canvasViewportRect.bottom >= e.clientY) {
+          e.preventDefault();
+          lastPos = { x: e.clientX,
+                      y: e.clientY }
+
+          var viewportPos = {
+            x: (e.clientX - canvasViewportRect.left),
+            y: (e.clientY - canvasViewportRect.top)
+          }
+          mouseDownPosition = viewportPos;
+          mouseDownPositionInContent = viewportToContents(viewportPos);
+          isMoving = true;
+        }
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function viewportMouseMove(e) {
+        if (isMoving) {
+          var dx = e.clientX - lastPos.x;
+          var dy = e.clientY - lastPos.y;
+          lastPos = { x: e.clientX,
+                      y: e.clientY }
+
+          var totalScale = pageScale * screenScale;
+
+          if (shiftDown) {
+            var anchorOld = mouseDownPositionInContent;
+            changeScale(pageScale + -dy*0.01);
+            var anchor = viewportToContents(mouseDownPosition);
+
+            var diffX = anchorOld.x - anchor.x;
+            var diffY = anchorOld.y - anchor.y;
+            var r;
+
+            if (curBrowser != browserSafari) {
+              r = scrollInner(diffX, diffY)
+              scrollOuter(r[0], r[1]);
+            }
+          } else {
+            move(-dx/totalScale, -dy/totalScale);
+          }
+        }
+      }
+
+      function changeScale(s) {
+        pageScale = s;
+
+        if (pageScale > scaleMaximum)
+          pageScale = scaleMaximum;
+        if (pageScale < scaleMinimum)
+          pageScale = scaleMinimum;
+
+        rangePageScale.value = pageScale;
+        requestAnimationFrame(drawFrame);
+      }
+
+      function viewportMouseUp(e) {
+        isMoving = false;
+        lastPos = null;
+      }
+
+      var headerWidth = 2872;
+      var headerHeight = 142;
+      var pageWidth = 2870;
+      var pageHeight = 3555;
+
+      var viewportWidth = 2872;
+      var viewportHeight = 2000;
+      var viewportXOffset = 0;
+      var viewportYOffset = 0;
+      var mainFrameXOffset = 0;
+      var mainFrameYOffset = 0;
+
+      var pageScale = 1;
+      var screenScale = vWidth / headerWidth;
+
+      function layoutViewport() {
+        if (curBrowser == browserSafari) {
+            return safariLayoutViewport();
+        } else {
+            return {
+              x: mainFrameXOffset,
+              y: mainFrameYOffset,
+              width: viewportWidth,
+              height: viewportHeight,
+            }
+        }
+      }
+
+      function safariLayoutViewport() {
+        var scale;
+        if (pageScale < safariThresholdScale)
+            scale = pageScale;
+        else
+            scale = safariThresholdScale;
+
+        return {
+          x: mainFrameXOffset,
+          y: mainFrameYOffset,
+          width: viewportWidth / scale,
+          height: viewportHeight / scale,
+        }
+      }
+
+      function visualViewport() {
+        return {
+          x: viewportXOffset,
+          y: viewportYOffset,
+          width: viewportWidth / pageScale,
+          height: viewportHeight / pageScale,
+        }
+      }
+
+      function move(x, y) {
+        if (curBrowser != browserSafari) {
+          step = scrollInner(x, y)
+          scrollOuter(step[0], step[1]);
+        } else {
+          layout = safariLayoutViewport();
+          visual = visualViewport();
+          innerRatioX = (layout.width - visual.width) / (layout.width - visual.width + pageWidth - layout.width);
+          innerRatioY = (layout.height - visual.height) / (layout.height - visual.height + pageHeight - layout.height);
+          outerRatioX = 1 - innerRatioX;
+          outerRatioY = 1 - innerRatioY;
+
+          step = scrollInner(x*innerRatioX, y*innerRatioY);
+          scrollOuter(x * outerRatioX, y * outerRatioY);
+        }
+
+        requestAnimationFrame(drawFrame);
+      }
+
+      function scrollOuter(x, y) {
+        var oldX = mainFrameXOffset;
+        var oldY = mainFrameYOffset;
+        mainFrameXOffset += x;
+        mainFrameYOffset += y;
+        clampViewport();
+        return [x - (mainFrameXOffset - oldX), y - (mainFrameYOffset - oldY)];
+      }
+
+      function scrollInner(x, y) {
+        var oldX = viewportXOffset;
+        var oldY = viewportYOffset;
+        viewportXOffset += x;
+        viewportYOffset += y;
+        clampViewport();
+        return [x - (viewportXOffset - oldX), y - (viewportYOffset - oldY)];
+      }
+
+
+      function drawScreen() {
+        var totalScale = pageScale * screenScale;
+        var headerScaledHeight = headerHeight * totalScale;
+        var headerScaledWidth = headerWidth * totalScale;
+        var pageScaledHeight = pageHeight * totalScale;
+        var pageScaledWidth = pageWidth * totalScale;
+
+        var xOffset = (mainFrameXOffset + viewportXOffset)*totalScale;
+        var yOffset = (mainFrameYOffset + viewportYOffset)*totalScale;
+
+        var ctx = canvasViewport.getContext('2d');
+        ctx.drawImage(imgForbes,
+                      0, 0, pageWidth, pageHeight,
+                      -xOffset, headerScaledHeight-yOffset, pageScaledWidth, pageScaledHeight);
+
+        var headerX = 0;
+        var headerY = 0;
+
+        if (curBrowser == browserChrome || curBrowser == browserEdge || curBrowser == browserSafari) {
+          headerX = -viewportXOffset*totalScale;
+          headerY = -viewportYOffset*totalScale;
+        }
+
+        ctx.drawImage(imgHeader,
+                      0, 0, headerWidth, headerHeight,
+                      headerX, headerY, headerScaledWidth, headerScaledHeight);
+      }
+
+      function clampViewport() {
+        var layout = layoutViewport();
+        var visual = visualViewport();
+
+        if (layout.y + layout.height > pageHeight)
+          mainFrameYOffset = pageHeight - layout.height;
+        else if (mainFrameYOffset < 0)
+          mainFrameYOffset = 0;
+
+        if (layout.x + layout.width > pageWidth)
+          mainFrameXOffset = pageWidth - layout.width;
+        else if (mainFrameXOffset < 0)
+          mainFrameXOffset = 0;
+
+        if (visual.x + visual.width > layout.width)
+          viewportXOffset = layout.width - visual.width;
+        else if (viewportXOffset < 0)
+          viewportXOffset = 0;
+
+        if (visual.y + visual.height > layout.height)
+          viewportYOffset = layout.height - visual.height;
+        else if (viewportYOffset < 0)
+          viewportYOffset = 0;
+      }
+
+      function drawOverview() {
+        var headerWidth = 2872;
+        var headerHeight = 142;
+        var pageWidth = 2870;
+        var pageHeight = 3555;
+
+        var headerScaledHeight = headerHeight * screenScale;
+        var headerScaledWidth = headerWidth * screenScale;
+        var pageScaledHeight = pageHeight * screenScale;
+        var pageScaledWidth = pageWidth * screenScale;
+
+        var mainFrame = {
+          x: mainFrameXOffset * screenScale,
+          y: mainFrameYOffset * screenScale,
+          width: vWidth,
+          height: vHeight
+        };
+
+        var viewport = {
+          x: mainFrame.x + viewportXOffset * screenScale,
+          y: mainFrame.y + viewportYOffset * screenScale,
+          width: viewportWidth * screenScale / pageScale,
+          height: viewportHeight * screenScale / pageScale
+        };
+
+        if (curBrowser == browserFirefox) {
+          mainFrame.x = viewport.x;
+          mainFrame.y = viewport.y;
+          mainFrame.width = viewport.width;
+          mainFrame.height = viewport.height;
+        } else if (curBrowser == browserSafari) {
+          if (pageScale < safariThresholdScale) {
+              mainFrame.x = viewport.x;
+              mainFrame.y = viewport.y;
+              mainFrame.width = viewport.width;
+              mainFrame.height = viewport.height;
+          } else {
+              mainFrame.x = mainFrame.x,
+              mainFrame.y = mainFrame.y,
+              mainFrame.width = viewportWidth * screenScale / safariThresholdScale,
+              mainFrame.height = viewportHeight * screenScale / safariThresholdScale
+          }
+
+        }
+
+        var ctx = canvasOverview.getContext('2d');
+        ctx.fillStyle = 'rgb(255, 255, 255)';
+        ctx.fillRect(0, 0, headerScaledWidth, headerScaledHeight);
+
+        ctx.drawImage(imgForbes,
+                      0, 0, pageWidth, pageHeight,
+                      0, headerScaledHeight, pageScaledWidth, pageScaledHeight);
+
+        var headerX;
+        var headerY;
+
+        if (curBrowser == browserChrome || curBrowser == browserEdge || curBrowser == browserSafari) {
+          headerX = mainFrame.x;
+          headerY = mainFrame.y;
+        } else {
+          headerX = viewport.x;
+          headerY = viewport.y;
+        }
+
+        ctx.drawImage(imgHeader,
+                      0, 0, headerWidth, headerHeight,
+                      headerX, headerY, headerScaledWidth, headerScaledHeight);
+
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = 'rgb(0, 0, 255)';
+        ctx.strokeRect(mainFrame.x + 3, mainFrame.y + 3, mainFrame.width-6, mainFrame.height - 6);
+
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgb(255, 0, 0)';
+        ctx.strokeRect(viewport.x + 2, viewport.y + 2, viewport.width - 4, viewport.height - 4);
+
+        //ctx.lineWidth = 4;
+        //ctx.strokeStyle = 'rgb(0, 255, 0)';
+        //ctx.strokeRect(downPosInContent.x, downPosInContent.y, 4, 4);
+
+      }
+
+      function drawFrame() {
+        if (!forbesLoaded || !headerLoaded)
+          requestAnimationFrame(drawFrame);
+
+        clampViewport();
+        drawScreen();
+        drawOverview();
+      }
+    </script>
+    <style>
+      .explanation {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body onload="init()">
+    <h2>Visual vs. Layout Viewport Demo</h2>
+    <div>
+      Use the viewport on the right to scroll and zoom around. The viewport on the left displays how the browser sees the two viewports. Note how the
+      position: fixed navbar at the top behaves under pinch-zoom between implementations. Disclaimer: This is the result of my research and a crude
+      demo, the behavior for implementations (particularily non-Chrome) may not capture all their subtleties.
+    </div>
+    <div style="width: 1400px">
+      <div style="float: left; margin: 15px 25px 25px 75px">
+        <h2>What the browser sees</h2>
+        <canvas id="canvasOverview" style="border: solid; border-width: 1px;"></canvas>
+      </div>
+      <div style="float: right; margin: 25px 75px 25px 15px">
+        <h2>What the user sees</h2>
+        <img id="browserBar" style="display: block;" src="browserbar.png">
+        <canvas id="canvasViewport" style="border: solid; border-width: 1px; z-index: 100"></canvas>
+        <div><em>Use mouse to pan around (as if using a touch-screen). Hold shift to pinch-zoom in/out.</em></div>
+        <div id="browserExplanation" style="width:500px">
+
+            <div class="explanation" id="chromeExplanation">
+              <h3>Chrome</h3>
+                The layout viewport is unchanged under pinch-zoom - the position: fixed bar does not follow the visual viewport when zoomed in.
+            </div>
+
+            <div class="explanation" id="edgeExplanation">
+              <h3>Edge</h3>
+              Essentially the same model as Chrome. One major difference, not visible here, is that Chrome sizes the layout viewport to be the
+              size of the visual viewport at minimum-scale. Edge sizes it to be the size of the visual viewport at scale=1. This means Edge's
+              visual viewport can be larger than the layout viewport.
+            </div>
+
+            <div class="explanation" id="firefoxExplanation">
+              <h3>Firefox</h3>
+              Firefox does not distinguish between the visual and layout viewport. As the user pinch-zooms, the layout viewport shrinks with
+              the visual viewport. The practical effect of this is that position: fixed elements stick to the visual viewport and there's no
+              way to scroll them if they overflow the visual viewport.
+            </div>
+
+            <div class="explanation" id="safariExplanation">
+              <h3>Safari</h3>
+              Something of a hybrid. When the user first starts to pinch-zoom, the layout viewport shrinks along with the visual viewport so
+              that the position: fixed element stays in the visual viewport. However, after crossing some threshold, the layout viewport
+              stops scaling and only the visual scales. When scrolling, both viewports are scrolled at the same time proportionally.
+            </div>
+
+        </div>
+      </div>
+      <br>
+      <div style="text-align: left; position: relative; top: 100px">
+        Page Scale
+        <input id="rangePageScale" type="range" step="0.1" value="1"></input>
+        <br><br>
+        Browser Implementation
+        <br>
+          <input id="radioChrome" type="radio" name="browser" value="Chrome" checked="checked"><label for="radioChrome">Chrome</label><br>
+          <input id="radioEdge" type="radio" name="browser" value="Edge"><label for="radioEdge">Edge</label><br>
+          <input id="radioFirefox" type="radio" name="browser" value="Firefox"><label for="radioFirefox">Firefox</label><br>
+          <input id="radioSafari" type="radio" name="browser" value="Safari"><label for="radioSafari">Safari</label><br>
+        <br>
+        <br><br><br>
+        <div style="margin: 5px; color: red">Visual Viewport</div>
+        <div style="margin: 5px; color: blue">Layout Viewport</div>
+      </div>
+    </div>
+  </body>
+</html>
