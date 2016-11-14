@@ -12,4 +12,9 @@
     border: 0 solid black;
   }
 </style>
-<iframe srcdoc="<div style='width: 2000px; height: 2000px; background: repeating-linear-gradient(45deg, red, red 30px, blue 30px, blue 60px)'></div>"></iframe>
+<iframe id="iframe" srcdoc="<div style='width: 2000px; height: 2000px; background: repeating-linear-gradient(45deg, red, red 30px, blue 30px, blue 60px)'></div>"></iframe>
+<script>
+  addEventListener('load', function() {
+    document.rootScroller = document.getElementById('iframe');
+  });
+</script>
