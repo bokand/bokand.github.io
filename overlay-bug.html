@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <style>
+      html, body {
+        margin: 0px;
+        height: 100%;
+        width: 100%;
+        background: repeating-linear-gradient(
+          45deg,
+          red,
+          red 30px,
+          blue 30px,
+          blue 60px);
+      }
+      .invisible {
+        display: none;
+      }
+      #overlay {
+        background-color: #030303;
+        width: 100%;
+        height: 100%;
+      }
+      #content {
+        width: 100%;
+        height: 500%;
+      }
+    </style>
+    <script>
+      addEventListener('click', function() {
+        var invisible = document.getElementsByClassName('invisible')[0];
+        var visible = document.getElementsByClassName('visible')[0];
+
+        visible.className = 'invisible';
+        invisible.className = 'visible';
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="overlay" class="invisible"></div>
+    <div id="content" class="visible"></div>
+  </body>
+</html>
