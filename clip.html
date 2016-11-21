@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name=viewport content="width=1024">
+  <style>
+    .right-menu {
+      border-style: solid;
+      border-width: 2px;
+      background-color: red;
+      width: 20px;
+      height: 300px;
+      position: fixed;
+      right: 10px;
+      top: 50px;
+    }
+
+    .bottom-menu {
+      border-style: solid;
+      border-width: 2px;
+      background-color: red;
+      width: 300px;
+      height: 30px;
+      position: fixed;
+      bottom: 10px;
+      left: 50px;
+    }
+
+    .wide {
+      position: absolute;
+      width: 3000px;
+      height: 100px;
+      background-color: grey;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="viewport-load.html">Blank page</a>
+  <br><br>
+  <a href="viewport-load-wide-content.html">Wide content</a>
+  <br><br>
+  <a href="viewport-load-1024-viewport.html">Viewport 1024</a>
+  <br><br>
+  <a href="viewport-load-1024-viewport-wide-content.html">Viewport 1024 with wide content</a>
+  <br><br>
+  <a href="viewport-load-1024-viewport-wide-content-min-scale.html">Viewport 1024 with wide content min scale</a>
+
+  <div class="wide"></div>
+  <div class="right-menu"></div>
+  <div class="bottom-menu"></div>
+</body>
+</html>
