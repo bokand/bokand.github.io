@@ -1,0 +1,34 @@
+<script>
+var runcount = {}
+function GetVariable(fuzzervars, var_type) { if(fuzzervars[var_type]) { return fuzzervars[var_type]; } else { return null; }}
+function SetVariable(fuzzervars, var_name, var_type) { fuzzervars[var_type] = var_name; }
+var fakestring = {toString: function() {
+return "1" }}
+function jsfuzzer() {
+runcount["jsfuzzer"]++; if(runcount["jsfuzzer"] > 2) { return; }var fuzzervars = {};
+var htmlvar00013 = document.getElementById("htmlvar00013"); //HTMLMarqueeElement
+SetVariable(fuzzervars, document, 'Document');
+ /* Element*/ var var00042 = document.documentElement; 
+ SetVariable(fuzzervars, var00042, 'Element'); SetVariable( 'GlobalEventHandlers'); SetVariable( 'EventTarget');   
+ /* Selection*/ var var00044 = document.getSelection(); 
+ var00043 = GetVariable(fuzzervars, 'Element');  
+ /* HTMLIFrameElement*/ var var00069 = document.createElement("iframe"); 
+ htmlvar00006.reset(); 
+ var00086 = GetVariable(fuzzervars, 'Document');  
+ var00043.replaceWith(var00069); 
+ var00044.deleteFromDocument(); 
+ /* Element*/ var var00159 = htmlvar00013.getRootNode(); 
+ /* Range*/ var var00162 = var00086.caretRangeFromPoint(); 
+ var00162.insertNode(var00159); 
+}
+function eventhandler5() {
+runcount["eventhandler5"]++; if(runcount["eventhandler5"] > 2) { return; }var fuzzervars = {};
+SetVariable(fuzzervars, document, 'Document');
+ var00044 = GetVariable(fuzzervars, 'Document');  
+ /* boolean*/ var var00160 = var00044.execCommand("selectAll"); 
+}
+</script>
+<body onload=jsfuzzer()>
+<form id="htmlvar00006" enctype="multipart/form-data" onreset="eventhandler5()"</meter>
+<output id="htmlvar00012" -webkit-rtl-ordering: logical">
+<marquee id="htmlvar00013">5WZn8
