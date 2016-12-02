@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<style>
+  #container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: #efefef;
+}
+#wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+#box {
+  position: absolute;
+  background-color: green;
+  width: 100px;
+  height: 100px;
+}
+</style>
+<script>
+document.addEventListener('touchmove', function(e) {
+	e.preventDefault();
+})
+
+var box = document.getElementById('box');
+var x = 0;
+var y = 0;
+var px = 0;
+var py = 0;
+var handler = null;
+
+
+function paint() {
+  box.style.setProperty(
+    'transform', 
+    `translate3d(${px}0px, ${py}px, 0px)`, 
+    'important'
+  );
+  handler = null;
+}
+
+box.addEventListener('touchstart', function(e) {
+  console.log('ts');
+  x = e.touches[0].pageX;
+  y = e.touches[0].pageY;
+});
+
+box.addEventListener('touchend', function() {
+  console.log('te');
+	if (handler) {
+  	window.cancelAnimationFrame(handler);
+    handler = null;
+  }
+});
+
+box.addEventListener('touchmove', function(e) {
+  console.log('tm');
+  px = e.touches[0].pageX;
+  py = e.touches[0].pageY;
+  if (!handler) {
+  	window.requestAnimationFrame(paint);
+  }
+});
+
+console.log('done');
+</script>
+
+<div id="container">
+  <div id="wrapper">
+    <div id="box">
+
+    </div>  
+  </div>
+</div>
+
