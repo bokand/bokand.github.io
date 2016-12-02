@@ -21,9 +21,18 @@
   height: 100px;
 }
 </style>
+
+<div id="container">
+  <div id="wrapper">
+    <div id="box">
+
+    </div>  
+  </div>
+</div>
+
 <script>
 document.addEventListener('touchmove', function(e) {
-	e.preventDefault();
+  e.preventDefault();
 })
 
 var box = document.getElementById('box');
@@ -68,12 +77,3 @@ box.addEventListener('touchmove', function(e) {
 
 console.log('done');
 </script>
-
-<div id="container">
-  <div id="wrapper">
-    <div id="box">
-
-    </div>  
-  </div>
-</div>
-
