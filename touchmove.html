@@ -70,9 +70,11 @@ box.addEventListener('touchmove', function(e) {
   console.log('tm');
   px = e.touches[0].pageX;
   py = e.touches[0].pageY;
-  if (!handler) {
-  	window.requestAnimationFrame(paint);
-  }
+
+  paint();
+  //if (!handler) {
+  //	window.requestAnimationFrame(paint);
+  //}
 });
 
 console.log('done');
