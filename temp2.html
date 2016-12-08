@@ -36,6 +36,9 @@
     <script>
       addEventListener('load', function() {
         document.setRootScroller(document.getElementById('container'));
+        document.getElementById('target').addEventListener('click', function() {
+          document.getElementById('target').style.backgroundColor = "green";
+        });
       });
     </script>
   </head>
@@ -46,7 +49,7 @@
         <span id="nonBlock">Blink</span>
         <div id="empty"></div>
       </div>
-      <div style="width:100%; height: 50px; background-color: red;"></div>
+      <div id="target" style="width:100%; height: 50px; background-color: red;"></div>
     </div>
     <div class="spacer" style="width:100%"></div>
   </body>
