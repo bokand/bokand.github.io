@@ -35,7 +35,7 @@
     </style>
     <script>
       addEventListener('load', function() {
-        document.setRootScroller(document.getElementById('container'));
+        document.rootScroller = document.getElementById('container');
         document.getElementById('target').addEventListener('click', function() {
           document.getElementById('target').style.backgroundColor = "green";
         });
