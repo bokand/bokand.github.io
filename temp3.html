@@ -33,25 +33,20 @@
         overflow: auto;
         background-color: yellow;
       }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
     </style>
     <script>
       addEventListener('load', function() {
-        document.rootScroller = document.getElementById('container');
-        document.getElementById('target').addEventListener('click', function() {
-          document.getElementById('target').style.backgroundColor = "green";
-        });
+        document.rootScroller = document.getElementById('iframe');
       });
     </script>
   </head>
 
   <body>
-    <div id="container">
-      <div class="spacer">
-        <span id="nonBlock">Blink</span>
-        <div id="empty"></div>
-      </div>
-      <div id="target" style="width:100%; height: 50px; background-color: red;"></div>
-    </div>
-    <div class="spacer" style="width:100%"></div>
+    <iframe id="iframe" src="temp2.html">
   </body>
 </html>
