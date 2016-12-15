@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    body {
+      height: 2000px;
+      margin: 0;
+      padding-top: 300px;
+    }
+
+    #parent, #child {
+      height: 300px;
+      width: 200px;
+    }
+
+    #parent {
+      background-color: #333;
+      clip-path: inset(0px);
+    }
+
+    #child {
+      background-color: #3FA;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="parent">
+    <div id="child"></div>
+  </div>
+</body>
