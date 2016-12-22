@@ -9,7 +9,7 @@
     if (fullscreen)
       document.webkitExitFullscreen();
     else
-      document.webkitRequestFullscreen();
+      document.documentElement.webkitRequestFullscreen();
 
     fullscreen = !fullscreen;
   });
