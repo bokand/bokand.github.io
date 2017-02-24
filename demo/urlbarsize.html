@@ -72,7 +72,7 @@
       console.innerHTML += "*Resize! window.innerHeight: " + window.innerHeight + ",  documentElement.clientHeight: " + document.documentElement.clientHeight + "<br>";
     }
     var fullscreen = false;
-    document.addEventListener("load", function() {
+    addEventListener("load", function() {
       document.documentElement.addEventListener("click", function() {
         if (fullscreen)
           document.webkitExitFullscreen();
