@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+
+        <style>
+            html, body {
+                margin: 0px;
+                width: 100%;
+                height: 100%;
+            }
+            #leftfixed {
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 5px;
+                height: 100%;
+                background-color: purple;
+                opacity: 0.25;
+            }
+            #bottomfixed {
+                position: fixed;
+                left: 0px;
+                bottom: 0px;
+                width: 100%;
+                height: 5px;
+                background-color: purple;
+                opacity: 0.25;
+            }
+            
+            #infobox {
+              width: 200px;
+              height: 300px;
+            }
+            
+        </style>
+        <script>        
+            function didResize() {
+              refresh();
+              document.body.innerHTML += "RESIZE EVENT!"
+              
+            }
+            
+            function refresh() {
+              var infobox = document.getElementById("infobox");
+              infobox.innerHTML = "InnerHeight: " + window.innerHeight + "</br>";
+              infobox.innerHTML += "doc Height: " + document.documentElement.clientHeight;
+              
+            }
+
+            window.addEventListener('load', function() {
+                infobox = document.getElementById('infobox');
+                contentbox = document.getElementById('infobox-content');
+                targetbox = document.getElementById('targetBox');
+                crossHair = document.getElementById('crossHair');
+                crossHairUnscaled = document.getElementById('crossHairUnscaled');
+
+                window.addEventListener('resize', didResize);
+                window.addEventListener('click', refresh);
+             
+                refresh();
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="infobox"></div>
+        <input type="text" style="position: absolute; left: 30px; top: 500px;"></input>
+        <div id="leftfixed"></div>
+        <div id="bottomfixed"></div>
+    </body>
+</html>
