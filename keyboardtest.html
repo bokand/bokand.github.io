@@ -32,14 +32,14 @@
             
             #infobox {
               width: 200px;
-              height: 300px;
+              height: 50px;
             }
             
         </style>
         <script>        
             function didResize() {
               refresh();
-              document.body.innerHTML += "RESIZE EVENT!"
+              document.body.innerHTML += "<br>RESIZE EVENT!"
               
             }
             
@@ -67,7 +67,7 @@
 
     <body>
         <div id="infobox"></div>
-        <input type="text" style="position: absolute; left: 30px; top: 500px;"></input>
+        <input type="text"></input>
         <div id="leftfixed"></div>
         <div id="bottomfixed"></div>
     </body>
