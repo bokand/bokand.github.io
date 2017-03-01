@@ -29,6 +29,15 @@
                 background-color: purple;
                 opacity: 0.25;
             }
+            #bottomfixed {
+                position: fixed;
+                left: 0px;
+                bottom: 0px;
+                width: 100%;
+                height: 5px;
+                background-color: purple;
+                opacity: 0.25;
+            }
             #infobox {
                 width: 400px;
                 height: 270px;
@@ -107,6 +116,7 @@
                 infobox.style.transform = "scale(" + 1/window.visualViewport.scale + ")";
 
                 contentbox.innerText = "Scale: " + Number((window.visualViewport.scale).toFixed(2)) + "\n";
+                contentbox.innerText = "documentElement.clientHeight: " + document.documentElement.clientHeight + "\n";
                 var layoutRect = document.documentElement.getBoundingClientRect();
                 contentbox.innerText += "Layout Viewport Pos: " + truncate(-layoutRect.left) + ", " + truncate(-layoutRect.top) + "\n";
                 contentbox.innerText += "window.scroll(X,Y): " + window.scrollX + ", " + window.scrollY + "\n";
