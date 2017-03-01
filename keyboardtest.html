@@ -34,12 +34,18 @@
               width: 200px;
               height: 50px;
             }
+            #resizeinfo {
+                width: 100px;
+                height: 200px;
+            }
             
         </style>
         <script>        
             function didResize() {
               refresh();
-              document.body.innerHTML += "<br>RESIZE EVENT!"
+              
+              var resizebox = document.getElementById("resizeinfo");
+              resizebox.innerHTML += "RESIZE EVENT!<br>"
               
             }
             
@@ -70,5 +76,6 @@
         <input type="text"></input>
         <div id="leftfixed"></div>
         <div id="bottomfixed"></div>
+        <div id="resizeinfo"></div>
     </body>
 </html>
