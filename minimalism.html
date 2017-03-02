@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fullscreen mouse pointer</title>
+
+    <style>
+        .is-fullscreen {
+            cursor: none;
+            width: 100%;
+            height: 100%;;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gofull">
+THIS IS FULLSCREEN
+</div>
+
+<button onclick="makeFS()">Make fullscreen</button>
+
+
+<script>
+    // Button to make a div fullscreen and add relevant style in that case
+    function makeFS() {
+        // Get FS element, add class, and go fullscreen
+        var el = document.getElementById("gofull");
+        el.classList.add('is-fullscreen');
+        if (el.requestFullscreen) {
+            el.requestFullscreen();
+        } else if (el.msRequestFullscreen) {
+            el.msRequestFullscreen();
+        } else if (el.mozRequestFullScreen) {
+            el.mozRequestFullScreen();
+        } else if (el.webkitRequestFullscreen) {
+            el.webkitRequestFullscreen();
+        } else {
+            console.log('Your browser does not appear to support fullscreen rendering.');
+        }
+    }
+
+</script>
+
+</body>
+</html>
