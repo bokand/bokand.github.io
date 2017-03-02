@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width">
+
+        <style>
+            html, body {
+                margin: 0px;
+                width: 100%;
+                height: 100%;
+            }
+            
+            #resizeinfo {
+                width: 100px;
+                height: 200px;
+            }
+            
+        </style>
+        <script>        
+            function sleep(ms) {
+              return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function blockFor(delayTimeMs) {
+              await sleep(delayTimeMs);
+            }
+            function didResize() {
+              blockFor(2000);             
+              var resizebox = document.getElementById("resizeinfo");
+              resizebox.innerHTML += "RESIZE!<br>"
+              
+            }
+            window.addEventListener('load', function() {
+                window.addEventListener('resize', didResize);
+             
+            });
+        </script>
+    </head>
+
+    <body>
+        <div id="resizeinfo"></div>
+    </body>
+</html>
