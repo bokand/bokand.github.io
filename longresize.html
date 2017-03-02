@@ -26,9 +26,12 @@
               await sleep(delayTimeMs);
             }
             function didResize() {
-              blockFor(2000);             
+              console.log("Resize Handler...");
+              blockFor(3000);     
+              console.log("Done sleep");
               var resizebox = document.getElementById("resizeinfo");
               resizebox.innerHTML += "RESIZE!<br>"
+              
               
             }
             window.addEventListener('load', function() {
