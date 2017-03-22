@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<style>
+div#transformed
+{
+    width: 350px;
+    height: 350px;
+    background: green;
+    display: block;
+    margin: auto;
+}
+div#wrapper
+{
+    border-style: solid;
+    width: 100%;
+}
+</style>
+<div id="wrapper">
+<div id="transformed"></div>
+</div>
+<script>
+    window.onload = function() {
+        document.getElementById('transformed').style.transition = "transform 1.0s";
+        document.getElementById('transformed').style.transform = "skewX(80deg)";
+    }
+</script>
