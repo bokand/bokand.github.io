@@ -22,4 +22,7 @@ div#wrapper
         document.getElementById('transformed').style.transition = "transform 1.0s";
         document.getElementById('transformed').style.transform = "skewX(80deg)";
     }
+    window.onclick = function() {
+        console.log("Log: " + window.scrollX + ", " + window.scrollY);
+    }
 </script>
