@@ -11,6 +11,17 @@
                 width: 100%;
                 height: 100%;
             }
+            #header {
+              position: absolute;
+              top: -50px;
+              height: 50px;
+              width: 100%;
+              background-color: red;
+              transition: top 2s;
+            }
+            #header.shown {
+              top: 0px;
+            }
             #leftfixed {
                 position: fixed;
                 left: 0px;
@@ -88,6 +99,16 @@
         <div id="leftfixed"></div>
         <div id="bottomfixed"></div>
         <div id="resizeinfo"></div>
+        <div id="header"></div>
     </body>
+    <script>
+      document.body.addEventListener('click', function() {
+        var header = document.getElementById("header");
+        if (header.className === "shown")
+          header.className = "";
+        else
+          header.className = "shown";
+      });
+    </script>
 </html>
 
