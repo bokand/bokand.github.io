@@ -1,0 +1,6 @@
+{
+  "short_name": "keyboard",
+  "name": "keyboard test",
+  "start_url": "keyboardtest.html",
+  "display": "standalone"
+}
