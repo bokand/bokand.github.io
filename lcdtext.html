@@ -18,12 +18,28 @@
         height: 600px;
         overflow: scroll;
       }
+
+      .composited {
+        will-change: transform;
+      }
     </style>
+    <script>
+      function clicked() {
+        var checkbox = document.getElementById("isComposited");
+        var text = document.getElementById("lcd");
+        var shouldComposite = checkbox.checked;
+        if (shouldComposite) {
+          text.className = "composited";
+        } else {
+          text.className = "";
+        }
+      }
+    </script>
   </head>
   <body>
     <div style="width: 100%; height: 20px"> 
       <span style="float: left"><b>This scroller is composited</b></span>
-      <span style="float: right"><b>This scroller is *NOT* composited</b></span>
+      <span style="float: right"><b>This scroller is <input id="isComposited" type="checkbox" onclick="clicked()">composited</input></b></span>
     </div>
     <div id="regular">
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
