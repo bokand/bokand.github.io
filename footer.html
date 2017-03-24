@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+      }
+
+      html, body {
+        height: 100%;
+        width: 100%;
+      }
+
+      #container {
+        width: 100%;
+        min-height: 100%;
+        position: absolute;
+      }
+
+      #content {
+        height: 300px;
+        width: 100%;
+        background-color: coral;
+      }
+
+      #content.overflowing {
+        height: 2000px;
+      }
+
+      #footer {
+        width: 100%;
+        height: 50px;
+        background-color: teal;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="content">Tap to make content taller/shorter than viewport.</div>
+      <div id="footer">FOOTER</div>
+    </div>
+  </body>
+  <script>
+    var content = document.getElementById("content");
+    content.addEventListener('click', function() {
+      if (content.className === 'overflowing')
+        content.className = '';
+      else
+        content.className = 'overflowing';
+    });
+  </script>
+</html>
