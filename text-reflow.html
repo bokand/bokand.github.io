@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="hammer.js"></script>
+    <script>
+      var scale = 1;
+      var prevScale = 1;
+      var prevDeltaX = 0;
+      var prevDeltaY = 0;
+      var oldCenterInContent;
+      var isPanning = false;
+
+      function clampScale(scale) {
+        return Math.min(4, Math.max(1, scale));
+      }
+
+      function frameToContent(framePoint, scale) {
+        var container = document.getElementById('container');
+        return {
+          x: (framePoint.x + container.scrollLeft) / scale,
+          y: (framePoint.y + container.scrollTop) / scale
+        };
+      }
+
+      function containerCenter(pageCenter) {
+        var container = document.getElementById('container');
+        return {
+          x: pageCenter.x - container.getBoundingClientRect().left,
+          y: pageCenter.y - container.getBoundingClientRect().top
+        }
+      }
+
+      function update(scaleDelta, center) {
+          var newScale = clampScale(scale * scaleDelta);
+          var container = document.getElementById('container');
+
+          var newCenterInContent = frameToContent(center, newScale);
+          var delta = {
+            x: (newCenterInContent.x - oldCenterInContent.x),
+            y: (newCenterInContent.y - oldCenterInContent.y)
+          }
+
+          scale = newScale;
+          prevScale *= scaleDelta;
+          document.getElementById('content').style.transform = 'scale(' + scale + ', ' + scale + ')';
+
+          container.scrollLeft -= delta.x * scale;
+          container.scrollTop -= delta.y * scale;
+      }
+
+      function init() {
+        var hammertime = new Hammer(document.getElementById('container'));
+        hammertime.get('pinch').set({ enable: true });
+        hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+
+        hammertime.on('pinch', function(ev) {
+            var scaleDelta = ev.scale / prevScale;
+            update(scaleDelta, containerCenter(ev.center));
+        });
+
+        hammertime.on('pinchstart', function(ev) {
+            prevScale = 1;
+            oldCenterInContent = frameToContent(containerCenter(ev.center), scale);
+
+            var scaleDelta = ev.scale / prevScale;
+            update(scaleDelta, oldCenterInContent);
+        });
+
+        hammertime.on('panstart', function(ev) {
+            isPanning = true;
+            prevDeltaX = 0;
+            prevDeltaY = 0;
+        });
+
+        hammertime.on('pan', function(ev) {
+            if (!isPanning)
+              return;
+
+            var container = document.getElementById('container');
+            container.scrollLeft -= (ev.deltaX - prevDeltaX);
+            container.scrollTop -= (ev.deltaY - prevDeltaY);
+            prevDeltaX = ev.deltaX;
+            prevDeltaY = ev.deltaY;
+        });
+
+        hammertime.on('panend', function(ev) {
+            isPanning = false;
+        });
+      }
+
+      addEventListener('load', init);
+    </script>
+    <style>
+      body,html {
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        left: 200px;
+        top: 200px;
+        border-style: solid;
+        overflow: auto;
+      }
+
+      #content {
+        width: 380px;
+        height: 380px;
+        transform-origin: top left;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="content">
+        In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content with placeholder text allows viewers to focus on graphic aspects such as font, typography, and page layout without being distracted by the content. It also reduces the need for the designer to come up with meaningful text, as they can instead use quickly-generated lorem ipsum.
+        The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed to make it nonsensical, improper Latin.
+        A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+      </div>
+    </div>
+  </body>
+</html>
