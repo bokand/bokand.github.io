@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="hammer.js"></script>
+    <script>
+      var scale = 1;
+      var prevScale = 1;
+      var prevDeltaX = 0;
+      var prevDeltaY = 0;
+      var oldCenterInContent;
+      var isPanning = false;
+      var containerWidth;
+
+      function clampScale(scale) {
+        return Math.min(4, Math.max(1, scale));
+      }
+
+      function frameToContent(framePoint, scale) {
+        var container = document.getElementById('container');
+        return {
+          x: (framePoint.x + container.scrollLeft) / scale,
+          y: (framePoint.y + container.scrollTop) / scale
+        };
+      }
+
+      function containerCenter(pageCenter) {
+        var container = document.getElementById('container');
+        return {
+          x: pageCenter.x - container.getBoundingClientRect().left,
+          y: pageCenter.y - container.getBoundingClientRect().top
+        }
+      }
+
+      function update(scaleDelta, center) {
+          var newScale = clampScale(scale * scaleDelta);
+          var container = document.getElementById('container');
+          var content = document.getElementById('content');
+
+          var newCenterInContent = frameToContent(center, newScale);
+          var delta = {
+            x: (newCenterInContent.x - oldCenterInContent.x),
+            y: (newCenterInContent.y - oldCenterInContent.y)
+          }
+
+          scale = newScale;
+          prevScale *= scaleDelta;
+          content.style.transform = 'scale(' + scale + ', ' + scale + ')';
+          content.style.width = containerWidth / scale + 'px';
+
+          container.scrollLeft -= delta.x * scale;
+          container.scrollTop -= delta.y * scale;
+      }
+
+      function resize() {
+        var content = document.getElementById('content');
+        var container = document.getElementById('container');
+
+        containerWidth = container.getBoundingClientRect().width - 17;
+        content.style.width = containerWidth / scale + 'px';
+      }
+
+      function init() {
+        var content = document.getElementById('content');
+        var container = document.getElementById('container');
+
+        resize();
+
+        addEventListener('resize', resize);
+
+        var hammertime = new Hammer(document.getElementById('container'));
+
+        container.addEventListener('touchstart', function(e) {
+            if (e.touches.length >= 2)
+                hammertime.get('pinch').set({ enable: true });
+            else
+                hammertime.get('pinch').set({ enable: false });
+
+        });
+
+        addEventListener('touchend', function(e) {
+            if (e.touches.length >= 2)
+                hammertime.get('pinch').set({ enable: true });
+            else
+                hammertime.get('pinch').set({ enable: false });
+        });
+
+        hammertime.on('pinch', function(ev) {
+            var scaleDelta = ev.scale / prevScale;
+            update(scaleDelta, containerCenter(ev.center));
+        });
+
+        hammertime.on('pinchstart', function(ev) {
+            prevScale = 1;
+            oldCenterInContent = frameToContent(containerCenter(ev.center), scale);
+
+            var scaleDelta = ev.scale / prevScale;
+            update(scaleDelta, oldCenterInContent);
+        });
+      }
+
+      addEventListener('load', init);
+    </script>
+    <style>
+      body,html {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+      }
+      #container {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+
+      #content {
+        width: 380px;
+        height: 380px;
+        transform-origin: top left;
+      }
+
+      #footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        background-color: red;
+        height: 50px;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="content">
+        In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content with placeholder text allows viewers to focus on graphic aspects such as font, typography, and page layout without being distracted by the content. It also reduces the need for the designer to come up with meaningful text, as they can instead use quickly-generated lorem ipsum.
+        The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed to make it nonsensical, improper Latin.
+        A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+        In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content with placeholder text allows viewers to focus on graphic aspects such as font, typography, and page layout without being distracted by the content. It also reduces the need for the designer to come up with meaningful text, as they can instead use quickly-generated lorem ipsum.
+        The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed to make it nonsensical, improper Latin.
+        <img src="html5logo.png" width="100" height="100" style="float: left">
+        A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+        In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content with placeholder text allows viewers to focus on graphic aspects such as font, typography, and page layout without being distracted by the content. It also reduces the need for the designer to come up with meaningful text, as they can instead use quickly-generated lorem ipsum.
+        The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed to make it nonsensical, improper Latin.
+        A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+        In publishing and graphic design, lorem ipsum is a filler text commonly used to demonstrate the graphic elements of a document or visual presentation. Replacing meaningful content with placeholder text allows viewers to focus on graphic aspects such as font, typography, and page layout without being distracted by the content. It also reduces the need for the designer to come up with meaningful text, as they can instead use quickly-generated lorem ipsum.
+        The lorem ipsum text is typically a scrambled section of De finibus bonorum et malorum, a 1st-century BC Latin text by Cicero, with words altered, added, and removed to make it nonsensical, improper Latin.
+        A variation of the ordinary lorem ipsum text has been used in typesetting since the 1960s or earlier, when it was popularized by advertisements for Letraset transfer sheets. It was introduced to the Information Age in the mid-1980s by Aldus Corporation, which employed it in graphics and word processing templates for its desktop publishing program, PageMaker, for the Apple Macintosh.[1]
+      </div>
+    </div>
+    <div id="footer">This could be a tool bar</div>
+  </body>
+</html>
