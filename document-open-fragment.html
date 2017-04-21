@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      html, body {
+        height: 10000px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Iframe test</h1>
+    <script type="text/javascript">
+      setTimeout(function() {
+        var iframe = document.createElement('iframe');
+        iframe.id = "iframe";
+        iframe.onload = function() {
+          var doc = iframe.contentWindow.document;
+          doc.open();
+          doc.write("<!DOCTYPE html><html><head><style>body{height: 100%}</style></head><body><h1>Hello</h1><a style='position: absolute; top:700px' href='#' id='test'>TEST</a></body></html>");
+          doc.close();
+          iframe.style.height = "400px";
+        };
+        iframe.style.marginTop = "1500px";
+        iframe.style.marginBottom = "400px";
+        document.body.appendChild(iframe);
+      }, 100);  
+    </script>
+  </body>
+</html>
