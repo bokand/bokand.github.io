@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    html {
+      position:fixed;
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+
+    div {
+      background-color: coral;
+      width: 95%;
+      height: 99%;
+      border: 1px solid black;
+      margin: 5px;
+    }
+  </style>
+</head>
+  <body>
+    <div id="temp">
+    </div>
+  </body>
+  <script>
+    function updateDisplay() {
+      var clientHeight = document.documentElement.clientHeight;
+      var offsetHeight = document.documentElement.offsetHeight;
+      document.getElementById("temp").innerHTML = "documentElement.clientHeight = " + clientHeight + "px <br>documentElement.offsetHeight = " + offsetHeight + "px";
+    }
+    updateDisplay();
+    addEventListener('resize', updateDisplay);
+  </script>
+</html>
