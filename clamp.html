@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <script>
+      var enabled = false
+      addEventListener('scroll', function() {
+          if (window.scrollY > 10)
+              enabled = true;
+
+          if (enabled && window.scrollY == 0) {
+              window.scrollTo(window.scrollX, 10000);
+          }
+      });
+    </script>
+  </head>
+
+  <body>
+    <img style="height:2000px" src="ScrollableAreaImproved.png">
+  </body>
+</html>

@@ -6,14 +6,14 @@
 <head>
 <style>
   html {
-    height: 100%;
+    height: 100vh;
   }
 
   body {
     margin: 0;
     padding: 0;
     background: #fff;
-    height: 100%;
+    height: 100vh;
   }
 
   .view {
@@ -21,7 +21,7 @@
     width: 100%;
     height: 100%;
     min-height: 100%;
-    background: #f1f1f1;
+    background: #b1b1b1;
     overflow: auto;
   }
 
@@ -72,7 +72,7 @@
 
   .view-body {
     position: relative;
-    min-height: 100%;
+    /* min-height: 100%; */
   }
 
   .view-header-gap {
@@ -183,7 +183,7 @@
   <title>MiniApp - Natural</title>
   <script>
     function imageUrl(path) {
-      return 'https://lh3.googleusercontent.com/' + path;
+      return 'http://lh3.googleusercontent.com/' + path;
     }
 
     function get(container, sel) {
@@ -193,6 +193,8 @@
     function makeRootScroller(element) {
       if (typeof(document.rootScroller) !== 'undefined')
           document.rootScroller = element;
+      else
+          console.log("RootScroller unsupported");
     }
 
     function anim(duration, mutate, complete) {
