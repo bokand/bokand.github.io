@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <script>
+          var resizeDisabled = false;
+          addEventListener("message", function() {
+            resizeDisabled = !resizeDisabled;
+            if (resizeDisabled){
+              document.documentElement.style.backgroundColor = "red";
+              frames[0].window.document.documentElement.style.backgroundColor = "red";
+              frames[1].window.document.documentElement.style.backgroundColor = "red";
+              document.getElementById("center").setAttribute("noresize", "");
+            }else{
+              document.documentElement.style.backgroundColor = "green";
+              frames[0].window.document.documentElement.style.backgroundColor = "green";
+              frames[1].window.document.documentElement.style.backgroundColor = "green";
+              document.getElementById("center").removeAttribute("noresize");
+            }
+          });
+      </script>
+      <style>
+          html {
+            background-color: green;
+          }
+      </style>
+</head>
+
+<frameset id="center" name="center" cols="300,*" >
+    <frame src="frameset-child.html">
+    <frame src="frameset-child.html">
+</frameset>
+</html>
