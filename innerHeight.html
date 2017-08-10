@@ -6,6 +6,10 @@
         body {
           height: 3000px;
         }
+      #box {
+          position: absolute;
+          top: 200px;
+      }
       </style>
   </head>
   <script>
@@ -13,13 +17,18 @@ function update() {
   window.setTimeout(function() {
     document.getElementById('iw').textContent =
       window.innerHeight;
+    document.getElementById('sh').textContent =
+      window.screen.height;
     requestAnimationFrame(update);
   }, 300);
 }
 requestAnimationFrame(update);
   </script>
   <body>
-    innerHeight: <span id=iw></span>  
+    <div id="box">
+      innerHeight: <span id=iw></span>  
+      screen.height: <span id=sh></span>  
+    </div>
   </body>
 </html>
 
