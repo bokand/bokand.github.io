@@ -61,14 +61,14 @@
     <script>
     addEventListener('load', function() {
         if (typeof document.rootScroller !== 'undefined')
-            document.rootScroller = document.getElementById('container');
+            document.rootScroller = document.getElementById('innercontainer');
         else
             console.log("ROOT SCROLLER UNSUPPORTED");
     });
     </script>
     </head>
     <body>
-        <iframe id="container" src="rootscroller-iframe-content.html" scrolling="yes"></iframe>
+        <iframe id="innercontainer" src="rootscroller-iframe-content.html" scrolling="yes"></iframe>
         <div style="width:100px; height:2000px; background: green;"></div>
         <div id="footer">FOOTER</div>
     </body>

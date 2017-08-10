@@ -17,6 +17,22 @@
     background-color: blue;
     opacity: 1.0;
   }
+#scroller {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
 </style>
 
+<div id="scroller"></div>
 <div id="bottom"></div>
+
+<script>
+  if ('rootScroller' in document) {
+      document.rootScroller = document.getElementById('scroller');
+  } else {
+      console.log('No RootScroller');
+  }
+</script>
