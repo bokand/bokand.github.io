@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <style>
+      body {
+        margin: 0px;
+      }
+
+      #scroller {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 8px;
+        box-sizing: border-box;
+      }
+    </style>
+    <script>
+      window.addEventListener("load", function() {
+        if (typeof(document.rootScroller) === 'undefined')
+          console.log("ROOT SCROLLER NOT SUPPORTED");
+        else
+          document.rootScroller = document.getElementById("scroller");
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="scroller">
+      <h2>document.rootScroller</h2>
+      <p>
+         This is a scrollable &lt;div&gt; that's been made the rootScroller in this document.
+         Because it is the rootScroller, it should behave as if it were the viewport in most/all
+         respects. For example: scrolling down should hide the URL bar, scrolling past the extent
+         should produce the overscroll glow, pinch-zooming shouldn't produce an extra set of
+         scrollbars.
+      </p>
+
+      <p>
+          Making a &lt;div&gt; the rootScroller is cool. But you know what's even cooler? <a href="iframe.html">Putting
+          this document inside an &lt;iframe&gt; and making it the rootScroller</a>!
+      </p>
+
+      <p>=====================================</p>
+
+      <p>
+          Below is some text taken from the GitHub explainer; it is used to fill out
+          the scroller with overflow.
+       </p>
+
+     <div id="readme" class="readme blob instapaper_body">
+         <article class="markdown-body entry-content" itemprop="text"><h1><a id="user-content-non-document-root-scrollers" class="anchor" href="#non-document-root-scrollers" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Non-Document Root Scrollers</h1>
+         <p>Non document root scrollers is a proposed feature that would allow an author to
+         endow an arbitrary scrolling element with the same specialness currently
+         assigned to the documentElement.</p>
+         <h2><a id="user-content-the-problem" class="anchor" href="#the-problem" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The Problem</h2>
+         <p>Applications are typically composed of multiple <em>views</em> between which a user can
+         transition. Traditionally, a web app would transition between its views by
+         navigating to a new page. This causes a round trip to the server and a jarring
+         experience for the user. To improve performance and allow for pleasing
+         transitions, the author may wish to keep multiple views within the DOM,
+         removing the need to navigate to a new document.</p>
+         <p>Authors can do this today by making each view out of a viewport-sized,
+         scrollable &lt;div&gt; element. This is the intuitive solution and allows the
+         author to animate transitions between these views and manage them as independent
+         components.</p>
+         <p>On the other hand, browsers have given essential UX features exclusively to one
+         special element: the documentElement (&lt;html&gt;). Here are some examples of how
+         &lt;html&gt; is special:</p>
+         <ul>
+         <li>URL-bar Hiding - To maximize the user's screen real-estate, the browser's
+         URL-bar is hidden when the documentElement element is scrolled down.</li>
+         <li>Overscroll Affordance - To let the user know the page content is fully
+         scrolled, further scrolls generate a "glow" or "rubber-banding" effect. In
+         Chrome, this only occurs on the documentElement.</li>
+         <li>Pull-to-Refresh - To allow the user to quickly refresh the page, scrolling
+         the documentElement up beyond the content top activates a refresh action
+         in Chrome. Chrome disables this effect when the documentElement isn't
+         scrollable.</li>
+         <li>Spacebar to Scroll - Many browsers use the spacebar as a shortcut to
+         scroll down by a page. This often only works for the documentElement.</li>
+         <li>Tapping top of browser chrome - iOS Safari has this to allow the user
+         to quickly scroll back to the top of the page but it targets only the
+         documentElement.</li>
+         </ul>
+         <p>Thus, authors have a choice: use the intuitive method and lose all these
+         essential UX features, or swap the <em>content</em> of each view in and out of the
+         documentElement. The latter turns out to be surprisingly difficult to
+         implement in a portable way for all the reasons listed in the
+         <a href="https://docs.google.com/document/d/11kwtjxXelqsIELtHfXDWLWVPrdGJGdy4yvHu-2mGyn4/edit#heading=h.kho1ejnoqhs7">MiniApp example</a>.
+         To summarize, swapping content within a single scroller is complicated since
+         the scroll offset is shared between two conceptual views; it requires tricks to
+         keep the content of multiple views overlaid and we have to manually keep track
+         of each view's scroll offset. Likewise, animating transitions becomes tricky
+         since the animation must be timed carefully with the content swap. Simple
+         behaviors which emerge naturally from using separate &lt;div&gt;s become difficult
+         and complicated to implement when forced to share the special documentElement.</p>
+         <h2><a id="user-content-proposed-solution" class="anchor" href="#proposed-solution" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Proposed Solution</h2>
+         <p>We need to provide authors some way to make the intuitive "each view is a div"
+         solution workable. This means giving an arbitrary scroller the same powers as
+         the documentElement; anointing it the <em>root scroller</em>. Lets make the documentElement
+         less special. The web is the only UI framework that gives special powers to one, and
+         only one, special scrolling element.</p>
+         <p>I propose an explicit mechanism to allow the author to specify which element should
+         be treated as the root scroller and, importantly, <em>when</em>. This will go some way to
+         <em>explaining</em> how the page interacts with browser UI and give authors a some ways to
+         control those interactions.</p>
+         <h2><a id="user-content-why-not-a-heuristic" class="anchor" href="#why-not-a-heuristic" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why not a heuristic?</h2>
+         <p>One alternate proposal is to apply these "root scroller" semantics to any scroller
+         that exactly fills the viewport. This avoids introducing a new API. While this may
+         work for some situations, it doesn't enable all the kinds of use cases we want to
+         support. In the example below, we overlay one viewport-sized scroller
+         over another and cross-fade between the two. It's less clear which scroller we
+         should designate in this case.</p>
+         <p>Using a heuristic would make it difficult to spec out all the edge cases and make
+         interop between browsers more difficult. It also means authors couldn't feature
+         detect. It's also less future friendly as we may wish to (in a future version of
+         the API) allow non-fullscreen root scrollers.</p>
+         <h2><a id="user-content-proposed-api" class="anchor" href="#proposed-api" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Proposed API</h2>
+         <ul>
+         <li>Add a <code>rootScroller</code> attribute on <code>document</code>.</li>
+         </ul>
+         <pre><code>var myScrollerDiv = document.getElementById('myScrollerDiv');
+         document.rootScroller = myScrollerDiv;
+         </code></pre>
+         <p>If the set element is a valid(*) scroller, scrolling it should perform all the same actions as the browser performs for document scrolling. E.g. hiding the URL bar, showing overscroll effects, pull-to-refresh, gesture effects, etc. If
+         no element is set as the <code>document.rootScroller</code>, the browser defaults to using the <code>document.scrollingElement</code> and
+         behavior is unchanged from today.</p>
+         <p>(*) For some - yet undetermined - definition of valid. Chrome's experimental implementation requires the element to be scrollable and exactly fill the viewport.</p>
+         <h3><a id="user-content-iframes" class="anchor" href="#iframes" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>&lt;iframes&gt;</h3>
+         <p>When a page sets an &lt;iframe&gt; element as the root scroller, e.g:</p>
+         <pre><code>&lt;iframe id="myIframe" src="..."&gt;&lt;/iframe&gt;
+         &lt;script&gt;document.rootScroller = document.querySelector('#myIframe');&lt;/script&gt;
+         </code></pre>
+         <p>The browser uses whichever element the document in the iframe set as the document.rootScroller (remember, if none
+         is set it defaults to the <code>document.scrollingElement</code>). This nesting works recursively; the iframe could itself set
+         a child iframe as rootScroller. In this way, the root-most document can delegate root scroller responsibilities to
+         child documents.</p>
+         <h3><a id="user-content-example" class="anchor" href="#example" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
+         <p>Here's a common application on the web: a (potentially-infinite) stream of items
+         that lets you open one up when you click on it. Since the stream is infinite,
+         navigating to a new page when you open an item means lots of work to recreate the
+         stream when the user navigates back. What if we could keep the item-view in the
+         DOM all along? Here's an example of how we'd do that with this proposal:</p>
+        </article>
+      </div>
+    </div>
+  </body>
+
+</html>
