@@ -1,0 +1,47 @@
+<!DOCTYPE>
+<meta name="viewport" content="width=device-width">
+<style>
+  div {
+    padding-top: 50px;
+  }
+
+  body {
+    padding-top: 100px;
+    height: 3000px;
+  }
+</style>
+
+<div>
+  The value on the left is updated continually in a rAF. The value on the right is updated from the respective resize handler.
+</div>
+
+<div id="iH">
+<span>window.innerHeight: </span><span id="valueiH">#</span><span> -- Last Resize: </span><span id="valueiHResize">#</span>
+</div>
+<div id="vH">
+<span>visualViewport.height: </span><span id="valuevH">#</span><span> -- Last Resize: </span><span id="valuevHResize">#</span>
+</div>
+
+<script>
+  var iHval = document.getElementById("valueiH");
+  var iHResizeVal = document.getElementById("valueiHResize");
+
+  var vHval = document.getElementById("valuevH");
+  var vHResizeVal = document.getElementById("valuevHResize");
+
+  visualViewport.addEventListener('resize', () => {
+    vHResizeVal.innerText = visualViewport.height + "px";
+  });
+  window.addEventListener('resize', () => {
+    iHResizeVal.innerText = window.innerHeight + "px";
+  });
+
+  function raf() {
+    iHval.innerText = window.innerHeight.toFixed(0) + "px";
+    vHval.innerText = visualViewport.height.toFixed(0) + "px";
+    requestAnimationFrame(raf);
+  }
+
+  raf();
+
+</script>
