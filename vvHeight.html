@@ -30,10 +30,10 @@
   var vHResizeVal = document.getElementById("valuevHResize");
 
   visualViewport.addEventListener('resize', () => {
-    vHResizeVal.innerText = visualViewport.height + "px";
+    vHResizeVal.innerText = visualViewport.height.toFixed(0) + "px";
   });
   window.addEventListener('resize', () => {
-    iHResizeVal.innerText = window.innerHeight + "px";
+    iHResizeVal.innerText = window.innerHeight.toFixed(0) + "px";
   });
 
   function raf() {
