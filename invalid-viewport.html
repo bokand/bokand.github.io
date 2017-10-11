@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-wight">
+<style>
+  #outer, body, html {
+    width: 100%;
+    height: 100%;
+  }
+
+</style>
+<script>
+  addEventListener('load', function() {
+    document.getElementById('outer').innerText = "Width: " + document.body.clientWidth + "px";
+  });
+</script>
+
+<div id="outer">
+</div>
