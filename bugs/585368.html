@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+		    #bluebox {
+                width: 100px;
+                height: 100px;
+                background: blue;
+                padding: 0px;
+                margin: 0px;
+            }
+            #redbox {
+                width: 100px;
+                height: 100px;
+                background: red;
+                padding: 0px;
+                margin: 0px;
+            }
+			
+			#container {
+				width: 200px;
+				height: 100px;				
+			}
+		</style>
+		<script>
+			function focusTextbox() {
+				var container = document.getElementById('container');
+				document.getElementById('textBox').focus();
+			}
+			
+			function collapseToggle() {
+				var element = document.getElementById('container');
+				
+				if (element.clientHeight > 0)
+					element.style.height = "0px";
+				else
+					element.style.height = "100px";
+			}
+		</script>
+	</head>
+	<body>
+		
+			
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+			<div id="bluebox"></div><div id="redbox"></div>
+			<div id="container" >
+				<div style="height: 100%; overflow: auto">
+					<input type="text" id="textBox">
+					<div id="bluebox"></div><div id="redbox"></div>
+					<div id="bluebox"></div><div id="redbox"></div>
+					<div id="bluebox"></div><div id="redbox"></div>
+					<div id="bluebox"></div><div id="redbox"></div>
+					<div id="bluebox"></div><div id="redbox"></div>
+				</div>
+			</div>
+			<button onclick="focusTextbox();">Focus Textbox</button>
+			<button onclick="collapseToggle();">Collapse Div With Textbox</button>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+			<div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+            <div id="bluebox"></div><div id="redbox"></div>
+	</body>
+</html>

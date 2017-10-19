@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .text {
+        position: absolute;
+        padding: 20px;
+        left: 500px;
+        top: 500px;
+        background-color: red;
+        width: 500px;
+        height: 600px;
+        touch-action: pan-x;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <div class="text">
+        This box has touch-action: pan-x
+        <div style="margin: 30px; padding: 30px; width:300px; height: 300px; background-color: green;">
+            Zooming out from this textbox is hard after it's autozoomed: <input type="text"></input>
+        </div>
+      </div>
+    </div>
+    <div style="width: 2000px; height: 2000px; background-color: blue;">
+            <div style="position: absolute; left: 100px; top: 100px; color: white">TEXTBOX: <input type="text"></input></div>
+  </body>
+</html>

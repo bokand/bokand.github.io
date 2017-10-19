@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=600, minimum-scale=0.33, maximum-scale=1.0">
+  <style type="text/css">
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  </style>
+  <script>
+    addEventListener('load', function() {
+        var console = document.getElementById('console');
+        console.innerHTML += '<br>Load'
+        console.innerHTML += '<br>InnerWidth: ' + window.innerWidth;
+        console.innerHTML += '<br>InnerHeight: ' + window.innerHeight;
+    });
+  </script>
+</head>
+<body>
+  <div id="console"></div>
+  <script>
+    var console = document.getElementById('console');
+    console.innerHTML += '<br>End Of <body>'
+    console.innerHTML += '<br>InnerWidth: ' + window.innerWidth;
+    console.innerHTML += '<br>InnerHeight: ' + window.innerHeight;
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1, width=device-width, minimal-ui">
+		<title>Open in portrait.</title>
+		<style type="text/css">
+			html,
+			body
+			{
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+			}
+
+			.container
+			{
+				background: #006699;
+				box-sizing: border-box;
+				height: 100%;
+				padding: 2em;
+				width: 100%;
+			}
+
+			.link
+			{
+				color: black;
+			}
+
+			.portrait-only
+			{
+				display: none;
+			}
+  #footer{
+    position:fixed;
+	right : 20px;
+    bottom:10px;
+    height:100px;
+    width:100px;
+	float: right;
+    background:#999;
+}
+
+			@media (orientation: landscape)
+			{
+				.portrait-only
+				{
+					display: block;
+				}
+
+				.link
+				{
+					display: none;
+				}
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<p class="portrait-only">Please rotate your device to portrait.</p>
+			<a href="landscape.html" class="link">Go to landscape page</a>
+		</div>
+	<a id ="footer" href="#">
+</body></html>

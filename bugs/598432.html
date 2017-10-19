@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://fb.me/react-0.14.7.min.js"></script>
+  <script src="https://fb.me/react-dom-0.14.7.min.js"></script>
+  <script src="https://rawgit.com/orgsync/react-list/master/react-list.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+	.scroller {
+	  height: 500px;
+	  width: 100%;
+	  overflow: scroll;
+	}
+
+	.item {
+	  display: block;
+	  font-size: 30px;
+	  height: 60px;
+	  background: #ccc
+	}
+  </style>
+</head>
+<body>
+  
+  <script>
+    var listParams = {
+      type: 'uniform',
+      length: 1000,
+      itemRenderer: function(i) {
+        return React.createElement('div', {className: 'item'}, 'Item ' + i)
+      }
+    }
+    
+    var root = React.createElement('div', {className: 'scroller'},
+      React.createElement(ReactList, listParams)
+    )
+    React.render(root, document.body)
+  </script>
+</body>
+</html>

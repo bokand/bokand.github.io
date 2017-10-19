@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width">
+<style>
+body,html{
+    width: 100%;
+    height: 100%;
+}
+body {
+    margin: 0;
+    background-color: red;
+}
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: min-content;
+    height: 100%;
+}
+#button-container {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+a {
+    display: inline-block;
+    background-color:blue;
+    margin-top: 32px;
+    background: #4285F4;
+    font-family: Roboto;
+    font-size: 14px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px;
+    min-width: 300px;
+}
+video {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+</style></head><body>
+
+<div id="container">
+
+      <video controls="" autoplay=""><source src="http://video.webmfiles.org/big-buck-bunny_trailer.webm" type="video/webm"></video>
+    <!--<div id="button-container">
+      <a href="http://video.webmfiles.org/big-buck-bunny_trailer.webm" download>DOWNLOAD</a>
+    </div>-->
+</div>
+  
+
+</body></html>

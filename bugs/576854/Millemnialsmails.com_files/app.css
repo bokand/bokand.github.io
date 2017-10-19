@@ -1,0 +1,529 @@
+#leftFrame{
+  min-height: 25em;
+}
+
+.form-inline .form-buttons {
+    margin-left: 0;
+    margin-top:2em;
+}
+
+div.mailbox{
+    position:relative;
+    float: left;
+/*    background-size:100%;*/
+      background-size: contain;
+    background: url(assets/images/mailboxmedium.png) no-repeat;
+}
+
+dl.mailbox{
+    position:relative;
+    width:100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+    margin:0px
+}
+.mailbox-address{
+    position:relative;
+    float:left;
+    padding-top:1em;
+    text-align:center;
+    margin-bottom:1em;
+    width:100%;
+    color:white;
+    font-size:130%;
+    font-weight:bold;
+    cursor: default;
+}
+dl#imboxMap{
+  height: 100%;
+}
+
+a.mailbox.mailbox-address {
+    text-decoration: none;
+}
+
+#imboxMap dd{
+  width: 50%;
+  z-index: 10;
+  position:relative;
+  float:left;
+}
+
+#imboxMap dd:last-child{
+  margin-bottom:1em;
+}
+
+
+a.mailbox.mailbox-address:hover {
+    color: white;
+}
+
+.mailbox dd{
+  position:absolute;
+  padding:0;
+  margin:0;
+}
+
+#imboxMap > dd > a{
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 20;
+}
+
+dl.mailbox > dd > a span, dl.mailbox > dd > a:visited span{
+  display: none;
+}
+
+dl.mailbox > dd > a:hover {
+  background-position:0 0;
+}
+
+dl.mailbox a:hover span:not(:empty) {
+  position:absolute;  
+  width:388px; 
+  display:block; 
+  font-family:arial; 
+  font-size:12px; 
+  background:#fff; 
+  color:#000; 
+  border:1px solid #000; 
+  padding:5px;
+}
+
+@media(min-width:769px){
+  div.mailbox{
+      height: 532px;
+      width:480px;
+      margin-top: 1.5em;
+  }
+
+  #imboxMap dd{
+    height: 117px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+  dl.mailbox{
+    position:relative;
+    display: block;
+    overflow: auto;
+  }
+
+  div.mailbox{
+      margin-left:auto;
+      margin-right:auto;
+      width: 90%;
+      background-size: contain;
+      height: 400px;
+      max-width:370px;
+      /* margin-left:2em; */
+  }
+  .mailbox-address{
+    font-size: 100%;
+    padding-top: 0.9em;
+    height: 2em;
+  }
+  dl#imboxMap{
+  }
+
+  #imboxMap dd{
+    width: 50%;
+    height: 86px;
+    z-index: 10;
+    position:relative;
+    float:left;
+  }
+  #imboxMap dd:last-child{
+    margin-bottom:1em;
+  }
+}
+
+@media (max-width: 480px) {
+  div.mailbox{
+      /* width: 100%; */
+      max-width: 100%;
+    height: 370px;
+  }
+
+  #imboxMap dd{
+    width: 50%;
+    height: 21%;
+  }
+}
+@media (max-width: 370px) {
+  div.mailbox{
+    height: 350px;
+  }
+}
+
+@media (max-width: 320px) {
+
+  div.mailbox{
+    height: 330px;
+    margin-left:0;
+  }
+  .mailbox-address{
+    margin-bottom: 0.5em;
+  }
+
+  #imboxMap dd{
+    height: 68px;
+  }
+  #imboxMap dd:last-child{
+  }
+}
+
+
+@media (max-width: 240px) {
+
+  div.mailbox{
+    max-width:100%;
+    max-height:250px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .mailbox-address{
+    margin-bottom: 0.5em;
+    font-size:80%;
+  }
+
+  #imboxMap dd{
+    height: 20%;
+  }
+  #imboxMap dd:last-child{
+  }
+}
+
+
+
+.ngdialog-letter {
+    overflow: auto;
+}
+
+
+
+.letter-headers {
+    padding: 0.4em 1em ;
+    font-size:large
+}
+.letter-header{
+    line-height:1.5em;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-weight:bold;
+}
+
+div.letter-header {
+    clear: both;
+}
+
+@media(max-width:320px){
+  .ngdialog-letter {
+    overflow: scroll;
+  }
+
+}
+@media (min-width:992px){
+    .form-group .letter-header {
+        text-align: right;
+    }
+}
+
+
+
+.letter-header span:first-child {
+    width: 4em;
+    display: block;
+    float: left;
+    text-align: right;
+    margin-right: 1em;
+}
+
+.letter-header span:last-child {
+    font-weight: initial;
+}
+
+
+div.letter-body {
+    display:block;
+    background-color: white;
+    height: 20em;
+    /* max-width: 100%; */
+    padding: 3px;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+    border-color: gray;
+    border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-radius: 0px;
+    word-break: normal;
+    word-wrap: break-word;
+    white-space: pre-line;
+    font-family: arial;
+    margin-left: 18px;
+}
+
+.ngdialog-letter .letter-body {
+    margin-left: 0px;
+    margin-top: 1em;
+}
+
+textarea.letter-body {
+    width: 100%;
+    /* height: 100%; */
+    height: 20em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.letter-frame .letter-body{
+    margin-right:0em;
+    margin-top:1em;
+    margin-bottom: 1em;
+}
+
+
+.letter-frame ul.letter-buttons {
+    position: relative;
+    width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+    float: left;
+    height: 52px;
+}
+
+.letter-buttons .letter-button {
+    position: relative;
+    float:left;
+    width:25%;
+    padding-top: 1.25em;
+    padding-bottom: 1em;
+    text-align:center;
+    color:white;
+    font-weight:bold;
+    height: 52px;
+    font-size: 14px;
+}
+
+a.letter-button {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a.letter-button:hover,a.letter-button:visited {
+    color: white;
+    vertical-align:middle;
+}
+
+
+.letter-button[data-button="1"] {
+    background-color: #00A2E9;
+}
+
+.letter-button[data-button="2"] {
+    background-color: rgb(33, 176, 76);
+}
+
+.letter-button[data-button="3"] {
+    background-color: #00A2E9;
+}
+
+.letter-button[data-button="4"] {
+    background-color:rgb( 41, 34, 45);
+}
+@media(max-width:768px){
+    textarea.letter-body {
+      height: 10em;
+  }
+  textarea.letter-body {
+      margin-bottom: 0;
+  }
+}
+@media(max-width:440px){
+  .letter-button[data-button="4"] {
+    padding-top:0.6em;
+  }
+}
+@media(max-width:320px){
+  .letter-body{
+    min-height:3em;
+    max-height:10em;
+  }
+
+}
+
+@media(min-width:768px){
+  .ngdialog-theme-letter .ngdialog-content {
+       width: 80%!important;
+  }
+}
+
+.ngdialog-theme-letter{
+    padding-top:2em !important;
+}
+
+/* -------------------------- Bill notices --------------------------*/
+
+.billNotice-frame ul.billNotice-buttons, ul.news-buttons {
+    position: relative;
+    width: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+    float: left;
+    height: 52px;
+    text-transform: capitalize;
+}
+
+.billNotice-frame >  a:first-child{
+  text-decoration:none;
+}
+.billNotice-buttons .billNotice-button, .news-buttons .news-button {
+    position: relative;
+    float:left;
+    width:33.33%;
+    vertical-align:middle;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align:center;
+    color:white;
+    font-weight:bold;
+    height: 52px;
+    font-size: 16px;
+    line-height: 1.5em;
+}
+
+a.billNotice-button, a.news-button {
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+a.billNotice-button:hover,a.billNotice-button:visited, a.news-button:hover,a.news-button:visited {
+    color: white;
+}
+
+
+.billNotice-button[data-button="1st"], .news-button[data-button="1st"] {
+    clear: left;
+    background-color: #00A2E9;
+}
+
+.billNotice-button[data-button="2nd"],.news-button[data-button="2nd"] {
+    background-color: rgb(33, 176, 76);
+}
+
+.billNotice-button[data-button="3th"], .news-button[data-button="3th"] {
+    background-color:rgb( 41, 34, 45);
+}
+
+.billNotice-frame, .letter-frame, .news-frame {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    float: left;
+}
+
+div#currentNotice, div#news {
+    padding: 1em;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+div#currentNotice {
+    overflow-y: auto;
+}
+
+#currentNotice p {
+    font-size:large;
+    line-height: 1.5em;
+}
+
+@media(max-width:420px){
+  .billNotice-frame, .letter-frame, .news-frame {
+      width: 100%;
+  }
+  #currentNotice p {
+    font-size:small;
+  }
+}
+
+@media(max-width:320px){
+  div#currentNotice, div#news {
+    width: auto;
+  }
+  .billNotice-frame, .letter-frame, .news-frame {
+    width:100%;
+  }
+
+}
+
+.necessity-detail .index:after {
+  content: '. ';
+}
+
+dl.necessity-detail dt p {
+    font-weight: normal;
+}
+
+#necessities-info{
+  margin-bottom:1em;
+}
+
+#view-school-assignments .header-links   h4,
+#view-school-assignments .header-links   p
+{
+  margin-top:1.5em;
+}
+
+
+@media(min-width:420px){
+  #classSelector > select{
+    width: 20em;
+    margin-left:1em;
+    margin-right:1em;
+    display: inline-block;
+  }
+}
+@media(max-width:420px){
+
+  #classSelector > a{
+    position:relative;
+  }
+}
+#nextAssignments .small-action-column,
+#next30DaysAssignments .small-action-column{
+  width:1em;
+}
+
+span.assigment-resume{
+  text-align: left;
+  word-wrap: normal;
+  white-space: pre-wrap;
+}
+
+.letter-frame > a:first-child,
+.news-frame > a:first-child,
+.advertising-frame > a:first-child{
+    text-decoration: none;
+}
+
+#view-my-account .form > div:nth-child(1)  p{
+  margin-top:1.5em;
+  margin-bottom:1.5em;
+}
+#view-my-account .form > div:nth-child(1)  p:last-child{
+  /* margin-bottom:0em; */
+}
+
+#view-my-account h3{
+    margin-top: 1em;
+}

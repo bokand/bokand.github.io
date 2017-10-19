@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<body>
+A red box should not appear.
+<input style="background:gray; width:200px;" autofocus onfocus="document.getElementById('t').scrollIntoView()">
+<div style="overflow:scroll; background:#8cf; height:202px; positin:relative">
+ <div style="border:1px solid white; height:200px;"></div>
+ <div style="background:red; height:200px;"></div>
+ <div id=t tabindex=0 style="background:lime; position:absolute; top:400px;">foo</div>
+</div>
+</body>

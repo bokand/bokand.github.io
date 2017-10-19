@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .bluebox {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+      }
+      .redbox {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+      }
+    </style>
+    <script>
+      function onTouchEnd(e) {
+        var touch = e.changedTouches[0];
+        console.log('Touch End:');
+        console.log('\tClient: (' + touch.clientX + ', ' + touch.clientY + ')');
+        console.log('\tPage: (' + touch.pageX + ', ' + touch.pageY + ')');
+      }
+
+      window.addEventListener('load', function() {
+        document.body.addEventListener('touchend', onTouchEnd);
+      });
+    </script>
+  </head>
+  <body>
+    <div class="bluebox"></div><div class="redbox"></div>
+    <div class="bluebox"></div><div class="redbox"></div>
+    <div class="bluebox"></div><div class="redbox"></div>
+    <div class="bluebox"></div><div class="redbox"></div>
+    <div class="bluebox"></div><div class="redbox"></div>
+    <div class="bluebox"></div><div class="redbox"></div>
+  </body>
+</html>
