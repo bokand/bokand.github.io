@@ -6,7 +6,7 @@ across browsers and then documenting and explaining the differences between
 how browsers implement these definitions. My intent is to make this a live
 document, constantly refreshed to reflect the current state of the world.
 
-All sizes in this document are, unless otherwise noted, are in CSS pixels.
+All sizes in this document are, unless otherwise noted, in CSS pixels.
 (i.e. when you zoom in, the size of a CSS pixel increases)
 
 If it's not already clear, this document is _non-normative_. Grain of salt and all that...
