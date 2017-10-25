@@ -314,6 +314,9 @@ positioned 600px from the document origin and will be visible when the page
 loads (but we won't be able to zoom out) and it will be 60px wide. Quite surprising
 indeed.
 
+###### Edge (Android)
+Works like Chrome.
+
 ## Browser UI Interactions
 
 #### Hiding URL Bar
