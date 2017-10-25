@@ -3,9 +3,10 @@ This document attempts to summarize and explain viewport concepts on the web
 and provide common definitions we can use to communicate about them. I've
 attempted to keep this browser agnostic, making definitions applicable
 across browsers and then documenting and explaining the differences between
-how browsers implement these definitions.
+how browsers implement these definitions. My intent is to make this a live
+document, constantly refreshed to reflect the current state of the world.
 
-All sizes are in this document, unless otherwise noted, are in CSS pixels.
+All sizes in this document are, unless otherwise noted, are in CSS pixels.
 (i.e. when you zoom in, the size of a CSS pixel increases)
 
 If it's not already clear, this document is _non-normative_. Grain of salt and all that...
@@ -63,13 +64,13 @@ So where does the ICB's size come from? This depends whether we're on a desktop
 or mobile browser. On desktop, the ICB matches the browser's window size;
 minus any browser chrome ("chrome" in the [UI sense](https://www.nngroup.com/articles/browser-and-gui-chrome/)).
 
-On mobile, the ICB's size can vary inependently of the window/screen size.
-If the page specifies an explicit size in the `width` attribute of a viewport
-meta tag, then we'll use that and the application window's aspect ratio to set
-height. Most browsers will use a default (e.g. 980px) value if there is no
-meta tag or `width` is unspecified. The page can also specify `width=device-width`
-which uses the window's width, much like on desktop. This is most common for
-"mobile-friendly" pages.
+On mobile, the ICB's size can vary inependently of the window/screen size.  If
+the page specifies an explicit size in the `width` attribute of a viewport meta
+tag, then we'll use that for the width and combine it with the application
+window's aspect ratio to set height. Most browsers will use a default (e.g.
+980px) value if there is no meta tag or `width` is unspecified. The page can
+also specify `width=device-width` which uses the window's width, much like on
+desktop. This is most common for "mobile-friendly" pages.
 
 Fun-fact: a page can specify the height in a `height` attribute as well, but
 it's quirky, rarely used, and not worth talking about here.
@@ -79,9 +80,9 @@ This is the total size of all the content on the page. In other words, it's the
 `documentElement.scrollWidth` and `documentElement.scrollHeight`, or how much
 scrollable "stuff" there is on the page.
 
-It's obvious that the content height can can (and usually is) greater than the
-ICB height. Sometimes, surprisingly, it can also be wider than the ICB. For
-example, this page loaded on a mobile browser:
+It's obvious that the content height can be (and often is) greater than the
+ICB height. Sometimes, maybe surprisingly, it can also be wider than the ICB.
+For example, this page loaded on a mobile browser:
 
 ```
 <!DOCTYPE html>
@@ -111,31 +112,33 @@ content. Thus, the visual and fixed viewports were always equivalent and a
 distinction was never made. We simply had _a viewport_. Also, the ICB
 was always the same size as the viewport. Life was simple then.
 
-Aside: There was and is "browser zoom" (i.e. ctrl+/- zooming) but this reflows
+_Aside: There was and is "browser zoom" (i.e. ctrl+/- zooming) but this reflows
 content with a larger CSS pixel size and affects both the fixed viewport and
 visual viewport so they remain the same. We won't concern ourselves with this
-type of zoom here.
+type of zoom here._
 
 With the introduction of modern mobile phones, screen real-estate was
 especially limited. In order to display pages meant for large screens, they
 introduced two major changes. One was the ability to pinch-zoom a page without
 reflowing it. The other was the ability to layout into an ICB larger than the
-window size so the page would layout correctly. Combined, this allowed a mobile
-browser to load a page as if it was rendered on a larger screen, but then
+window size so the page would layout correctly. Combined, this allowes a mobile
+browser to load a page as if it were rendered on a larger screen, but then
 shrink it to fit on the small mobile screen.
 
-Unfortunately, how pinch-zoom affected the viewports was never specified or
+Unfortunately, how pinch-zoom is implemented was never specified or
 interoperable and each browser did their own thing.
 
 These models are easier to show than to explain so see my [simulator](http://bokand.github.io/viewport/index.html)
 to compare visually. Here's the explanations:
 
 ###### Firefox
-Pinch-zoom shrinks/grows both the visual and fixed viewports equally.
-That is, as you zoom in, position: fixed elements remain stuck to the screen
-(and change size). This has a major disadvantage in that position: fixed
+Firefox never adopted the visual/fixed viewport split so there's only a single
+viewport. However, we can think of it in terms of the visual/fixed framework by
+realizing that pinch-zoom shrinks/grows both the visual and fixed viewports
+equally.  That is, as you zoom in, position: fixed elements remain stuck to the
+visible screen edges. This has a major disadvantage in that position: fixed
 elements will obscure most of the viewport as you zoom in and can also appear
-unaligned to other content it was designed to align with.
+detached from other content it was designed to align with.
 
 ###### Edge
 Pinch-zoom doesn't affect the fixed viewport, only the visual. So when
@@ -144,16 +147,17 @@ user took a magnifying glass to the screen. This solves the disadvantage in the
 Firefox model and is more compatible with pages designed for desktops.
 
 ###### Safari
-Initially, (AFAICT) Safari had a "hybrid" model of the Edge/Firefox
-models. As you zoomed in, it would affect both viewports like Firefox. But once
-you zoomed in far enough and reached a threshold, it would stop zooming in the
-fixed viewport and zoom only the visual, like Edge. While a nice idea, it was
-hard to reason about and broke down in many cases. More recently, Safari has
-moved to the Edge model.
+Initially, (AFAICT - based on my own observations only) Safari had a "hybrid"
+model of the Edge/Firefox models. As you zoomed in, it would affect both
+viewports like Firefox. But once you zoomed in far enough and reached a
+threshold, it would stop zooming in the fixed viewport and zoom only the
+visual, like Edge. While a nice idea, it was hard to reason about and broke
+down in many cases.
+
+More recently, Safari has moved to the Edge model.
 
 ###### Chrome
 Initially used the Firefox model but later switched to the Edge model.
-
 
 So it looks like the major browsers are converging on a common model (Firefox
 intends to move to this model too: [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1123938)). Huzzah!
@@ -209,48 +213,10 @@ as the page can tell. In other words, the page doesn't react at all to
 pinch-zoom. However, some pages do have niche use cases for querying the visual
 viewport. For those use cases, Chrome [introduced](https://github.com/WICG/ViewportAPI) `window.visualViewport`.
 
-## Hiding URL Bar
-
-Some mobile browsers have a hideable URL bar. Typically the browser "scrolls"
-the URL bar in and out of view as the page is scrolled.
-
-###### Safari
-Showing and hiding the URL bar resizes both the fixed and visual
-viewports but not the ICB.
-
-###### Chrome
-Works the same as Safari.
-
-###### Firefox
-Resizes both fixed and visual but also the ICB.
-
-###### Edge
-Edge on Windows Phone had a fixed URL bar. With the introduction of Edge
-on Android and iOS though, it has a movable bar! On first glance looks to work
-in a similar manner to Chrome and Safari, however, there's a bottom bar as
-well! Further investigation is warranted...
-
-## On Screen Keyboard (OSK)
-
-###### Safari
-The OSK resizes just the visual viewport. (TODO: confirm)
-
-###### Edge
-TODO
-
-###### Chrome
-The OSK resizes the entire window. This means both the visual and fixed
-viewports are resized as well as the ICB. This has performance and usability
-issues so Chrome would like to make the OSK resize only the visual viewport.
-
-###### Firefox
-TODO
-
-_Idea: What if instead of resizing just visual, the OSK resizes visual and fixed - but
-not ICB. This would fix Chrome's performance issues and allow Safari to use Chrome's
-coordinate space model without the interop issues. Nice analog to how URL bar works._
-
 ## Minimum Scale
+
+Minimum scale is important enough to call out since it has surprising
+implications, particularily in Chrome.
 
 This section will deal only with mobile browsers. On desktop the situation is
 simple: the minimum scale is always 1, on every browser I know of.
@@ -347,4 +313,47 @@ If we add `minimum-scale=1` to the meta tag, #fixed will be
 positioned 600px from the document origin and will be visible when the page
 loads (but we won't be able to zoom out) and it will be 60px wide. Quite surprising
 indeed.
+
+## Browser UI Interactions
+
+#### Hiding URL Bar
+
+Some mobile browsers have a hideable URL bar. Typically the browser "scrolls"
+the URL bar in and out of view as the page is scrolled.
+
+###### Safari
+Showing and hiding the URL bar resizes both the fixed and visual
+viewports but not the ICB.
+
+###### Chrome
+Works the same as Safari.
+
+###### Firefox
+Resizes both fixed and visual but also the ICB.
+
+###### Edge
+Edge on Windows Phone had a fixed URL bar. With the introduction of Edge
+on Android and iOS though, it has a movable bar! On first glance looks to work
+in a similar manner to Chrome and Safari, however, there's a bottom bar as
+well! Further investigation is warranted...
+
+#### On Screen Keyboard (OSK)
+
+###### Safari
+The OSK resizes just the visual viewport. (TODO: confirm)
+
+###### Edge
+TODO
+
+###### Chrome
+The OSK resizes the entire window. This means both the visual and fixed
+viewports are resized as well as the ICB. This has performance and usability
+issues so Chrome would like to make the OSK resize only the visual viewport.
+
+###### Firefox
+TODO
+
+_Idea: What if instead of resizing just visual, the OSK resizes visual and fixed - but
+not ICB. This would fix Chrome's performance issues and allow Safari to use Chrome's
+coordinate space model without the interop issues. Nice analog to how URL bar works._
 
