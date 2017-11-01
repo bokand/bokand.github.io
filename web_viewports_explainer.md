@@ -187,9 +187,9 @@ Not relevant in this section since it uses a single viewport.
 but it means pages will react to pinch-zoom, most often in ways they weren't
 designed to. This is especially problematic on desktop pages as most desktops
 don't support pinch-zoom (though some do, e.g. MacBooks) so their designers never
-predicted for or tested with pinch-zoom. To see how bad it is, I spent about an hour
-surfing major web pages on a Mac and zooming in and out. Here's [the
-results](https://docs.google.com/document/d/1t8VLcYL9Gb6BwxseBe6bgvjy5l8vqWc0LIfKAuU9v2Y/edit).
+predicted for or tested with pinch-zoom. To see how this affects compatibility, here's [the
+results](https://docs.google.com/document/d/1t8VLcYL9Gb6BwxseBe6bgvjy5l8vqWc0LIfKAuU9v2Y/edit)
+of surfing and zooming some major web properties using Desktop Safari.
 
 ###### Edge
 "Hybrid". All "client", and indeed most APIs, refer to the fixed
@@ -232,18 +232,38 @@ actually used minimum scale will be `max(minimum-scale, intrinsic minimum)`. Som
 browsers also have a built in hard minimum (and maximum) that they will further clamp
 this expression within. These built-in limits vary by browser.
 
+###### Safari
+
+It looks like Safari further ensures that the minimum-scale doesn't allow the
+user to zoom out further than the ICB. For example, if the screen width is
+320px and we have the following viewport meta:
+
+```
+<meta name="viewport" content="width=600, minimum-scale:0.25">
+<div style="width: 2000px; height: 100px"></div>
+```
+
+The minimum scale will be 320 / 600 = 0.53 rather than 0.25. If the
+minimum-scale attribute were instead 1, the used minimum scale would be 1.
+
+###### Chrome
+
+Chrome does not involve the ICB in minimum-scale calculation at all. Perhaps it
+should, Safari's model sounds reasonable.
+
+
 ## Fixed Viewport Size
 
 We've talked about how the visual viewport and the ICB get their size, but the
 fixed viewport is less intuitive and varies between browsers.
 
-###### Safari:
-TODO
+###### Firefox
+Fixed viewport always matches the visual viewport size.
 
-###### Edge (Windows Phone)
-The fixed viewport is sized to be equal to the ICB size. A consequence of
-this is that if the user can zoom out to see more than the ICB, the fixed
-viewport is smaller than the visual viewport:
+###### Safari + Edge (Windows Phone)
+The fixed viewport is sized to be equal to the ICB size. A consequence of this
+is that if the user can zoom out to see more than the ICB (Window Phone, but
+not Safari), the fixed viewport is smaller than the visual viewport:
 
 ![Edge Viewport position: fixed Elements](https://bokand.github.io/viewport/EdgeFixedViewport-1.png "A page loaded in Edge with position: fixed Elements before zooming out.")
 
@@ -253,6 +273,9 @@ The page is at scale: 1.0 but has an extra wide Element so it can be zoomed out.
 ![Edge Viewport position: fixed Elements zoomed out](https://bokand.github.io/viewport/EdgeFixedViewport-2.png "The same page after zooming out")
 
 The same page when zoomed out to minimum. The fixed viewport has been shaded in green.
+
+###### Edge (Android)
+Same as Chrome.
 
 ###### Chrome
 The fixed viewport is sized to the minimum scale size. This means that
@@ -324,12 +347,9 @@ Works like Chrome.
 Some mobile browsers have a hideable URL bar. Typically the browser "scrolls"
 the URL bar in and out of view as the page is scrolled.
 
-###### Safari
+###### Safari + Chrome
 Showing and hiding the URL bar resizes both the fixed and visual
 viewports but not the ICB.
-
-###### Chrome
-Works the same as Safari.
 
 ###### Firefox
 Resizes both fixed and visual but also the ICB.
@@ -338,23 +358,22 @@ Resizes both fixed and visual but also the ICB.
 Edge on Windows Phone had a fixed URL bar. With the introduction of Edge
 on Android and iOS though, it has a movable bar! On first glance looks to work
 in a similar manner to Chrome and Safari, however, there's a bottom bar as
-well! Further investigation is warranted...
+well!
+
+It seems like the bottom bar affects the ICB size but the URL bar does not!
+
+Both bars affect the fixed viewport and visual viewports.
+
 
 #### On Screen Keyboard (OSK)
 
 ###### Safari
-The OSK resizes just the visual viewport. (TODO: confirm)
+window.innerHeight doesn't change so it seems nothing is resized?
 
-###### Edge
-TODO
-
-###### Chrome
+###### Chrome + Firefox and Edge on Android
 The OSK resizes the entire window. This means both the visual and fixed
 viewports are resized as well as the ICB. This has performance and usability
 issues so Chrome would like to make the OSK resize only the visual viewport.
-
-###### Firefox
-TODO
 
 _Idea: What if instead of resizing just visual, the OSK resizes visual and fixed - but
 not ICB. This would fix Chrome's performance issues and allow Safari to use Chrome's
