@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta name="viewport" content="width=2000, minimum-scale=0.5, initial-scale=2">
+    <style>
+      #fixed {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+      }
+      #wide {
+        width: 4000px;
+        height: 10px;
+      }
+    </style>
+
+    <script>
+      addEventListener('load', function() {
+        var fixed = document.getElementById('fixed');
+
+        function refresh() {
+          var rect = fixed.getBoundingClientRect();
+          var viewportSize = ('visualViewport' in window)
+              ? (Math.round(visualViewport.width) + ", " + Math.round(visualViewport.height))
+              : (Math.round(window.innerWidth) + ", " + Math.round(window.innerHeight));
+          fixed.innerText = "Rect: " + rect.x + ", " + rect.y + " - [" + rect.width + ", " + rect.height + "]\n" +
+              "ViewportSize: " + viewportSize;
+          setTimeout(refresh, 500);
+        }
+        setTimeout(refresh, 500);
+      });
+
+    </script>
+  </head>
+
+  <body>
+    <div id="fixed"></div>
+    <div id="wide"></div>
+  </body>
+</html>
