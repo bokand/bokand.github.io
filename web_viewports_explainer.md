@@ -176,7 +176,7 @@ viewport.  However, the `window` APIs refer to the visual viewport:
 in an esthetic and rational sense but it is more compatible with the desktop
 web than the "all visual" model. However, it still has shortcomings. Chrome
 initially used this model and has had a long tail of [reported
-bugs](crbug.com/489206). A common pattern on the web to display one Element
+bugs](crbug.com/489206). A common pattern on the web to display one element
 relative to another is to take `getBoundingClientRect` of the first element,
 add `(window.scrollX, window.scrollY)` to it and set that as the absolute
 position of the second element. e.g. this is how many popup menus are
@@ -246,10 +246,10 @@ The fixed viewport is sized to be equal to the ICB size. A consequence of this
 is that if the user can zoom out to see more than the ICB (Window Phone, but
 not Safari), the fixed viewport is smaller than the visual viewport:
 
-![Edge Viewport position: fixed Elements](https://bokand.github.io/viewport/EdgeFixedViewport-1.png "A page loaded in Edge with position: fixed Elements before zooming out.")
+![Edge Viewport position: fixed Elements](https://bokand.github.io/viewport/EdgeFixedViewport-1.png "A page loaded in Edge with position: fixed elements before zooming out.")
 
 The image above shows a page with (fictional) position: fixed elements attached to the top, bottom, and left edges.
-The page is at scale: 1.0 but has an extra wide Element so it can be zoomed out.
+The page is at scale: 1.0 but has an extra wide element so it can be zoomed out.
 
 ![Edge Viewport position: fixed Elements zoomed out](https://bokand.github.io/viewport/EdgeFixedViewport-2.png "The same page after zooming out")
 
@@ -257,12 +257,12 @@ The same page when zoomed out to minimum. The fixed viewport has been shaded in 
 
 ###### Chrome
 The fixed viewport is sized to the minimum scale size. This means that
-a position: fixed Element that has `width: 100%; height: 100%` will exactly
+a position: fixed element that has `width: 100%; height: 100%` will exactly
 fill the viewport when the page is fully zoomed out. One consequence of this is
 that the visual viewport is always fully contained by the fixed viewport.
 
-Because of how the minimum scale size is computed, a wide Element elsewhere on
-a page can change how fixed Elements are sized and positioned. This can be
+Because of how the minimum scale size is computed, a wide element elsewhere on
+a page can change how fixed elements are sized and positioned. This can be
 especially surprising when the page has a specific `initial-scale` in its
 viewport meta tag. Consider the following page:
 
@@ -295,19 +295,19 @@ viewport meta tag. Consider the following page:
 <div id="wide"></div>
 
 ```
-Suppose it's loaded on a device with a 600px wide screen. Because the #wide
-element is twice as wide as the ICB, the minimum-scale will be 0.5. That is, we
-can zoom out to half the size. Since Chrome sizes the fixed viewport based on the
-minimum scale, it will also be twice as large as the ICB: 1200px wide. The right
-edge of the #fixed element will thus be positioned 1200px from the left edge of
-the document and it will be 120px wide. This is intuitive if the page loads at
-minimum-scale, as it does when the initial-scale is unspecified. However, in this
-case, because we've specified the `initial-scale=1` only the leftmost 600px of
-the document will be visible. The #fixed element will not be visible when the
-page loads! Here's a picture of the page at load with the visual viewport shaded in
-green:
+Suppose it's loaded on a device with a 600px wide screen. Because of the #wide
+element, the content size is twice as wide as the ideal viewport so the
+minimum-scale will be 0.5. That is, we can zoom out to half the size. Since
+Chrome sizes the fixed viewport based on the minimum scale, it will also be
+twice as large as the ICB: 1200px wide. The right edge of the #fixed element
+will thus be positioned 1200px from the left edge of the document and it will
+be 120px wide. This is intuitive if the page loads at minimum-scale, as it does
+when the initial-scale is unspecified. However, in this case, because we've
+specified the `initial-scale=1` only the leftmost 600px of the document will be
+visible. The #fixed element will not be visible when the page loads! Here's a
+picture of the page at load with the visual viewport shaded in green:
 
-![Chrome Viewport position: fixed Elements zoomed out](https://bokand.github.io/viewport/ChromeFixedViewport.png "position: fixed elements with initial-scale, in Chrome")
+![Chrome Viewport position: fixed elements zoomed out](https://bokand.github.io/viewport/ChromeFixedViewport.png "position: fixed elements with initial-scale, in Chrome")
 
 
 If we add `minimum-scale=1` to the meta tag, #fixed will be
@@ -329,7 +329,7 @@ the URL bar in and out of view as the page is scrolled.
 ###### Safari + Chrome
 Showing and hiding the URL bar resizes both the fixed and visual viewports but
 not the ICB. The page isn't reflowed when the URL bar state changes except for
-position: fixed Elements.
+position: fixed elements.
 
 ###### Firefox
 Resizes both fixed and visual but also the ICB so the entire page does reflow.
