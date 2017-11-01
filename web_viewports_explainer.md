@@ -100,18 +100,18 @@ was always the same size as the viewport. Life was simple then.
 _Aside: There was and is "browser zoom" (i.e. ctrl+/- zooming) but this reflows
 content with a larger CSS pixel size and affects both the fixed viewport and
 visual viewport so they remain the same. We won't concern ourselves with this
-type of zoom here._
+type of zoom in this document._
 
 With the introduction of modern mobile phones, screen real-estate was
 especially limited. In order to display pages meant for large screens, they
 introduced two major changes. One was the ability to pinch-zoom a page without
 reflowing it. The other was the ability to layout into an ICB larger than the
-window size so the page would layout correctly. Combined, this allowes a mobile
-browser to load a page as if it were rendered on a larger screen, but then
-shrink it to fit on the small mobile screen.
+window size so the page would layout correctly. Combined, this allows mobile
+browsers to load pages as if they were rendered on a larger screen, but then
+shrink them to fit on the small mobile screen.
 
-Unfortunately, how pinch-zoom is implemented was never specified or
-interoperable and each browser did their own thing.
+Unfortunately, how pinch-zoom is implemented is neither specified nor
+interoperable. Each browser have unique models here.
 
 These models are easier to show than to explain so see my [simulator](http://bokand.github.io/viewport/index.html)
 to compare visually. Here's the explanations:
