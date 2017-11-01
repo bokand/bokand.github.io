@@ -1,4 +1,6 @@
 # Web Viewports Explainer
+### bokan@chromium.org
+
 This document attempts to summarize and explain viewport concepts on the web
 and provide common definitions we can use to communicate about them. I've
 attempted to keep this browser agnostic, making definitions applicable
@@ -90,7 +92,7 @@ size.
 
 TODO: PICTURE
 
-## History and Current Status
+## Pinch-zoom Model
 
 Before mobile browsers, there was no pinch-zoom or browser chrome that obscured
 content. Thus, the visual and fixed viewports were always equivalent and a
@@ -102,19 +104,16 @@ content with a larger CSS pixel size and affects both the fixed viewport and
 visual viewport so they remain the same. We won't concern ourselves with this
 type of zoom in this document._
 
-With the introduction of modern mobile phones, screen real-estate was
-especially limited. In order to display pages meant for large screens, they
-introduced two major changes. One was the ability to pinch-zoom a page without
-reflowing it. The other was the ability to layout into an ICB larger than the
-window size so the page would layout correctly. Combined, this allows mobile
-browsers to load pages as if they were rendered on a larger screen, but then
-shrink them to fit on the small mobile screen.
+Mobile browsers introduced two major changes. One was the ability to pinch-zoom
+a page without reflowing it. The other was the ability to layout into an ICB
+larger than the window size so the page would layout correctly. Combined, this
+allows mobile browsers to load pages as if they were rendered on a larger
+screen, but then shrink them to fit on the small mobile screen.
 
 Unfortunately, how pinch-zoom is implemented is neither specified nor
-interoperable. Each browser have unique models here.
-
-These models are easier to show than to explain so see my [simulator](http://bokand.github.io/viewport/index.html)
-to compare visually. Here's the explanations:
+interoperable. Their operation is easier to show than to explain so see my
+[simulator](http://bokand.github.io/viewport/index.html) to compare visually.
+Here's the explanations as well as I understand them:
 
 ###### Firefox
 Firefox never adopted the visual/fixed viewport split so there's only a single
