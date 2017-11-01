@@ -11,6 +11,9 @@ document, constantly refreshed to reflect the current state of the world.
 All sizes in this document are, unless otherwise noted, in CSS pixels.
 (i.e. when you zoom in, the size of a CSS pixel increases)
 
+_Mobile_ means any browser that interprets the viewport `<meta>`
+tag.
+
 If it's not already clear, this document is _non-normative_ and simply the
 results of my observations when it comes to non-Chrome browsers. Grain of salt
 and all that...
@@ -57,7 +60,7 @@ So where does the ICB's size come from? This depends whether we're on a desktop
 or mobile browser. On desktop, the ICB matches the browser's window size;
 minus any browser chrome ("chrome" in the [UI sense](https://www.nngroup.com/articles/browser-and-gui-chrome/)).
 
-On mobile, the ICB's size can vary inependently of the window/screen size.  If
+On mobile, the ICB's size can vary independently of the window/screen size.  If
 the page specifies an explicit size in the `width` attribute of a viewport meta
 tag, then we'll use that for the width and combine it with the application
 window's aspect ratio to set height. Most browsers will use a default (e.g.
@@ -203,24 +206,26 @@ actually used minimum scale will be `max(minimum-scale, intrinsic minimum)`. Som
 browsers also have a built in hard minimum (and maximum) that they will further clamp
 this expression within. These built-in limits vary by browser.
 
-###### Safari
+###### Safari + Firefox
 
-It looks like Safari further ensures that the minimum-scale doesn't allow the
+Further ensure that the minimum-scale doesn't allow the
 user to zoom out further than the ICB. For example, if the screen width is
-320px and we have the following viewport meta:
+320px and we have the following in our page:
 
 ```
 <meta name="viewport" content="width=600, minimum-scale:0.25">
 <div style="width: 2000px; height: 100px"></div>
 ```
 
-The minimum scale will be 320 / 600 = 0.53 rather than 0.25. If the
-minimum-scale attribute were instead 1, the used minimum scale would be 1.
+The minimum scale will be `320 / 600 = 0.53` rather than `0.25`. If the
+minimum-scale attribute were instead 1, the used minimum scale would be 1 since
+1 > 0.53.
 
 ###### Chrome
 
-Chrome does not involve the ICB in minimum-scale calculation at all. Perhaps it
-should, Safari's model sounds reasonable.
+Chrome does not involve the ICB in minimum-scale calculation at all. Looks like
+it should since it's the odd one out and this causes issues with fixed viewport
+sizing (see below).
 
 
 ## Fixed Viewport Size
