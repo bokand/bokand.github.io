@@ -299,13 +299,14 @@ Suppose it's loaded on a device with a 600px wide screen. Because of the #wide
 element, the content size is twice as wide as the ideal viewport so the
 minimum-scale will be 0.5. That is, we can zoom out to half the size. Since
 Chrome sizes the fixed viewport based on the minimum scale, it will also be
-twice as large as the ICB: 1200px wide. The right edge of the #fixed element
-will thus be positioned 1200px from the left edge of the document and it will
-be 120px wide. This is intuitive if the page loads at minimum-scale, as it does
-when the initial-scale is unspecified. However, in this case, because we've
-specified the `initial-scale=1` only the leftmost 600px of the document will be
-visible. The #fixed element will not be visible when the page loads! Here's a
-picture of the page at load with the visual viewport shaded in green:
+twice as large as the ideal viewport: 1200px wide. The right edge of the #fixed
+element will thus be positioned 1200px from the left edge of the document and
+it will be 120px wide. This is intuitive if the page loads at minimum-scale, as
+it does when the initial-scale is unspecified. However, in this case, because
+we've specified the `initial-scale=1` only the leftmost 600px of the document
+will be visible. The #fixed element will not be visible when the page loads!
+Here's a picture of the entire page at load with the visual viewport (i.e. what
+the user is seeing) shaded in green:
 
 ![Chrome Viewport position: fixed elements zoomed out](https://bokand.github.io/viewport/ChromeFixedViewport.png "position: fixed elements with initial-scale, in Chrome")
 
