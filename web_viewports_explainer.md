@@ -2,10 +2,11 @@
 ### bokan@chromium.org
 
 This document attempts to summarize and explain viewport concepts on the web
-and provide common definitions we can use to communicate about them. I've
-attempted to keep this browser agnostic, making definitions applicable
-across browsers and then documenting and explaining the differences between
-how browsers implement these definitions. My intent is to make this a live
+and provide common definitions we can use to communicate about them. It also
+compares behavior across the major browsers on various related features. I've
+attempted to keep this browser agnostic, making the definitions applicable across
+browsers and then documenting and explaining the differences between how
+browsers implement these definitions. My intent is to make this a live
 document, constantly refreshed to reflect the current state of the world.
 
 All sizes in this document are, unless otherwise noted, in CSS pixels.
