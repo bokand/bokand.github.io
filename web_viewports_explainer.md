@@ -58,8 +58,8 @@ viewports above, the ICB doesn't ever change position, it's always located at
 the document origin. We could equivalently call this the "layout size".
 
 So where does the ICB's size come from? This depends whether we're on a desktop
-or mobile browser. On desktop, the ICB matches the browser's window size;
-minus any browser chrome ("chrome" in the [UI sense](https://www.nngroup.com/articles/browser-and-gui-chrome/)).
+or mobile browser. On desktop, the ICB matches the browser's window size less
+any browser chrome ("chrome" in the [UI sense](https://www.nngroup.com/articles/browser-and-gui-chrome/)).
 
 On mobile, the ICB's size can vary independently of the window/screen size.  If
 the page specifies an explicit size in the `width` attribute of a viewport meta
