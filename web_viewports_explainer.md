@@ -11,7 +11,9 @@ document, constantly refreshed to reflect the current state of the world.
 All sizes in this document are, unless otherwise noted, in CSS pixels.
 (i.e. when you zoom in, the size of a CSS pixel increases)
 
-If it's not already clear, this document is _non-normative_. Grain of salt and all that...
+If it's not already clear, this document is _non-normative_ and simply the
+results of my observations when it comes to non-Chrome browsers. Grain of salt
+and all that...
 
 ## Definitions
 
@@ -90,8 +92,6 @@ pixel is the same size as 1 density independent pixel (DIP). If we use
 `width=device-width` in the meta tag, the ICB will match the ideal viewport
 size.
 
-TODO: PICTURE
-
 ## Pinch-zoom Model
 
 Before mobile browsers, there was no pinch-zoom or browser chrome that obscured
@@ -124,27 +124,14 @@ visible screen edges. This has a major disadvantage in that position: fixed
 elements will obscure most of the viewport as you zoom in and can also appear
 detached from other content it was designed to align with.
 
-###### Edge
+###### Edge + Safari + Chrome
 Pinch-zoom doesn't affect the fixed viewport, only the visual. So when
 you zoom in, position: fixed elements "detach" from the screen. It's as if the
 user took a magnifying glass to the screen. This solves the disadvantage in the
 Firefox model and is more compatible with pages designed for desktops.
 
-###### Safari
-Initially, (AFAICT - based on my own observations only) Safari had a "hybrid"
-model of the Edge/Firefox models. As you zoomed in, it would affect both
-viewports like Firefox. But once you zoomed in far enough and reached a
-threshold, it would stop zooming in the fixed viewport and zoom only the
-visual, like Edge. While a nice idea, it was hard to reason about and broke
-down in many cases.
-
-More recently, Safari has moved to the Edge model.
-
-###### Chrome
-Initially used the Firefox model but later switched to the Edge model.
-
-So it looks like the major browsers are converging on a common model (Firefox
-intends to move to this model too: [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1123938)). Huzzah!
+Note: Firefox intends to move to this model too:
+[bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1123938). Huzzah!
 
 ## Coordinate Spaces
 
@@ -205,11 +192,11 @@ implications, particularily in Chrome.
 This section will deal only with mobile browsers. On desktop the situation is
 simple: the minimum scale is always 1, on every browser I know of.
 
-On mobile, the way the the minimum scale is determined varies between browsers.
-In all cases, the browser will not let you zoom out so far that the visual
-viewport is wider than the content width. Lets call this the _intrinsic
-minimum_. Simply, the scale at which the visual viewport would contain the entire
-content width.
+On mobile, the way the the minimum scale is determined varies slightly between
+browsers.  In all cases, the browser will not let you zoom out so far that the
+visual viewport is wider than the content width. Lets call this the _intrinsic
+minimum_. Simply, the scale at which the visual viewport would contain the
+entire content width.
 
 If the `minimum-scale` attribute of the viewport meta tag is explicitly set, the
 actually used minimum scale will be `max(minimum-scale, intrinsic minimum)`. Some (all?)
@@ -239,7 +226,8 @@ should, Safari's model sounds reasonable.
 ## Fixed Viewport Size
 
 We've talked about how the visual viewport and the ICB get their size, but the
-fixed viewport is less intuitive and varies between browsers.
+fixed viewport is less intuitive and varies between browsers. Similarly to
+above, this is only interesting on mobile.
 
 ###### Firefox
 Fixed viewport always matches the visual viewport size.
@@ -257,9 +245,6 @@ The page is at scale: 1.0 but has an extra wide Element so it can be zoomed out.
 ![Edge Viewport position: fixed Elements zoomed out](https://bokand.github.io/viewport/EdgeFixedViewport-2.png "The same page after zooming out")
 
 The same page when zoomed out to minimum. The fixed viewport has been shaded in green.
-
-###### Edge (Android)
-Same as Chrome.
 
 ###### Chrome
 The fixed viewport is sized to the minimum scale size. This means that
@@ -320,9 +305,6 @@ If we add `minimum-scale=1` to the meta tag, #fixed will be
 positioned 600px from the document origin and will be visible when the page
 loads (but we won't be able to zoom out) and it will be 60px wide. Quite surprising
 indeed.
-
-###### Edge (Android)
-Works like Chrome.
 
 ## Browser UI Interactions
 
