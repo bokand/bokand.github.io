@@ -38,24 +38,13 @@ size from. i.e. if you give an element this style:
 
 its bounds will exactly match the fixed viewport.
 
-This has been commonly referred to as the _layout viewport_ but that implies some
-things about it which aren't true and hinder understanding. I'm going to call
-it the _fixed viewport_ here.
+This has been commonly referred to as the _layout viewport_ but that's a
+misnomer since it isn't really related to general layout and calling it as such
+can be misleading. I'm going to call it the _fixed viewport_ here.
 
 ###### Initial Containing Block (ICB)
-Elements get their (relative) sizes and positions from their _containing block_.
-e.g. if you specify:
-
-```
-#elem {
-  position: relative;
-  left: 10%;
-  height: 50%;
-}
-```
-the browser will find the first ancestor element of `#elem` that is a
-containing block and use its size to compute the percentages in `#elem`. The
-_initial containing block_ is the root containing block. If you give the `<html>`
+See [the spec](https://www.w3.org/TR/css-display-3/#initial-containing-block) for
+the technical definition. Simply, if you give the `<html>`
 element relative size and position, it'll be calculated relative to the ICB. We
 could equivalently call this the "layout size".  Unlike the viewports above, the
 ICB doesn't ever change position, it's always located at the document origin.
