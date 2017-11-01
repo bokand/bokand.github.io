@@ -43,11 +43,11 @@ misnomer since it isn't really related to general layout and calling it as such
 can be misleading. I'm going to call it the _fixed viewport_ here.
 
 ###### Initial Containing Block (ICB)
-See [the spec](https://www.w3.org/TR/css-display-3/#initial-containing-block) for
-the technical definition. Simply, if you give the `<html>`
-element relative size and position, it'll be calculated relative to the ICB. We
-could equivalently call this the "layout size".  Unlike the viewports above, the
-ICB doesn't ever change position, it's always located at the document origin.
+See [the spec](https://www.w3.org/TR/css-display-3/#initial-containing-block)
+for the technical definition. Simply, if you give the `<html>` element relative
+size and position, it'll be calculated relative to the ICB. Unlike the
+viewports above, the ICB doesn't ever change position, it's always located at
+the document origin. We could equivalently call this the "layout size".
 
 So where does the ICB's size come from? This depends whether we're on a desktop
 or mobile browser. On desktop, the ICB matches the browser's window size;
@@ -80,17 +80,13 @@ For example, this page loaded on a mobile browser:
 ```
 
 will have an ICB that's 980px wide but a content width of 2000px. This can
-sometimes lead to surprising behavior as we'll see later.
+sometimes lead to surprising behavior in Chrome as we'll see later.
 
 ###### Ideal Viewport
 This is the size of the visual viewport when the scale is 1. i.e. When 1 CSS
-pixel is the same size as 1 density independent pixel (DIP).
-
-###### Minimum Scale Size
-This is the size of the visual viewport when zoomed out to the minimum scale
-allowed on a page. The minimum zoom can be set in the viewport meta tag but
-if it isn't, the browser will pick a minimum zoom. Unfortunately, browsers
-vary in how this is calculated. More on this below.
+pixel is the same size as 1 density independent pixel (DIP). If we use
+`width=device-width` in the meta tag, the ICB will match the ideal viewport
+size.
 
 TODO: PICTURE
 
