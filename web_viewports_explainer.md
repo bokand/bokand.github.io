@@ -114,10 +114,13 @@ larger than the window size so the page would layout correctly. Combined, this
 allows mobile browsers to load pages as if they were rendered on a larger
 screen, but then shrink them to fit on the small mobile screen.
 
-Unfortunately, how pinch-zoom is implemented is neither specified nor
-interoperable. Their operation is easier to show than to explain so see my
-[simulator](http://bokand.github.io/viewport/index.html) to compare visually.
-Here's the explanations as well as I understand them:
+Unfortunately, how pinch-zoom is implemented is not specified. The good news is
+that the browsers have mostly converged on interoperable behavior. Once we iron
+out the details in this doc we should spec it.
+
+The behavior is easier to show than to explain so see my
+[simulator](http://bokand.github.io/viewport/index.html) to compare visually
+(it's a bit dated).  Here's the explanations as well as I understand them:
 
 ###### Firefox
 Firefox never adopted the visual/fixed viewport split so there's only a single
@@ -151,8 +154,8 @@ window.scrollX and window.scrollY
 
 See the full list of web APIs in [this sheet](https://docs.google.com/spreadsheets/d/11DfDDa-s1hePVwBn3PZidlPJZ9ahhkJ44dyuMiOQtrc/edit#gid=0).
 
-So again we have a choice of model. Here's what each browser does today
-(spoiler alert: they all work differently):
+Unfortunately, this is the greatest point of divergence in behavior; each
+browser works differently:
 
 ###### Firefox
 Not relevant in this section since it uses a single viewport.
