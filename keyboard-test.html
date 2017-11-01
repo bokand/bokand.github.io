@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta name="viewport" content="width=1200, initial-scale=1">
+    <style>
+      #fixed {
+        background-color: lightskyblue;
+      }
+      #wide {
+        width: 4000px;
+        height: 10px;
+      }
+    </style>
+
+    <script>
+      addEventListener('load', function() {
+        var fixed = document.getElementById('fixed');
+
+        function refresh() {
+          var viewportSize = ('visualViewport' in window)
+              ? (Math.round(visualViewport.width) + ", " + Math.round(visualViewport.height))
+              : (Math.round(window.innerWidth) + ", " + Math.round(window.innerHeight));
+          fixed.innerText = "ViewportSize: " + viewportSize;
+          setTimeout(refresh, 500);
+        }
+        setTimeout(refresh, 500);
+      });
+
+    </script>
+  </head>
+
+  <body>
+    <div id="fixed"></div>
+    <input></input>
+    <div id="wide"></div>
+  </body>
+</html>
