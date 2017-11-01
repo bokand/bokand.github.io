@@ -311,6 +311,10 @@ positioned 600px from the document origin and will be visible when the page
 loads (but we won't be able to zoom out) and it will be 60px wide. Quite surprising
 indeed.
 
+Note: This wasn't ever really *designed* per se and seems bizzare even to me.
+Since Chrome's the only one that's not sizing the fixed viewport to the ICB,
+perhaps we should change to that. Doing something rational is tracked in [437303](crbug.com/437303).
+
 ## Browser UI Interactions
 
 #### Hiding URL Bar
@@ -319,11 +323,12 @@ Some mobile browsers have a hideable URL bar. Typically the browser "scrolls"
 the URL bar in and out of view as the page is scrolled.
 
 ###### Safari + Chrome
-Showing and hiding the URL bar resizes both the fixed and visual
-viewports but not the ICB.
+Showing and hiding the URL bar resizes both the fixed and visual viewports but
+not the ICB. The page isn't reflowed when the URL bar state changes except for
+position: fixed Elements.
 
 ###### Firefox
-Resizes both fixed and visual but also the ICB.
+Resizes both fixed and visual but also the ICB so the entire page does reflow.
 
 ###### Edge
 Edge on Windows Phone had a fixed URL bar. With the introduction of Edge
@@ -331,9 +336,10 @@ on Android and iOS though, it has a movable bar! On first glance looks to work
 in a similar manner to Chrome and Safari, however, there's a bottom bar as
 well!
 
-It seems like the bottom bar affects the ICB size but the URL bar does not!
+It seems like the URL bar does not affect the ICB (good) but the bottom bar
+does (whoa)! Both bars affect the fixed viewport and visual viewports.
 
-Both bars affect the fixed viewport and visual viewports.
+Seems like this could be made more rational...
 
 
 #### On Screen Keyboard (OSK)
