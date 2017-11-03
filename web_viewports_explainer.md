@@ -318,7 +318,7 @@ indeed.
 
 Note: This wasn't ever really *designed* per se and seems bizzare even to me.
 Since Chrome's the only one that's not sizing the fixed viewport to the ICB,
-perhaps we should change to that. Doing something rational is tracked in [437303](crbug.com/437303).
+perhaps we should change to that. Doing something rational is tracked in [437303](https://crbug.com/437303).
 
 ## Mobile Browser UI Interactions
 
