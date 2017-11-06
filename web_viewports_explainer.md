@@ -176,7 +176,7 @@ viewport.  However, the `window` APIs refer to the visual viewport:
 in an esthetic and rational sense but it is more compatible with the desktop
 web than the "all visual" model. However, it still has shortcomings. Chrome
 initially used this model and has had a long tail of [reported
-bugs](crbug.com/489206). A common pattern on the web to display one element
+bugs](https://crbug.com/489206). A common pattern on the web to display one element
 relative to another is to take `getBoundingClientRect` of the first element,
 add `(window.scrollX, window.scrollY)` to it and set that as the absolute
 position of the second element. e.g. this is how many popup menus are
