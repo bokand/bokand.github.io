@@ -569,5 +569,10 @@
     }
 
     makeAlbums();
+
+    if ('rootScroller' in document) {
+      document.rootScroller = document.getElementById('main');
+    }
+
   </script>
 </html>
