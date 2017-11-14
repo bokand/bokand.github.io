@@ -634,7 +634,9 @@
           // Do this in rAF since if we get here from back button, doing it here
           // means the newly added handler would get called when we bubble.
           requestAnimationFrame(() => {
-            template.addEventListener('click', container.showOrHideFunction);
+            requestAnimationFrame(() => {
+              template.addEventListener('click', container.showOrHideFunction);
+            });
           });
           // TODO: Animate?
           container.scrollTop = 0;
@@ -655,11 +657,13 @@
         firstPhoto.classList.remove('first');
         firstPhoto.nextElementSibling.classList.add('deleted');
         requestAnimationFrame(() => {
-          container.classList.add('container-expanded');
-          photoGrid.classList.add('photo-grid-expanded');
-          column.classList.add('column-expanded');
-          template.classList.remove('collapsed');
-          backButton.classList.remove('deleted');
+          requestAnimationFrame(() => {
+            container.classList.add('container-expanded');
+            photoGrid.classList.add('photo-grid-expanded');
+            column.classList.add('column-expanded');
+            template.classList.remove('collapsed');
+            backButton.classList.remove('deleted');
+          });
         });
 
         if (!fromPopState) {
@@ -699,7 +703,9 @@
         theatre.style.backgroundImage = photo.style.backgroundImage;
         theatre.classList.remove('deleted');
         requestAnimationFrame( () => {
-          theatre.classList.add('fullscreen');
+          requestAnimationFrame( () => {
+            theatre.classList.add('fullscreen');
+          });
         });
 
         if (!fromPopState) {
