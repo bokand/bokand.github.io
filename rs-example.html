@@ -150,15 +150,34 @@
         top: 0;
       }
 
+
       .deleted {
         display: none;
       }
+
+      .theatre {
+        position: fixed;
+        z-index: 2;
+        background-size: 100% 100%;
+        transition: left 0.3s, top 0.3s, width 0.3s, height 0.3s;
+        overflow: auto;
+      }
+
+      .theatre.fullscreen {
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
     </style>
   </head>
 
   <body>
     <div id="main">
       <div class="gallery-title">Photo Gallery</div>
+    </div>
+    <div class="theatre deleted">
     </div>
 
     <div id="album-template" class="template collapsed" style="display:none">
@@ -644,11 +663,45 @@
       }
     }
 
+    function tapPhoto() {
+      if (this.classList.contains('theatre')) {
+        let theatre = this;
+        theatre.classList.remove('fullscreen');
+      } else if (this.classList.contains('photo')) {
+        let photo = this;
+        let container = photo;
+        while(!container.classList.contains('container'))
+          container = container.parentElement;
+
+        if (!container.classList.contains('container-expanded'))
+          return;
+
+        let theatre = document.querySelector('.theatre');
+        let rect = photo.getBoundingClientRect();
+        theatre.style.left = rect.left + 'px';
+        theatre.style.top = rect.top + 'px';
+        theatre.style.width = rect.width + 'px';
+        theatre.style.height = rect.height + 'px';
+        theatre.style.backgroundImage = photo.style.backgroundImage;
+        theatre.classList.remove('deleted');
+        requestAnimationFrame( () => {
+          theatre.classList.add('fullscreen');
+        });
+      }
+    }
+
     function makeAlbums() {
       let template = document.getElementById('album-template');
       let photoTemplate = document.getElementById('photo-template');
       photoTemplate.id = '';
       photoTemplate.remove();
+
+      let theatre = document.querySelector('.theatre');
+      theatre.addEventListener('click', tapPhoto);
+      theatre.addEventListener('transitionend', () => {
+        if (!theatre.classList.contains('fullscreen'))
+          theatre.classList.add('deleted');
+      });
 
       for(let album of albums) {
         let clone = template.cloneNode(true);
@@ -683,6 +736,7 @@
           let photoClone = photoTemplate.cloneNode(true);
           photoClone.style.display = '';
           photoClone.style.backgroundImage = 'Url(thumbs/' + photoUrl + ')';
+          photoClone.addEventListener('click', tapPhoto);
 
           grid.appendChild(photoClone);
           if (first) {
@@ -692,7 +746,6 @@
           }
 
           first = false;
-
         }
 
         document.getElementById('main').appendChild(clone);
