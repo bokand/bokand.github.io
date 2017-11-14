@@ -34,6 +34,7 @@
         height: 100%;
         overflow: auto;
         padding: 8px;
+        padding-bottom: 20px;
         box-sizing: border-box;
         background-color: #e4e4e4;
       }
@@ -80,7 +81,7 @@
 
       .contents {
         width: 100vw;
-        height: 300vh;
+        padding-bottom: 30px;
       }
 
       .contents-column {
@@ -94,7 +95,7 @@
       }
 
       .column-expanded {
-        transform: translateX(0) translateY(0);
+        /*transform: translateX(0) translateY(0);*/
       }
 
       .title {
@@ -108,11 +109,14 @@
       }
 
       .back-button {
-        width: 30px;
-        height: 30px;
-        position: absolute;
+        width: 50px;
+        height: 50px;
+        position: fixed;
         left: 30px;
+        top:30px;
         cursor: pointer;
+        background-color: #90c2daad;
+        border-radius: 50%;
       }
 
       .photo-grid {
@@ -146,7 +150,7 @@
         top: 0;
       }
 
-      .photo.deleted {
+      .deleted {
         display: none;
       }
     </style>
@@ -163,7 +167,7 @@
           <div class="contents">
             <div class="contents-column">
               <div class="title">
-                <div class="back-button">
+                <div class="back-button deleted">
                   <svg viewBox="0 0 24 24">
                     <g>
                       <path d="M20,11H7.8l5.6-5.6L12,4l-8,8l8,8l1.4-1.4L7.8,13H20V11z"></path>
@@ -186,46 +190,94 @@
   <script>
     let albums = [
       {
-        name: "Winter",
+        name: "Canoing",
         images: [
-          '20130801_122857.jpg',
+          '20170831-DSC_2613.jpg',
           '20170830-DSC_2579.jpg',
           '20170830-DSC_2589.jpg',
           '20170831-DSC_2612.jpg',
-        ]
-      },
-      { name: "Summer",
-        images: [
-          '20170831-DSC_2613.jpg',
           '20170831-GOPR2706.jpg',
-          '3644.jpg',
-          '3651.jpg',
-          '3671.jpg',
-        ]
-      },
-      { name: "Summer",
-        images: [
-          'IMG_20170527_190640.jpg',
-          'IMG_20170624_204621.jpg',
-          'IMG_20170701_132655.jpg',
-          'IMG_20170701_132736.jpg',
-        ]
-      },
-      { name: "Summer",
-        images: [
-          'IMG_20170708_144402.jpg',
-          'IMG_20170917_231959.jpg',
-          'IMG_20171015_180528.jpg',
-          'MVIMG_20170713_134611.jpg',
-        ]
-      },
-      { name: "Summer",
-        images: [
-          'MVIMG_20170807_001749.jpg',
-          'MVIMG_20170824_213754.jpg',
           'MVIMG_20170826_160111.jpg',
           'MVIMG_20170828_200326.jpg',
           'MVIMG_20170829_204150.jpg',
+        ]
+      },
+      { name: "Offices",
+        images: [
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+        ]
+      },
+      { name: "Food",
+        images: [
+          'IMG_20170527_190640.jpg',
+          'IMG_20170624_204621.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          'IMG_20170701_132655.jpg',
+          'IMG_20170701_132736.jpg',
+          'MVIMG_20170807_001749.jpg',
+        ]
+      },
+      { name: "Random Trips",
+        images: [
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'MVIMG_20170713_134611.jpg',
+        ]
+      },
+      { name: "Summer 2016",
+        images: [
+          'MVIMG_20170824_213754.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
         ]
       },
       { name: "Summer",
@@ -234,26 +286,61 @@
           'MVIMG_20170902_192438.jpg',
           'MVIMG_20170903_134157.jpg',
           'MVIMG_20170910_150041.jpg',
+          'MVIMG_20170831_144026.jpg',
+          'MVIMG_20170902_192438.jpg',
+          'MVIMG_20170903_134157.jpg',
+          'MVIMG_20170910_150041.jpg',
+          'MVIMG_20170831_144026.jpg',
+          'MVIMG_20170902_192438.jpg',
+          'MVIMG_20170903_134157.jpg',
+          'MVIMG_20170910_150041.jpg',
+          'MVIMG_20170831_144026.jpg',
+          'MVIMG_20170902_192438.jpg',
+          'MVIMG_20170903_134157.jpg',
+          'MVIMG_20170910_150041.jpg',
         ]
       },
-      { name: "Summer",
+      { name: "Japan",
         images: [
           'MVIMG_20170912_201636.jpg',
           'MVIMG_20170916_175331.jpg',
+          'IMG_20170917_231959.jpg',
           'MVIMG_20170916_202224.jpg',
           'MVIMG_20170916_232442.jpg',
           'MVIMG_20170917_191930.jpg',
           'MVIMG_20170917_233559.jpg',
           'MVIMG_20170918_140733.jpg',
           'MVIMG_20170918_172700.jpg',
+          'MVIMG_20170922_075150.jpg',
+          'MVIMG_20170912_201636.jpg',
+          'MVIMG_20170916_175331.jpg',
+          'IMG_20170917_231959.jpg',
+          'MVIMG_20170916_202224.jpg',
+          'MVIMG_20170916_232442.jpg',
+          'MVIMG_20170917_191930.jpg',
+          'MVIMG_20170917_233559.jpg',
+          'MVIMG_20170918_140733.jpg',
+          'MVIMG_20170918_172700.jpg',
+          'MVIMG_20170922_075150.jpg',
         ]
       },
-      { name: "Summer",
+      { name: "Misc",
         images: [
-          'MVIMG_20170922_075150.jpg',
-          'MVIMG_20171011_104923.jpg',
           'MVIMG_20171015_153133.jpg',
           'MVIMG_20171031_082131.jpg',
+          'IMG_20140325_141400.jpg',
+          'IMG_20140405_115839.jpg',
+          'MVIMG_20170916_232442.jpg',
+          'MVIMG_20170917_191930.jpg',
+          'MVIMG_20170917_233559.jpg',
+          '3657.jpg',
+          '3662.jpg',
+          '3666.jpg',
+          '3669.jpg',
+          'MVIMG_20170910_150041.jpg',
+          'MVIMG_20170831_144026.jpg',
+          'MVIMG_20170902_192438.jpg',
+          '3673.jpg',
         ]
       },
     ];
@@ -263,6 +350,7 @@
       let container = this;
       let photoGrid = container.querySelector('.photo-grid');
       let column = container.querySelector('.contents-column');
+      let backButton = container.querySelector('.back-button');
       let firstPhoto = photoGrid.firstElementChild;
 
       let template = container;
@@ -276,6 +364,7 @@
         firstPhoto.classList.add('first');
         firstPhoto.nextElementSibling.classList.remove('deleted');
         template.classList.add('collapsed');
+        backButton.classList.add('deleted');
 
         // Do this in rAF since if we get here from back button, doing it here
         // means the newly added handler would get called when we bubble.
@@ -297,6 +386,7 @@
           photoGrid.classList.add('photo-grid-expanded');
           column.classList.add('column-expanded');
           template.classList.remove('collapsed');
+          backButton.classList.remove('deleted');
         });
       }
     }
