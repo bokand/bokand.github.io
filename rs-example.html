@@ -24,15 +24,6 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        padding: 8px;
-        box-sizing: border-box;
-        background-color: #e4e4e4;
-      }
-
-      .gallery-title {
-        font: 400 30px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-        text-align: center;
-        margin: 30px;
       }
 
       .thumbnail {
@@ -41,14 +32,10 @@
         background-color: red;
         margin-left: 30px;
         margin-right: 30px;
-
-        box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
-        -webkit-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
-        -moz-box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.75);
       }
       .thumbnail-name {
         flex-grow: 1;
-        font: 400 20px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+        font-family: fantasy;
       }
 
       .container {
@@ -72,6 +59,7 @@
       .contents {
         width: 100vw;
         height: 300vh;
+        background-color: blue;
       }
 
       .contents-column {
@@ -124,7 +112,6 @@
 
   <body>
     <div id="main">
-      <div class="gallery-title">Photo Gallery</div>
     </div>
 
     <div id="album-template" class="template" style="display:none">
@@ -157,17 +144,17 @@
 
   <script>
     let albums = [
-      { name: "Winter", },
-      { name: "Summer", },
-      { name: "Spring", },
-      { name: "Fall", },
-      { name: "Screenshots", },
-      { name: "Skiing", },
-      { name: "Beach", },
-      { name: "Vacation", },
-      { name: "Wedding", },
-      { name: "Camping", },
-      { name: "Canoeing", },
+      { name: "winter", },
+      { name: "summer", },
+      { name: "spring", },
+      { name: "fall", },
+      { name: "screenshots", },
+      { name: "skiing", },
+      { name: "beach", },
+      { name: "vacation", },
+      { name: "wedding", },
+      { name: "camping", },
+      { name: "canoeing", },
     ];
 
     function containerClick(e) {
