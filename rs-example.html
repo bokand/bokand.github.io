@@ -824,7 +824,7 @@
       document.rootScroller = document.getElementById('main');
     }
 
-    let main = document.getElementById('main');
+    let mainScroller = document.getElementById('main');
     if (!window.history.state) {
       window.history.replaceState(
         {
@@ -833,10 +833,10 @@
         },
         "", "?main");
     } else if (window.history.state.page === 'main') {
-      main.scrollTop = window.history.state.scrollTop;
+      mainScroller.scrollTop = window.history.state.scrollTop;
     }
 
-    main.addEventListener('scroll', () => {
+    mainScroller.addEventListener('scroll', () => {
       window.history.replaceState(
       {
         page: "main",
