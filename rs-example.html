@@ -422,6 +422,49 @@
           'MVIMG_20170922_075150.jpg',
         ]
       },
+      { name: "Random Trips",
+        images: [
+          '3671.jpg',
+          'IMG_20170708_144402.jpg',
+          'IMG_20171015_180528.jpg',
+          'IMG_20171015_180528.jpg',
+          'MVIMG_20170713_134611.jpg',
+          '3671.jpg',
+          'MVIMG_20170713_134611.jpg',
+          'IMG_20170527_190640.jpg',
+          'IMG_20170624_204621.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          'IMG_20170701_132655.jpg',
+          'IMG_20170701_132736.jpg',
+          'MVIMG_20170807_001749.jpg',
+        ]
+      },
+      { name: "Food",
+        images: [
+          'IMG_20170527_190640.jpg',
+          'IMG_20170624_204621.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          'IMG_20170701_132655.jpg',
+          'IMG_20170701_132736.jpg',
+          'MVIMG_20170807_001749.jpg',
+        ]
+      },
       { name: "Misc",
         images: [
           'MVIMG_20171015_153133.jpg',
@@ -527,6 +570,24 @@
           'MVIMG_20170807_001749.jpg',
         ]
       },
+      { name: "Food",
+        images: [
+          'IMG_20170527_190640.jpg',
+          'IMG_20170624_204621.jpg',
+          'MVIMG_20170826_160111.jpg',
+          '3651.jpg',
+          'MVIMG_20171011_104923.jpg',
+          '20130801_122857.jpg',
+          '3644.jpg',
+          '20170830-DSC_2589.jpg',
+          '20170831-DSC_2612.jpg',
+          '20170831-GOPR2706.jpg',
+          'MVIMG_20170826_160111.jpg',
+          'IMG_20170701_132655.jpg',
+          'IMG_20170701_132736.jpg',
+          'MVIMG_20170807_001749.jpg',
+        ]
+      },
     ];
 
     function showOrHideContainer(e) {
@@ -553,7 +614,6 @@
         // means the newly added handler would get called when we bubble.
         requestAnimationFrame(() => {
           template.addEventListener('click', container.showOrHideFunction);
-          container.scrollTop = 0;
         });
         // TODO: Animate?
         container.scrollTop = 0;
@@ -614,7 +674,6 @@
             container.style.left = '';
             container.style.top = '';
           }
-          container.scrollTop = 0;
         });
 
         let grid = clone.querySelector('.photo-grid');
