@@ -127,6 +127,7 @@
       }
 
       .photo.first {
+        display: block;
         position: absolute;
         left: 0;
         top: 0;
@@ -245,6 +246,7 @@
         photoGrid.classList.remove('photo-grid-expanded');
         column.classList.remove('column-expanded');
         firstPhoto.classList.add('first');
+        firstPhoto.nextElementSibling.classList.remove('first');
         // TODO: Animate?
         container.scrollTop = 0;
       } else {
@@ -253,6 +255,7 @@
         container.style.top = rect.top + window.scrollY + 'px';
         container.style.position = 'absolute';
         firstPhoto.classList.remove('first');
+        firstPhoto.nextElementSibling.classList.add('first');
         requestAnimationFrame(() => {
           container.classList.add('container-expanded');
           photoGrid.classList.add('photo-grid-expanded');
@@ -294,12 +297,16 @@
           let photoClone = photoTemplate.cloneNode(true);
           photoClone.style.display = '';
           photoClone.style.backgroundImage = 'Url(thumbs/' + photoUrl + ')';
-          if (first)
+
+          grid.appendChild(photoClone);
+          if (first) {
+            grid.appendChild(photoTemplate.cloneNode(true));
+            grid.lastElementChild.style.display = '';
             photoClone.classList.add('first');
+          }
 
           first = false;
 
-          grid.appendChild(photoClone);
         }
 
         document.getElementById('main').appendChild(clone);
