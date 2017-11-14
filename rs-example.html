@@ -611,7 +611,7 @@
       },
     ];
 
-    function showOrHideContainer(e) {
+    function showOrHideContainer(e, fromPopState) {
       let container = this;
       let photoGrid = container.querySelector('.photo-grid');
       let column = container.querySelector('.contents-column');
@@ -623,24 +623,28 @@
         template = template.parentElement;
 
       if (container.classList.contains('container-expanded')) {
-        container.classList.remove('container-expanded');
-        photoGrid.classList.remove('photo-grid-expanded');
-        column.classList.remove('column-expanded');
-        firstPhoto.classList.add('first');
-        firstPhoto.nextElementSibling.classList.remove('deleted');
-        template.classList.add('collapsed');
-        backButton.classList.add('deleted');
+        if (fromPopState) {
+          container.classList.remove('container-expanded');
+          photoGrid.classList.remove('photo-grid-expanded');
+          column.classList.remove('column-expanded');
+          firstPhoto.classList.add('first');
+          firstPhoto.nextElementSibling.classList.remove('deleted');
+          template.classList.add('collapsed');
+          backButton.classList.add('deleted');
 
-        // Do this in rAF since if we get here from back button, doing it here
-        // means the newly added handler would get called when we bubble.
-        requestAnimationFrame(() => {
-          template.addEventListener('click', container.showOrHideFunction);
-        });
-        // TODO: Animate?
-        container.scrollTop = 0;
+          // Do this in rAF since if we get here from back button, doing it here
+          // means the newly added handler would get called when we bubble.
+          requestAnimationFrame(() => {
+            template.addEventListener('click', container.showOrHideFunction);
+          });
+          // TODO: Animate?
+          container.scrollTop = 0;
 
-        if ('rootScroller' in document) {
-          document.rootScroller = document.getElementById('main');
+          if ('rootScroller' in document) {
+            document.rootScroller = document.getElementById('main');
+          }
+        } else {
+          window.history.back();
         }
 
       } else {
@@ -659,16 +663,24 @@
           backButton.classList.remove('deleted');
         });
 
+        if (!fromPopState) {
+          window.history.pushState(
+            {
+              page: "album",
+              containerId: container.id,
+            },
+            "", "?album");
+        }
+
         if ('rootScroller' in document) {
           document.rootScroller = container;
         }
       }
     }
 
-    function tapPhoto() {
+    function tapPhoto(e, fromPopState) {
       if (this.classList.contains('theatre')) {
-        let theatre = this;
-        theatre.classList.remove('fullscreen');
+        window.history.back();
       } else if (this.classList.contains('photo')) {
         let photo = this;
         let container = photo;
@@ -689,6 +701,15 @@
         requestAnimationFrame( () => {
           theatre.classList.add('fullscreen');
         });
+
+        if (!fromPopState) {
+          window.history.pushState(
+            {
+              page: "theatre",
+              photoId: photo.id,
+            },
+            "", "?fullscreen");
+        }
       }
     }
 
@@ -705,7 +726,9 @@
           theatre.classList.add('deleted');
       });
 
+      let containerIx = 0;
       for(let album of albums) {
+        containerIx++;
         let clone = template.cloneNode(true);
         clone.style.display = '';
 
@@ -717,6 +740,8 @@
 
         let container = clone.querySelector('.container');
         let backButton = clone.querySelector('.back-button');
+
+        container.id = 'container-' + containerIx;
 
         container.showOrHideFunction = showOrHideContainer.bind(container);
 
@@ -734,11 +759,14 @@
         let grid = clone.querySelector('.photo-grid');
 
         let first = true;
+        let photoIx = 0;
         for (let photoUrl of album.images) {
+          photoIx++;
           let photoClone = photoTemplate.cloneNode(true);
           photoClone.style.display = '';
           photoClone.style.backgroundImage = 'Url(thumbs/' + photoUrl + ')';
           photoClone.addEventListener('click', tapPhoto);
+          photoClone.id = 'photo-' + containerIx + '-' + photoIx;
 
           grid.appendChild(photoClone);
           if (first) {
@@ -754,11 +782,68 @@
       }
     }
 
+    window.addEventListener('popstate', (e) => {
+      console.log('POP STATE: ' + e.state.page);
+      if (e.state.page === 'main') {
+        let theatre = document.querySelector('.theatre');
+        let container = document.querySelector('.container-expanded');
+        console.log('\t' + window.history.state.scrollTop);
+
+        if (theatre.classList.contains('fullscreen')) {
+          theatre.classList.remove('fullscreen');
+        }
+
+        if (container) {
+          container.showOrHideFunction(null, true);
+        }
+      } else if (e.state.page === 'album') {
+        let theatre = document.querySelector('.theatre');
+        if (theatre.classList.contains('fullscreen')) {
+          theatre.classList.remove('fullscreen');
+        }
+
+        let container = document.getElementById(e.state.containerId);
+        if (!container.classList.contains('container-expanded')) {
+          container.showOrHideFunction(null, true);
+        }
+      } else if (e.state.page === 'theatre') {
+        let photo = document.getElementById(e.state.photoId);
+        photo.scrollIntoViewIfNeeded();
+        tapPhoto.bind(photo, null)(true);
+      }
+    });
+
     makeAlbums();
 
     if ('rootScroller' in document) {
       document.rootScroller = document.getElementById('main');
     }
+
+    if (window.history.state) {
+      console.log('LOAD: ' + ('scrollTop' in window.history.state) ? window.history.state.scrollTop : -1);
+    }
+
+    let main = document.getElementById('main');
+    if (!window.history.state) {
+      window.history.replaceState(
+        {
+          page: "main",
+          scrollTop: 0,
+        },
+        "", "?main");
+    } else if (window.history.state.page === 'main') {
+      main.scrollTop = window.history.state.scrollTop;
+    }
+
+    main.addEventListener('scroll', () => {
+      window.history.replaceState(
+      {
+        page: "main",
+        scrollTop: main.scrollTop,
+      },
+      "", "?main");
+    });
+
 
   </script>
 </html>
