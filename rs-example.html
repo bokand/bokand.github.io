@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .template {
+        width: 100%;
+        height: 30vw;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #main {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+
+      .thumbnail {
+        width: 30vw;
+        height: 30vw;
+        background-color: red;
+        margin-left: 30px;
+        margin-right: 30px;
+      }
+      .thumbnail-name {
+        flex-grow: 1;
+        font-family: fantasy;
+      }
+
+      .container {
+        width: 30vw;
+        height: 30vw;
+        overflow: hidden;
+        background-color: green;
+        transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
+        z-index: 1;
+      }
+
+      .container-expanded {
+        position: absolute;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+
+      .contents {
+        width: 100vw;
+        height: 300vh;
+        background-color: blue;
+      }
+
+      .contents-column {
+        display: flex;
+        flex-direction: column;
+
+        /* TODO: These need to be dynamically calculated on resize */
+        transform: translateX(-32px) translateY(-97px);
+        transition: transform 0.3s;
+      }
+
+      .column-expanded {
+        transform: translateX(0) translateY(0);
+      }
+
+      .title {
+        text-align: center;
+        font-family: fantasy;
+        font-weight: bolder;
+        font-size: x-large;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+
+      .photo-grid {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 30px;
+        grid-auto-rows: min-content;
+        justify-items: center;
+        transition: transform 0.3s;
+      }
+
+      .photo-grid-collapsed {
+        transform: translateX(0), translateY(0);
+      }
+
+      .photo-grid-expanded {
+      }
+
+      .photo {
+        width: 30vw;
+        height: 30vw;
+        background-color: coral;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+    </div>
+
+    <div id="album-template" class="template" style="display:none">
+      <div class="thumbnail">
+        <div class="container">
+          <div class="contents">
+            <div class="contents-column">
+              <div class="title">
+                TITLE
+              </div>
+              <div class="photo-grid">
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+                <div class="photo"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="thumbnail-name"></div>
+    </div>
+  </body>
+
+  <script>
+    let albums = [
+      { name: "winter", },
+      { name: "summer", },
+      { name: "spring", },
+      { name: "fall", },
+      { name: "screenshots", },
+      { name: "skiing", },
+      { name: "beach", },
+      { name: "vacation", },
+      { name: "wedding", },
+      { name: "camping", },
+      { name: "canoeing", },
+    ];
+
+    function containerClick(e) {
+      let container = this;
+      let photoGrid = container.querySelector('.photo-grid');
+      let column = container.querySelector('.contents-column');
+
+      if(container.classList.contains('container-expanded')) {
+        container.classList.remove('container-expanded');
+        photoGrid.classList.remove('photo-grid-expanded');
+        column.classList.remove('column-expanded');
+        // TODO: Animate?
+        container.scrollTop = 0;
+      } else {
+        let rect = container.getBoundingClientRect();
+        container.style.left = rect.left + window.scrollX + 'px';
+        container.style.top = rect.top + window.scrollY + 'px';
+        container.style.position = 'absolute';
+        requestAnimationFrame(() => {
+          container.classList.add('container-expanded');
+          photoGrid.classList.add('photo-grid-expanded');
+          column.classList.add('column-expanded');
+        });
+      }
+    }
+
+    function makeAlbums() {
+      let template = document.getElementById('album-template');
+
+      for(let album of albums) {
+        let clone = template.cloneNode(true);
+        clone.style.display = '';
+
+        let thumbName = clone.querySelector('.thumbnail-name');
+        thumbName.innerText = album.name;
+
+        let title = clone.querySelector('.title');
+        title.innerText = album.name;
+
+        let container = clone.querySelector('.container');
+        container.addEventListener('click', containerClick);
+        container.addEventListener('transitionend', () => {
+          if (!container.classList.contains('container-expanded')) {
+            container.style.position = '';
+            container.style.left = '';
+            container.style.top = '';
+          }
+        });
+
+        document.getElementById('main').appendChild(clone);
+      }
+    }
+
+    makeAlbums();
+  </script>
+</html>
