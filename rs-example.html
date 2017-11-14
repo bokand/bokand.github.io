@@ -553,6 +553,7 @@
         // means the newly added handler would get called when we bubble.
         requestAnimationFrame(() => {
           template.addEventListener('click', container.showOrHideFunction);
+          container.scrollTop = 0;
         });
         // TODO: Animate?
         container.scrollTop = 0;
@@ -613,6 +614,7 @@
             container.style.left = '';
             container.style.top = '';
           }
+          container.scrollTop = 0;
         });
 
         let grid = clone.querySelector('.photo-grid');
