@@ -373,6 +373,11 @@
         });
         // TODO: Animate?
         container.scrollTop = 0;
+
+        if ('rootScroller' in document) {
+          document.rootScroller = document.getElementById('main');
+        }
+
       } else {
         let rect = container.getBoundingClientRect();
         container.style.left = rect.left + window.scrollX + 'px';
@@ -388,6 +393,10 @@
           template.classList.remove('collapsed');
           backButton.classList.remove('deleted');
         });
+
+        if ('rootScroller' in document) {
+          document.rootScroller = container;
+        }
       }
     }
 
