@@ -4,6 +4,11 @@
   <head>
     <meta name="viewport" content="width=device-width">
     <style>
+      :root {
+        --thumb-offset-x: -40px;
+        --thumb-offset-y: -97px;
+      }
+
       html, body {
         margin: 0;
         width: 100%;
@@ -55,7 +60,7 @@
         width: 30vw;
         height: 30vw;
         overflow: hidden;
-        background-color: green;
+        background-color: #ebf9eb;
         transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
         z-index: 1;
       }
@@ -77,9 +82,10 @@
       .contents-column {
         display: flex;
         flex-direction: column;
+        position: relative;
 
         /* TODO: These need to be dynamically calculated on resize */
-        transform: translateX(-32px) translateY(-97px);
+        /*transform: translateX(var(--thumb-offset-x)) translateY(var(--thumb-offset-y));*/
         transition: transform 0.3s;
       }
 
@@ -118,6 +124,12 @@
         width: 30vw;
         height: 30vw;
         background-size: cover;
+      }
+
+      .photo.first {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
     </style>
   </head>
@@ -226,11 +238,13 @@
       let container = this;
       let photoGrid = container.querySelector('.photo-grid');
       let column = container.querySelector('.contents-column');
+      let firstPhoto = photoGrid.firstElementChild;
 
       if(container.classList.contains('container-expanded')) {
         container.classList.remove('container-expanded');
         photoGrid.classList.remove('photo-grid-expanded');
         column.classList.remove('column-expanded');
+        firstPhoto.classList.add('first');
         // TODO: Animate?
         container.scrollTop = 0;
       } else {
@@ -238,6 +252,7 @@
         container.style.left = rect.left + window.scrollX + 'px';
         container.style.top = rect.top + window.scrollY + 'px';
         container.style.position = 'absolute';
+        firstPhoto.classList.remove('first');
         requestAnimationFrame(() => {
           container.classList.add('container-expanded');
           photoGrid.classList.add('photo-grid-expanded');
@@ -249,6 +264,8 @@
     function makeAlbums() {
       let template = document.getElementById('album-template');
       let photoTemplate = document.getElementById('photo-template');
+      photoTemplate.id = '';
+      photoTemplate.remove();
 
       for(let album of albums) {
         let clone = template.cloneNode(true);
@@ -272,10 +289,16 @@
 
         let grid = clone.querySelector('.photo-grid');
 
+        let first = true;
         for (let photoUrl of album.images) {
           let photoClone = photoTemplate.cloneNode(true);
           photoClone.style.display = '';
           photoClone.style.backgroundImage = 'Url(thumbs/' + photoUrl + ')';
+          if (first)
+            photoClone.classList.add('first');
+
+          first = false;
+
           grid.appendChild(photoClone);
         }
 
