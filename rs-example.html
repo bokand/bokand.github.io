@@ -679,7 +679,9 @@
     }
 
     function tapPhoto(e, fromPopState) {
+      let theatre = document.querySelector('.theatre');
       if (this.classList.contains('theatre')) {
+        theatre.removeEventListener('click', tapPhoto);
         window.history.back();
       } else if (this.classList.contains('photo')) {
         let photo = this;
@@ -690,7 +692,6 @@
         if (!container.classList.contains('container-expanded'))
           return;
 
-        let theatre = document.querySelector('.theatre');
         let rect = photo.getBoundingClientRect();
         theatre.style.left = rect.left + 'px';
         theatre.style.top = rect.top + 'px';
@@ -720,10 +721,11 @@
       photoTemplate.remove();
 
       let theatre = document.querySelector('.theatre');
-      theatre.addEventListener('click', tapPhoto);
       theatre.addEventListener('transitionend', () => {
         if (!theatre.classList.contains('fullscreen'))
           theatre.classList.add('deleted');
+        else
+          theatre.addEventListener('click', tapPhoto);
       });
 
       let containerIx = 0;
@@ -783,11 +785,9 @@
     }
 
     window.addEventListener('popstate', (e) => {
-      console.log('POP STATE: ' + e.state.page);
       if (e.state.page === 'main') {
         let theatre = document.querySelector('.theatre');
         let container = document.querySelector('.container-expanded');
-        console.log('\t' + window.history.state.scrollTop);
 
         if (theatre.classList.contains('fullscreen')) {
           theatre.classList.remove('fullscreen');
@@ -817,10 +817,6 @@
 
     if ('rootScroller' in document) {
       document.rootScroller = document.getElementById('main');
-    }
-
-    if (window.history.state) {
-      console.log('LOAD: ' + ('scrollTop' in window.history.state) ? window.history.state.scrollTop : -1);
     }
 
     let main = document.getElementById('main');
