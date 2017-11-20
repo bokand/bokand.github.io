@@ -90,13 +90,12 @@
         flex-direction: column;
         position: relative;
 
-        /* TODO: These need to be dynamically calculated on resize */
-        /*transform: translateX(var(--thumb-offset-x)) translateY(var(--thumb-offset-y));*/
+        transform: translateX(var(--thumb-offset-x)) translateY(var(--thumb-offset-y));
         transition: transform 0.3s;
       }
 
       .column-expanded {
-        /*transform: translateX(0) translateY(0);*/
+        transform: translateX(0) translateY(0);
       }
 
       .title {
@@ -128,7 +127,7 @@
         grid-gap: 30px;
         grid-auto-rows: min-content;
         justify-items: center;
-        transition: transform 0.3s;
+        transition: transform 1s;
       }
 
       .photo-grid-collapsed {
@@ -144,12 +143,12 @@
         background-size: cover;
       }
 
-      .photo.first {
+      /*.photo.first {
         display: block;
         position: absolute;
         left: 0;
         top: 0;
-      }
+      }*/
 
 
       .deleted {
@@ -628,8 +627,8 @@
           container.classList.remove('container-expanded');
           photoGrid.classList.remove('photo-grid-expanded');
           column.classList.remove('column-expanded');
-          firstPhoto.classList.add('first');
-          firstPhoto.nextElementSibling.classList.remove('deleted');
+          //firstPhoto.classList.add('first');
+          //firstPhoto.nextElementSibling.classList.remove('deleted');
           template.classList.add('collapsed');
           backButton.classList.add('deleted');
 
@@ -656,8 +655,8 @@
         container.style.top = rect.top + window.scrollY + 'px';
         container.style.position = 'absolute';
         template.removeEventListener('click', container.showOrHideFunction);
-        firstPhoto.classList.remove('first');
-        firstPhoto.nextElementSibling.classList.add('deleted');
+        //firstPhoto.classList.remove('first');
+        //firstPhoto.nextElementSibling.classList.add('deleted');
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             container.classList.add('container-expanded');
@@ -675,10 +674,6 @@
               containerId: container.id,
             },
             "", "?album");
-        }
-
-        if ('rootScroller' in document) {
-          document.rootScroller = container;
         }
       }
     }
@@ -762,12 +757,15 @@
             container.style.position = '';
             container.style.left = '';
             container.style.top = '';
+          } else {
+            if ('rootScroller' in document) {
+              document.rootScroller = container;
+            }
           }
         });
 
         let grid = clone.querySelector('.photo-grid');
 
-        let first = true;
         let photoIx = 0;
         for (let photoUrl of album.images) {
           photoIx++;
@@ -778,13 +776,6 @@
           photoClone.id = 'photo-' + containerIx + '-' + photoIx;
 
           grid.appendChild(photoClone);
-          if (first) {
-            grid.appendChild(photoTemplate.cloneNode(true));
-            grid.lastElementChild.style.display = '';
-            photoClone.classList.add('first');
-          }
-
-          first = false;
         }
 
         document.getElementById('main').appendChild(clone);
@@ -819,6 +810,19 @@
         tapPhoto.bind(photo, null)(true);
       }
     });
+
+    function calculateFirstPictureOffset() {
+      const contentsColumn = document.querySelector('.contents-column');
+      const firstPic = contentsColumn.querySelector('.photo');
+      const transitionStyle = contentsColumn.style.transition;
+      const x = firstPic.getBoundingClientRect().x - contentsColumn.getBoundingClientRect().x;
+      const y = firstPic.getBoundingClientRect().y - contentsColumn.getBoundingClientRect().y;
+      document.documentElement.style.setProperty('--thumb-offset-x', -x + 'px');
+      document.documentElement.style.setProperty('--thumb-offset-y', -y + 'px');
+    }
+
+    addEventListener('resize', calculateFirstPictureOffset);
+    addEventListener('load', calculateFirstPictureOffset);
 
     makeAlbums();
 
