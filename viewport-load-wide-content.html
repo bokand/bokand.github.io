@@ -22,30 +22,42 @@
       position: fixed;
       bottom: 10px;
       left: 50px;
+      font-size: xx-large;
     }
 
     .wide {
+      font-size: xx-large;
       position: absolute;
       width: 3000px;
       height: 100px;
       background-color: grey;
     }
+
+    body, html {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .full-width {
+      font-size: xx-large;
+      position: absolute;
+      width: 100%;
+      height: 100px;
+      background-color: coral;
+    }
   </style>
 </head>
 
 <body>
-  <a href="viewport-load.html">Blank page</a>
   <br><br>
-  <a href="viewport-load-wide-content.html">Wide content</a>
   <br><br>
-  <a href="viewport-load-1024-viewport.html">Viewport 1024</a>
+  <div class="full-width">This box is the same width as the ICB</div>
   <br><br>
-  <a href="viewport-load-1024-viewport-wide-content.html">Viewport 1024 with wide content</a>
   <br><br>
-  <a href="viewport-load-1024-viewport-wide-content-min-scale.html">Viewport 1024 with wide content min scale</a>
 
-  <div class="wide"></div>
+  <div class="wide">This box is 3000px wide (much wider than the ICB)</div>
   <div class="right-menu"></div>
-  <div class="bottom-menu"></div>
+  <div class="bottom-menu">POSITION: FIXED</div>
 </body>
 </html>
