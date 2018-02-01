@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+}
+#app {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
+#header {
+  background-color: #446cb3;
+  color: #fff;
+  grid-column: 1 / 3;
+  padding: 1rem;
+}
+#sidebar {
+  background-color: #eee;
+  overflow-y: auto;
+  padding: 1rem;
+}
+#content {
+  overflow: auto; /* seems to be part of the problem, together with the grid layout */
+  padding: 0 1rem;
+}
+#test-subject {
+  background-color: rgba(255, 0, 255, 0.7);
+  bottom: 0;
+  height: 50px;
+  left: 0;
+  width: 100%;
+}
