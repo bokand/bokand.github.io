@@ -15,10 +15,11 @@
 <body style="padding: 3%;">
     <h3>How to reproduce the bug.</h3>
     <ul>
-        <li>1. Open chrome dev and position right;</li>
-        <li>2. Scroll down to bottom;</li>
+        <li>1. Scroll down to bottom;</li>
         <li>3. Click 'Remove' button</li>
-        <li>4. Click 'Append And Remove' button, you will see this log: 'Document's scroll event fired.'</li>
+        <li>4. Click 'Append' button</li>
+        <li>Expected: Scroll offset doesn't change</li>
+        <li>Actual: Page scrolls down after appending</li>
     </ul>
 <div id="selectBasicTest" ng-controller="selectBasicCtrl">
     <div class='container'></div>
@@ -45,10 +46,6 @@
         // var b = 2 * 10; // no bug
         var a = $('body').height(); // reproduce bug
     }
- 
-    $(document).on('scroll', function() {
-        console.log("Document's scroll event fired.");
-    });
 </script>
 </body>
 </html>
