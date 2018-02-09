@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Select disable Test</title>
+    <style>
+        .container {
+            height: 600px;
+            width: 800px;
+            background-color: #694;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body style="padding: 3%;">
+    <h3>How to reproduce the bug.</h3>
+    <ul>
+        <li>1. Open chrome dev and position right;</li>
+        <li>2. Scroll down to bottom;</li>
+        <li>3. Click 'Remove' button</li>
+        <li>4. Click 'Append And Remove' button, you will see this log: 'Document's scroll event fired.'</li>
+    </ul>
+<div id="selectBasicTest" ng-controller="selectBasicCtrl">
+    <div class='container'></div>
+    <div class='container'></div>
+    <div class='container'></div>
+    <div class='container'></div>
+    <div class='container' id='anchored'></div>
+    <button onclick='remove()'>Remove</button>
+    <button onclick='appendAndRemove()'>Append</button>
+    <div class='container' id='last'></div>
+</div>
+<script type='application/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+<script type="application/javascript">
+
+    function remove() {
+        var elem = $('#last');
+        elem.css('display', 'none');
+    }
+
+    function appendAndRemove() {
+        var $div = $('<div class="container">').appendTo($('body'));
+        // var height = $div.height(); // reproduce bug
+        // var width = $div.width(); // reproduce bug
+        // var b = 2 * 10; // no bug
+        var a = $('body').height(); // reproduce bug
+    }
+ 
+    $(document).on('scroll', function() {
+        console.log("Document's scroll event fired.");
+    });
+</script>
+</body>
+</html>
