@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<style>
+  input {
+    position: absolute;
+    top: 300px;
+    left: 100px;
+    border: 3px red solid;
+  }
+
+  body {
+    height: 5000px;
+  }
+</style>
+
+<input type="text" value="test"></input>
+
+<script>
+
+function block()
+  {
+    console.log('Blocking for 1s');
+    var start = Date.now();
+    var end = 0;
+    while (end < start + 1000)
+      end = Date.now();
+    console.log('Done');
+    setTimeout(block, 1000);
+  }
+
+  setTimeout(block, 1000);
+</script>
