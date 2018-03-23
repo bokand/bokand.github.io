@@ -2,13 +2,19 @@
 <head>
 <link rel="stylesheet" href="tests.css">
 <meta name="viewport" content="width=device-width">
+<style>
+  iframe {
+    width: 100%;
+    height: 95%;
+  }
+</style>
 </head>
 <body>
 <h1>Simple cross-site iframe</h1>
 
 This iframe is initially cross-site (to HTTPS, simulating a demo from html5rocks.com) and contains a form.<br>
 <iframe src="https://csreis.github.io/tests/input-types.html"
-    name="frame1" width=400 height=600></iframe><br>
+    name="frame1"></iframe><br>
 
 </body>
 </html>
