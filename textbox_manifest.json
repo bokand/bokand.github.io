@@ -1,0 +1,5 @@
+{
+  "name": "Web Application Manifest Sample",
+  "start_url": "textbox.html",
+  "display": "standalone",
+}
