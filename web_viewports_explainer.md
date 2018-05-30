@@ -96,6 +96,10 @@ pixel is the same size as 1 density independent pixel (DIP). If we use
 `width=device-width` in the meta tag, the ICB will match the ideal viewport
 size.
 
+###### Minimum Scale Size
+The size of the visual viewport when zoomed to the minimum scale allowed on a
+given page.
+
 ## Pinch-zoom Model
 
 Before mobile browsers, there was no pinch-zoom or browser chrome that obscured
