@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<style>
+#wide {
+  width: 1200px;
+  height: 200px;
+  background-color: red;
+  display: none;
+}
+</style>
+<script>
+  function handler() {
+    document.getElementById('wide').style.display = "block";
+    document.getElementById('console').innerHTML += window.innerWidth;
+  }
+</script>
+<button onclick="handler()">Add overflow</button>
+<div id="console"></div>
+<div id="wide"></div>
