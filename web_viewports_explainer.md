@@ -150,7 +150,7 @@ as the visual viewport becomes larger than the ICB, the fixed viewport matches
 the visual viewport. i.e. The fixed viewport size is calculated as:
 
 ```
-fixed_viewport_size = max(icb_viewport_size, visual_viewport_size)
+fixed_viewport_size = max(icb_size, visual_viewport_size)
 ```
 
 The practical effect of this is that position: fixed elements detach from the
