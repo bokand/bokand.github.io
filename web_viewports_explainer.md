@@ -135,7 +135,7 @@ visible screen edges. This has a major disadvantage in that position: fixed
 elements will obscure most of the viewport as you zoom in and can also appear
 detached from other content it was designed to align with.
 
-###### Edge + Safari + Chrome
+###### Edge + Chrome
 Pinch-zoom doesn't affect the fixed viewport, only the visual. So when
 you zoom in, position: fixed elements "detach" from the screen. It's as if the
 user took a magnifying glass to the screen. This solves the disadvantage in the
@@ -143,6 +143,19 @@ Firefox model and is more compatible with pages designed for desktops.
 
 Note: Firefox intends to move to this model too:
 [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1123938). Huzzah!
+
+###### Safari
+Safari's model is similar to Edge+Chrome with a small twist. When zooming out,
+as the visual viewport becomes larger than the ICB, the fixed viewport matches
+the visual viewport. i.e. The fixed viewport size is calculated as:
+
+```
+fixed_viewport_size = max(icb_viewport_size, visual_viewport_size)
+```
+
+The practical effect of this is that position: fixed elements detach from the
+screen as the user zoomes in on a page, but as they zoom out past the ICB, the
+elements stay fixed to the user's screen.
 
 ## Coordinate Spaces
 
