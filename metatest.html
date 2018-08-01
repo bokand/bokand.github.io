@@ -2,12 +2,30 @@
 <meta name="viewport" content="width=700">
 <script>
   if (window.location.search !== "") {
-    const metaTag = document.querySelector('meta[name="viewport"]');
-    const content = window.location.search.substring(1);
-    if (content.search('width=') !== -1)
-      metaTag.setAttribute("content", content);
-    else
-      metaTag.setAttribute("content", metaTag.getAttribute('content') + ', ' + content);
+    const params = window.location.search.substring(1).split("&");
+    for (let param of params) {
+      const eqIx = param.indexOf("=");
+      if (eqIx === -1)
+        continue;
+
+      const keyval = param.split("=");
+      if (keyval.length < 2)
+        continue;
+
+      const key = param.substring(0, eqIx);
+      const val = param.substring(eqIx+1);
+
+      if (key === "viewport") {
+        const content = val;
+        const metaTag = document.querySelector('meta[name="viewport"]');
+        if (content.search('width=') !== -1)
+          metaTag.setAttribute("content", content);
+        else
+          metaTag.setAttribute("content", metaTag.getAttribute('content') + ', ' + content);
+      } else if (key === "overflow") {
+        document.documentElement.style.overflow = val;
+      }
+    }
   }
 </script>
 <style>
