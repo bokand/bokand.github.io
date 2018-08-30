@@ -1,0 +1,245 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <style>
+      html {
+        overflow: auto;
+      }
+      body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      .view {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .intransition {
+        height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        height: 100%;
+        transition: 0.5s ease-out;
+      }
+
+      .flex {
+        display: flex;
+        flex-direction: row;
+        width: 400%;
+      }
+
+      #overflower {
+        width: 10000px;
+        height: 300px;
+      }
+    </style>
+
+    <script>
+      let carousel;
+      let curIx = 0;
+      let prevIx = -1;
+      let container;
+
+      // ======================================================================
+      // Utility funcs
+
+      function getUrlBarHeight() {
+        // We can get the URL bar height by measuring a 100% and 100vh height
+        // Element and comparing the difference. See:
+        // https://developers.google.com/web/updates/2016/12/url-bar-resizing
+        const vhElement = document.createElement('div');
+        vhElement.style.position = 'absolute';
+        vhElement.style.width = '1px';
+        vhElement.style.height = '100vh';
+        vhElement.style.left = '-10000px';
+        const pctElement = document.createElement('div');
+        pctElement.style.position = 'absolute';
+        pctElement.style.width = '1px';
+        pctElement.style.height = '100%';
+        pctElement.style.left = '-10000px';
+
+        document.body.appendChild(vhElement)
+        document.body.appendChild(pctElement)
+
+        const vhHeight = vhElement.clientHeight;
+        const pctHeight = pctElement.clientHeight;
+
+        barHeight = vhHeight - pctHeight;
+
+        vhElement.remove();
+        pctElement.remove();
+
+        return barHeight;
+      }
+
+      function isUrlBarShowing() {
+        // The documentElement.clientHeight doesn't change as the URL bar
+        // shows/hides so we can compare it against the innerHeight which does.
+        return window.innerHeight == document.documentElement.clientHeight;
+      }
+
+      function createUrlBarStyle() {
+        const urlBarHeight = getUrlBarHeight();
+        var sheet = document.createElement('style')
+        sheet.innerHTML =
+            '.offsetByUrlBar {position: relative; top: ' + urlBarHeight +'px;}';
+        document.body.appendChild(sheet);
+      }
+
+      // ======================================================================
+      // Gesture recognition
+
+      function initSwipeSupport(swipeFunc) {
+        for (let view of carousel) {
+          let scroller = view.contentDocument.scrollingElement;
+          if (view.contentDocument.rootScroller)
+            scroller = view.contentDocument.rootScroller;
+
+          const hammertime = new Hammer.Manager(
+              scroller,
+              {
+                recognizers: [
+                  [Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL }],
+                ]
+              });
+
+          hammertime.on('swipe', (e) => {
+            if (e.offsetDirection === Hammer.DIRECTION_RIGHT ||
+                e.offsetDirection === Hammer.DIRECTION_LEFT) {
+              swipeFunc(e);
+            }
+          });
+        }
+      }
+
+      function onSwipe(e) {
+        // Ignore swipes while we're in transition to avoid messing up our
+        // state management.
+        if (prevIx >= 0) {
+          const prevView = carousel[prevIx];
+          if (prevView.classList.contains('intransition'))
+            return;
+        }
+
+        let prev = curIx;
+        if (e.offsetDirection === Hammer.DIRECTION_RIGHT)
+          curIx -= 1;
+        else
+          curIx += 1;
+
+        curIx = Math.min(Math.max(curIx, 0), carousel.length-1);
+
+        if (prev != curIx) {
+          prevIx = prev;
+          activateCurView();
+        }
+      }
+
+      onload = () => {
+        carousel = document.getElementsByClassName('view');
+        container = document.getElementById('container');
+
+        createUrlBarStyle();
+        initSwipeSupport(onSwipe);
+        container.addEventListener('transitionend', didActivateView);
+
+        activateCurView();
+      }
+
+      // Brings the view at curIx into view.
+      function activateCurView() {
+        const curView = carousel[curIx];
+
+        // We'll make the outgoing view 100vh until the animation is finished.
+        // The reason we do this is an artifact of how rootScroller works.
+        // When the view is a rootScroller and the URL bar is hidden, the
+        // view's bounds are actually smaller than the visible area; part of
+        // the rootScroller "magic" is that we expand the visible overflow area
+        // beyond the content box. However, as soon as the animation starts
+        // we'll stop being the root scroller so the bottom area that was made
+        // visible by rootScroller will be clipped out. We temporarily expand
+        // the size of the box to prevent seeing a visual glitch at the bottom
+        // of the outgoing view.
+        if (prevIx >= 0 && !isUrlBarShowing()) {
+          const prevView = carousel[prevIx];
+          prevView.classList.add('intransition');
+        }
+
+        // Chrome normally animates the URL bar in by overlaying the content.
+        // There's an exception though when the scroll offset is at 0, in that
+        // case it'll just push the content down. Set a tiny offset to prevent
+        // this special case from taking effect.
+        document.scrollingElement.scrollTop = 1 / window.devicePixelRatio;
+
+        // Make the next view the root scroller so that scrolling it will
+        // control the URL bar. This'll only take effect once it's fully in
+        // view.
+        document.rootScroller = curView;
+
+        // Bring the next view into the viewport by adding a transform. The
+        // container has a CSS transition so it'll animate in.
+        container.style.transform =
+            'translateX(-' + window.innerWidth * curIx + 'px)';
+
+        // For the next bit, do it in a double-rAF so that the URL bar
+        // animation starts hopefully after the the rootScroller change is
+        // propagated to the active tree.  If we start showing the URL bar
+        // while the old view is still the root scroller in the compositor, the
+        // counter-scroll will be applied to the old view rather than the main
+        // document which cause some movement between the view and URL bar.
+        requestAnimationFrame(() => {requestAnimationFrame(() => {
+          // Animate the URL bar in. This will counter scroll the current
+          // effective root scroller. While we're animating the next view, the
+          // main document itself will be the effective root scroller.
+          document.showUrlBar();
+
+          // Move the view down by the size of the URL bar while we're
+          // animating it in. Since an animating URL bar overlays the content,
+          // the URL bar will slide down to meet it.  Once it's fully in view,
+          // we'll remove this and counter scroll so that the view is at the
+          // top and there isn't any overflow above.
+          if (!isUrlBarShowing())
+            curView.classList.add('offsetByUrlBar');
+        })});
+      }
+
+      // Called at the end of the transform transition.
+      function didActivateView() {
+        // Remove the compensation from above for if we're transitioning from a
+        // URL-bar-hidden state.
+        carousel[curIx].classList.remove('offsetByUrlBar');
+        document.scrollingElement.scrollTop = 0;
+
+        if (prevIx >= 0) {
+          const prevView = carousel[prevIx];
+          prevView.classList.remove('intransition');
+        }
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div id="container" class="container">
+      <div class="flex">
+        <iframe class="view" src="imq.html"></iframe>
+        <iframe class="view" src="totese.html"></iframe>
+        <iframe class="view" src="mq.html"></iframe>
+        <iframe class="view" src="scroll.html"></iframe>
+      </div>
+    </div>
+    <!--We need this to cause main-document overflow. The document must have
+    overflow so that an animating URL bar has overflow to counterscroll.
+    Otherwise, the URL bar pushes the content down. This wont actually allow
+    scrolling since the rootScroller prevents scrolling a box above the
+    rootScroller.-->
+    <div id="overflower"></div>
+  </body>
+</html>
