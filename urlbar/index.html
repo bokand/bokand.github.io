@@ -179,7 +179,7 @@
         // There's an exception though when the scroll offset is at 0, in that
         // case it'll just push the content down. Set a tiny offset to prevent
         // this special case from taking effect.
-        document.scrollingElement.scrollTop = 1 / window.devicePixelRatio;
+        document.scrollingElement.scrollTop = 1;
 
         // Make the next view the root scroller so that scrolling it will
         // control the URL bar. This'll only take effect once it's fully in
