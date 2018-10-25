@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>frame</title>
+</head>
+<body>
+This is the frame with window.top.document.body.getBoundingClientRect().top => <span id="rect"></span>
+<button type="button" onclick="bug()">Click Me</button>
+<script>
+function bug() {
+  window.location.hash='';
+  setTimeout(function() {
+    document.querySelector('#rect').innerHTML = window.top.document.body.getBoundingClientRect().top;
+  }, 0)
+}
+document.querySelector('#rect').innerHTML = window.top.document.body.getBoundingClientRect().top;
+</script>
+</body>
+</html>
