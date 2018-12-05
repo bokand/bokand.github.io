@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      #textbox {
+        margin: 50px;
+      }
+      #range {
+        margin: 50px;
+      }
+      #youtubeScroller {
+        width: 500px;
+        height: 500px;
+        overflow: auto;
+        border: 1px solid black;
+      }
+      .divScroller {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        overflow: auto;
+      }
+      .spacer {
+        width: 800px;
+        height: 800px;
+      }
+      #horizontal {
+        position: absolute;
+        left: 600px;
+        top: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div tabindex="0">Dummy Focusable</div>
+    <div tabindex="0">Dummy Focusable</div>
+    <div tabindex="0">Dummy Focusable</div>
+    <div tabindex="0">Scroller w/o focusable child</div>
+    <div class="divScroller">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </div>
+    <div tabindex="0">Dummy Focusable</div>
+    <div tabindex="0">Dummy Focusable</div>
+    <div tabindex="0">Dummy Focusable</div>
+  </body>
+  <script>
+    //document.getElementById('hello').addEventListener('keydown', (e) => { e.preventDefault(); });
+  </script>
+</html>

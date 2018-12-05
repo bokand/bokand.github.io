@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <style>
+      #textbox {
+        margin: 50px;
+      }
+      #range {
+        margin: 50px;
+      }
+      #youtubeScroller {
+        width: 500px;
+        height: 500px;
+        overflow: auto;
+        border: 1px solid black;
+      }
+      .divScroller {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        overflow: auto;
+      }
+      .spacer {
+        width: 800px;
+        height: 800px;
+      }
+      #horizontal {
+        position: absolute;
+        left: 600px;
+        top: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div tabindex="0">Same Origin Iframe (no focusable child):</div>
+    <iframe src="spatnav-child.html" style="width:200px; height: 200px"></iframe><br>
+    Same Origin Iframe (w/focusable child):<br>
+    <iframe src="spatnav-child2.html" style="width:200px; height: 200px"></iframe><br>
+    Scrolling Div (no focusable child):<br>
+    <div class="divScroller">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </div>
+    Scrolling Div (w/focusable child):<br>
+    <div class="divScroller">
+      <input type="text">
+      <div class="spacer"></div>
+    </div>
+    <br>
+    <input type="text" id="textbox" value="TextBox">
+    <input type="range" min="1" max="100" value="50" id="range">
+    <br>
+    <div id="hello" tabindex="0" style="width:300px"> Hello </div>
+    <br>
+    <textarea name="multiline" cols="40" rows="5">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+      Why do we use it?
+
+      It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+
+
+      Where does it come from?
+
+      Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+
+      The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+    </textarea>
+    <iframe id="horizontal" tabindex="0" width="560" height="315" src="https://www.youtube.com/embed/4y33h81phKU?list=RD4y33h81phKU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div id="youtubeScroller">
+      <div style="height:400px"></div>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/pBxND8Kix7Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </body>
+  <script>
+    //document.getElementById('hello').addEventListener('keydown', (e) => { e.preventDefault(); });
+  </script>
+</html>
