@@ -20,6 +20,7 @@
         height: 200px;
         border: 1px solid black;
         overflow: auto;
+        scroll-behavior: smooth;
       }
       .spacer {
         width: 800px;
@@ -30,30 +31,152 @@
         left: 600px;
         top: 100px;
       }
+      .focus {
+        border: 1px solid dodgerblue;
+      }
+      .bold {
+        font-weight: bold;
+      }
     </style>
+    <script>
+      if (!window.location.search.endsWith('useSpatNav')) {
+        addEventListener('keyup', (e) => {
+          if (e.key === 'ArrowDown')
+            Move(false);
+          else if (e.key === 'ArrowUp')
+            Move(true);
+          else if (e.key === 'Escape')
+            removeFocus();
+        });
+      }
+
+      function curFocus() {
+        return document.querySelector('.focus');
+      }
+
+      function removeFocus() {
+        if (curFocus())
+          curFocus().classList.remove('focus');
+      }
+
+      function addFocus(elem) {
+        elem.classList.add('focus');
+        elem.scrollIntoViewIfNeeded();
+      }
+
+      function isScroller(e) {
+        return e.classList.contains('divScroller');
+      }
+
+      function canScroll(e, reverse) {
+        return (reverse && e.scrollTop > 0) ||
+        (!reverse && e.scrollTop < e.scrollHeight - e.clientHeight);
+
+      }
+
+      function isVisible(elem, scroller) {
+        if (!isScroller(scroller))
+          return true;
+
+        const scrollport = scroller.getBoundingClientRect();
+        const rect = elem.getBoundingClientRect();
+
+        return rect.bottom >= scrollport.top && rect.top <= scrollport.bottom;
+      }
+
+      function searchScroller(reverse) {
+        const scroller = curFocus();
+
+        let children = Array.prototype.slice.call(scroller.children, 0);
+        if (reverse)
+          children.reverse();
+
+        for (let child of children) {
+          if (isVisible(child, scroller))
+            return child;
+        }
+
+        if (canScroll(scroller, reverse))
+          return scroller;
+
+        return null;
+      }
+
+      function nextElement(reverse) {
+        const cur_element = curFocus();
+        if (!cur_element)
+          return document.body.firstElementChild;
+
+        // If the element is a DIV and we're moving in a direction that's not
+        // fully scrolled, try to move focus to a child.
+
+        if (isScroller(cur_element)) {
+          const e = searchScroller(reverse);
+          if (e)
+            return e;
+        }
+
+        let ret;
+        if (reverse)
+          ret = cur_element.previousElementSibling;
+        else
+          ret = cur_element.nextElementSibling;
+
+        if (ret && isVisible(ret, ret.parentElement))
+          return ret;
+
+        const parent = cur_element.parentElement;
+        if (!isScroller(parent))
+          return null;
+
+        if (canScroll(parent, reverse))
+          return cur_element;
+
+        if (reverse)
+          return parent.previousElementSibling;
+        else
+          return parent.nextElementSibling;
+      }
+
+      function Move(reverse) {
+        const next_elem = nextElement(reverse);
+        if (!next_elem)
+          return;
+
+        if (next_elem === curFocus()) {
+          const e = isScroller(next_elem) ? next_elem : next_elem.parentElement;
+          const kScrollAmount = reverse ? -20 : 20;
+          e.scrollTop += kScrollAmount;
+          return;
+        }
+
+        removeFocus();
+        addFocus(next_elem);
+      }
+    </script>
   </head>
 
   <body>
+    <div tabindex="0" class="bold">Use Keyboard Up and Down arrows to Navigate Around</div>
+    <div tabindex="0" class="bold">Escape key resets focus</div>
     <div tabindex="0">Dummy Focusable</div>
-    <div tabindex="0">Dummy Focusable</div>
-    <div tabindex="0">Dummy Focusable</div>
-    <div tabindex="0">Scroller w/o focusable child</div>
+    <div tabindex="0" class="bold">Scroller w/o focusable child</div>
     <div class="divScroller">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </div>
     <div tabindex="0">Dummy Focusable</div>
     <div tabindex="0">Dummy Focusable</div>
-    <div tabindex="0">Scroller w/ focusable child</div>
+    <div tabindex="0" class="bold">Scroller w/ focusable child</div>
     <div class="divScroller">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
       <div tabindex="0">Dummy Focusable</div>
       standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-      <div tabindex="0">Dummy Focusable</div>
-      <div tabindex="0">Dummy Focusable</div>
+      <div tabindex="1">Dummy Focusable</div>
+      <div tabindex="2">Dummy Focusable</div>
       It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </div>
     <div tabindex="0">Dummy Focusable</div>
-    <div tabindex="0">Scroller w/ focusable child - initially out of scrollport</div>
+    <div tabindex="0" class="bold">Scroller w/ focusable child - initially out of scrollport</div>
     <div class="divScroller">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
       standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
@@ -64,7 +187,4 @@
       It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </div>
   </body>
-  <script>
-    //document.getElementById('hello').addEventListener('keydown', (e) => { e.preventDefault(); });
-  </script>
 </html>
