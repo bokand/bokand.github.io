@@ -88,6 +88,13 @@
                 top: 1000px;
                 display: none;
             }
+            .superwide {
+                width: 300vw;
+            }
+            #wideElement{
+                height: 1px;
+                position: absolute;
+            }
         </style>
         <script>
             var infobox;
@@ -160,6 +167,15 @@
                     document.getElementById('spacer').style.display = "none";
             }
 
+            function toggleWideElement() {
+                var needsWideContent = document.getElementById('checkboxWideContent').checked;
+                if (needsWideContent)
+                    document.getElementById('wideElement').classList.add('superwide');
+                else
+                    document.getElementById('wideElement').classList.remove('superwide');
+
+            }
+
             function scrollTargetIntoViewIfNeeded() {
                 targetbox.scrollIntoViewIfNeeded();
             }
@@ -192,9 +208,11 @@
     </head>
 
     <body>
+        <div id="wideElement"></div>
         <div id="infobox">
           <div id="infobox-content"></div>
           <label><input type="checkbox" onClick="toggleScrolling()" id="checkboxHasLayoutScrolling">Has Layout Scrolling</label>
+          <label><input type="checkbox" onClick="toggleWideElement()" id="checkboxWideContent">Wide Content</label>
           <button name="scrollto" onclick="windowScrollTo()">window.scrollTo(300, 400)</button>
           <br>
           <button name="scrolltoElem" onclick="scrollTargetIntoView()">target.scrollIntoView</button>
