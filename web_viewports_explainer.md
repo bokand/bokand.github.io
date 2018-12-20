@@ -126,23 +126,17 @@ The behavior is easier to show than to explain so see my
 [simulator](http://bokand.github.io/viewport/index.html) to compare visually
 (it's a bit dated).  Here's the explanations as well as I understand them:
 
-###### Firefox
-Firefox never adopted the visual/fixed viewport split so there's only a single
-viewport. However, we can think of it in terms of the visual/fixed framework by
-realizing that pinch-zoom shrinks/grows both the visual and fixed viewports
-equally.  That is, as you zoom in, position: fixed elements remain stuck to the
-visible screen edges. This has a major disadvantage in that position: fixed
-elements will obscure most of the viewport as you zoom in and can also appear
-detached from other content it was designed to align with.
-
 ###### Edge + Chrome
 Pinch-zoom doesn't affect the fixed viewport, only the visual. So when
 you zoom in, position: fixed elements "detach" from the screen. It's as if the
 user took a magnifying glass to the screen. This solves the disadvantage in the
 Firefox model and is more compatible with pages designed for desktops.
 
-Note: Firefox intends to move to this model too:
-[bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1123938). Huzzah!
+###### Firefox
+Firefox now uses a similar model to above, where the position: fixed elements
+stick to a fixed viewport. The one difference is that Firefox doesn't allow
+zooming out further than the ICB. That is, the minimum visual viewport size is
+the ICB size.
 
 ###### Safari
 Safari's model is similar to Edge+Chrome with a small twist. When zooming out,
@@ -175,7 +169,22 @@ Unfortunately, this is the greatest point of divergence in behavior; each
 browser works differently:
 
 ###### Firefox
-Not relevant in this section since it uses a single viewport.
+Almost "all fixed". From what I can tell:
+
+Element.getBoundingClientRect: Fixed Viewport
+document.elementFromPoint: Fixed Viewport
+Touch/Mouse events: Fixed Viewport
+window.scrollX|Y: Fixed Viewport
+window.innerWidth|Height: Visual Viewport
+
+Strange things happen with scrollIntoView however:
+
+ - Visit [viewporttest.html](https://bokand.github.io/viewporttest.html) which has no fixed scrolling
+ - Pinch-zoom in a bit
+ - Notice panning around doesn't change window.scrollX|Y
+ - Tap window.scrollTo(300, 400) button or the scrollIntoView buttons.
+ - Note that window.scrollX|Y is updated. Also note that scrolling back to 0
+   updates the values but they can't be manually scrolled back to higher numbers.
 
 ###### Safari
 "All Visual". All APIs refer to the visual viewport. This is consistent
@@ -255,13 +264,10 @@ We've talked about how the visual viewport and the ICB get their size, but the
 fixed viewport is less intuitive and varies between browsers. Similarly to
 above, this is only interesting on mobile.
 
-###### Firefox
-Fixed viewport always matches the visual viewport size.
-
-###### Safari + Edge (Windows Phone)
+###### Safari + Edge (Windows Phone) + Firefox
 The fixed viewport is sized to be equal to the ICB size. A consequence of this
 is that if the user can zoom out to see more than the ICB (Window Phone, but
-not Safari), the fixed viewport is smaller than the visual viewport:
+not Safari or Firefox), the fixed viewport is smaller than the visual viewport:
 
 ![Edge Viewport position: fixed Elements](https://bokand.github.io/viewport/EdgeFixedViewport-1.png "A page loaded in Edge with position: fixed elements before zooming out.")
 
