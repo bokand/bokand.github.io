@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<style>
+  #container {
+    top: 16px;
+    position: fixed;
+    right: 0;
+  }
+
+  #element {
+    position: absolute;
+    top: 32px;
+    right: -8px;
+    min-width: 100px;
+    min-height: 48px;
+    background-color: red;
+  }
+
+  #scroller {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    overflow: auto;
+  }
+
+</style>
+
+<div id="scroller">
+  <div id="container">
+    <div id="element">
+      This box paints behind the scrollbar but blocks hit testing
+    </div>
+  </div>
+  <div id="spacer" style="height: 4000px"></div>
+</div>
+
