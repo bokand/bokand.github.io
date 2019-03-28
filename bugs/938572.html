@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello!</title>
+    <style>
+      .row {
+        border: 8px solid #303030;
+        margin-top: 38px;
+      }
+    </style>
+  </head>  
+  <body>
+    <div style="height: 100%; left: 0px; overflow: hidden auto; position: fixed; top: 0px; width: 100%;">
+
+      <div class="rows" style="position: relative;">
+        <div class="row">
+          <h2>a row title</h2>
+          <div style="height: 240px;">
+            <div style="border: 8px solid #32dc32; clip: rect(0px, 1000px, 500px, 0px);display: flex;height: 100px;overflow-x: auto;position: absolute;width: 500px;">
+              <div style="width: 10000px; flex: 0 0 auto; border: 8px dashed #54bbff; height: 50px;">
+                When broken, this div with the blue dashed border won't move when you scroll horizontally in the green div
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div style="height: 240px;"></div>
+        </div>
+
+        <div class="row">
+          <div style="height: 240px;"></div>
+        </div>
+
+      </div>
+    </div>
+    <div style="height:1000px;width:2000px"></div>
+    <script>
+    function jank() {
+        document.body.style.backgroundColor = "grey";
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            let start = performance.now()
+            while(performance.now() - start < 6000) {
+              var x = 1; x++;
+            }
+            document.body.style.backgroundColor = "";
+            setTimeout(jank, 1000);
+          });
+        });
+    }
+
+    setTimeout(jank, 1000);
+    </script>
+
+  </body>
+</html>
+
