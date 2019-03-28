@@ -24,30 +24,23 @@
           </div>
         </div>
 
-        <div class="row">
-          <div style="height: 240px;"></div>
-        </div>
-
-        <div class="row">
-          <div style="height: 240px;"></div>
-        </div>
 
       </div>
     </div>
-    <div style="height:1000px;width:2000px"></div>
+    <div style="height:2000px;width:100px;"></div>
     <script>
     function jank() {
-        document.body.style.backgroundColor = "grey";
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            let start = performance.now()
-            while(performance.now() - start < 6000) {
-              var x = 1; x++;
-            }
-            document.body.style.backgroundColor = "";
-            setTimeout(jank, 1000);
-          });
-        });
+        //document.body.style.backgroundColor = "grey";
+        //requestAnimationFrame(() => {
+        //  requestAnimationFrame(() => {
+        //    let start = performance.now()
+        //    while(performance.now() - start < 6000) {
+        //      var x = 1; x++;
+        //    }
+        //    document.body.style.backgroundColor = "";
+        //    setTimeout(jank, 1000);
+        //  });
+        //});
     }
 
     setTimeout(jank, 1000);
