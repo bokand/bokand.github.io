@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title></title>
+    <script>
+        function onClick() {
+            var label = document.createElement("DIV");
+            label.innerHTML = "click";
+            document.body.appendChild(label);
+        }
+        function attachEventToElement(element, eventName, func) {
+            element.addEventListener(eventName, func);
+        };
+    </script>
+    <script>
+        //attachEventToElement(document, "pointerdown", function() {
+        //    //some handler
+        //});
+        attachEventToElement(document, "touchstart", function() {
+            //some handler
+        });
+        //attachEventToElement(document, "touchend", function () {
+        //    //some handler
+        //});
+    </script>
+
+
+</head>
+<body>
+    <input type="checkbox" onclick="onClick()" />
+</body>
+</html>
