@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<style>
+  html {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    margin: 0;
+  }
+</style>
+<div id="output"></div>
+<script>
+  function handler(e) {
+    var str = "Event: " + e.type + " at (" + e.clientX + ", " + e.clientY + ")";
+    document.getElementById('output').innerText = str;
+  }
+
+  addEventListener('mousemove', handler);
+  addEventListener('mouseup', handler);
+  addEventListener('mousedown', handler);
+</script>
