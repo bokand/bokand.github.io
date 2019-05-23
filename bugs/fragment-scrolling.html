@@ -15,11 +15,16 @@
     function navigate() {
       document.getElementById('frame').src = "https://bokand.github.io/iframe.html#firstframe";
     }
+    function navigateTop() {
+      document.getElementById('frame').src = "https://bokand.github.io/iframe.html#top";
+    }
   </script>
 </head>
 <body>
   <div>
     <button type="button" onclick="navigate()">Navigate Iframe</button>
+    <br>
+    <button type="button" onclick="navigateTop()">Navigate Iframe#top</button>
   </div>
   <iframe id="frame" src=""></iframe>
 </body>
