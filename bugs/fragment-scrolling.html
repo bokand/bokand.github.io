@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    iframe {
+      width: 100px;
+      height: 100px;
+      margin-top: 2000px;
+    }
+  </style>
+  <script>
+    function navigate() {
+      document.getElementById('frame').src = "https://bokand.github.io/iframe.html#firstframe";
+    }
+  </script>
+</head>
+<body>
+  <div>
+    <button type="button" onclick="navigate()">Navigate Iframe</button>
+  </div>
+  <iframe id="frame" src=""></iframe>
+</body>
+</html>
