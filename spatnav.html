@@ -31,19 +31,9 @@
         top: 100px;
       }
     </style>
-    <script>
-      function talk() {
-        document.body.style.backgroundColor = "red";
-      }
-    </script>
   </head>
 
   <body>
-    <div>
-      <a href="#">SOME LINK</a>
-      <span>SomeText</span>
-      <span onclick="talk();">ClickHandler</span>
-    </div>
     <div tabindex="0">Same Origin Iframe (no focusable child):</div>
     <iframe src="spatnav-child.html" style="width:200px; height: 200px"></iframe><br>
     Same Origin Iframe (w/focusable child):<br>
@@ -52,29 +42,6 @@
     <div class="divScroller">
       Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
     </div>
-<a title="https://helpingcanadagrow.ca" style="display:inline; line-height: 1.3125; overflow-wrap: break-word;" href="https://t.co/Qs5XHQx8Pt?amp=1" target="_blank" dir="ltr" role="link" data-focusable="true" rel=" noopener noreferrer">
-  <span style="left: 600px; overflow: hidden; width: 1px; clip: rect(1px 1px 1px 1px); overflow-wrap: break-word; line-height: 1.3125; display: inline; height: 1px; position:absolute" dir="auto" aria-hidden="true">
-    (link: https://helpingcanadagrow.ca) 
-  </span>
-  helpingcanadagrow.ca
-</a>
-
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
-    Scrolling Div (w/focusable child):<br>
     Scrolling Div (w/focusable child):<br>
     <div class="divScroller">
       <input type="text">
@@ -108,12 +75,5 @@
   </body>
   <script>
     //document.getElementById('hello').addEventListener('keydown', (e) => { e.preventDefault(); });
-    var elem = null;
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'f') {
-        elem = document.getElementById('hello');
-        elem.remove();
-      }
-    });
   </script>
 </html>
