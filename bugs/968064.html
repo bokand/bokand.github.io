@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#content {
+  height: 80px;
+  width: 20px;
+  padding: 0px;
+  background-color: coral;
+  text-align: right
+}
+</style>
+</head>
+<body>
+
+<p>Click the button to get the entire height (vertically) and width (horizontally) of the div element with id="content".</p>
+
+<button onclick="myFunction()">Try it</button>
+
+
+  <input id="content">Some content..</input>
+
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var elmnt = document.getElementById("content");
+  var y = elmnt.scrollHeight;
+  var x = elmnt.scrollWidth;
+  var z = elmnt.clientWidth;
+  document.getElementById ("demo").innerHTML = "ScrollHeight: " + y + "px<br>ScrollWidth: " + x + "px<br>clientWidth: " + z + "px";
+}
+</script>
+
+</body>
+</html>
