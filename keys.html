@@ -6,6 +6,12 @@
       * {
         font-size: x-small;
       }
+
+      #scroller {
+        overflow: scroll;
+        width: 100%;
+        height: 200px;
+      }
     </style>
     <script>
       let preventDown = false;
@@ -20,6 +26,7 @@
         }
 
         output.innerHTML += "<br>";
+        document.getElementById('scroller').scrollTop = 100000;
       }
       onkeypress = (e) => {
         const output = document.getElementById("output");
@@ -30,6 +37,7 @@
         }
 
         output.innerHTML += "<br>";
+        document.getElementById('scroller').scrollTop = 100000;
       }
       onkeyup = (e) => {
         const output = document.getElementById("output");
@@ -40,6 +48,12 @@
         }
 
         output.innerHTML += "<hr>";
+        document.getElementById('scroller').scrollTop = 100000;
+      }
+
+      onload = () => {
+        let formHeight = document.getElementById('f').clientHeight;
+        document.getElementById('scroller').style.height = (window.innerHeight - formHeight- 26) + "px";
       }
 
       function togglePreventDown() {
@@ -54,12 +68,14 @@
     </script>
   </head>
   <body>
-    <form>
+    <form id="f">
       <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventDown();"> prevent down<br>
       <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventPress();"> prevent press<br>
       <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventUp();"> prevent up<br>
     </form>
-    <div id="output">
+    <div id="scroller">
+      <div id="output">
+      </div>
     </div>
   </body>
 </html>
