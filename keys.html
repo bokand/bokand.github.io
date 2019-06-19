@@ -54,6 +54,10 @@
       onload = () => {
         let formHeight = document.getElementById('f').clientHeight;
         document.getElementById('scroller').style.height = (window.innerHeight - formHeight- 26) + "px";
+
+        preventDown = document.getElementById("boxDown").checked;
+        preventPress = document.getElementById("boxPress").checked;
+        preventUp = document.getElementById("boxUp").checked;
       }
 
       function togglePreventDown() {
@@ -69,9 +73,9 @@
   </head>
   <body>
     <form id="f">
-      <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventDown();"> prevent down<br>
-      <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventPress();"> prevent press<br>
-      <input type="checkbox" name="prevent" value="prevent" onclick="togglePreventUp();"> prevent up<br>
+      <input id="boxDown" type="checkbox" name="prevent" value="prevent" onclick="togglePreventDown();"> prevent down<br>
+      <input id="boxPress" type="checkbox" name="prevent" value="prevent" onclick="togglePreventPress();"> prevent press<br>
+      <input id="boxUp" type="checkbox" name="prevent" value="prevent" onclick="togglePreventUp();"> prevent up<br>
     </form>
     <div id="scroller">
       <div id="output">
