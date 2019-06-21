@@ -1,0 +1,86 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <link rel="manifest" href="/manifest-fullscreen.json">
+    <meta name="viewport" content="width=device-width">
+    <style>
+      * {
+        font-size: x-small;
+      }
+
+      #scroller {
+        overflow: scroll;
+        width: 100%;
+        height: 200px;
+      }
+    </style>
+    <script>
+      let preventDown = false;
+      let preventPress = false;
+      let preventUp = false;
+      onkeydown = (e) => {
+        const output = document.getElementById("output");
+        output.innerHTML += 'DOWN: ' + e.key + ' cancelable[' + e.cancelable + ']';
+        if (preventDown) {
+          output.innerHTML += ' #PREVENTED#';
+          e.preventDefault();
+        }
+
+        output.innerHTML += "<br>";
+        document.getElementById('scroller').scrollTop = 100000;
+      }
+      onkeypress = (e) => {
+        const output = document.getElementById("output");
+        output.innerHTML += 'PRESS: ' + e.key + ' cancelable[' + e.cancelable + ']';
+        if (preventPress) {
+          output.innerHTML += ' #PREVENTED#';
+          e.preventDefault();
+        }
+
+        output.innerHTML += "<br>";
+        document.getElementById('scroller').scrollTop = 100000;
+      }
+      onkeyup = (e) => {
+        const output = document.getElementById("output");
+        output.innerHTML += 'UP: ' + e.key + ' cancelable[' + e.cancelable + ']';
+        if (preventUp) {
+          output.innerHTML += ' #PREVENTED#';
+          e.preventDefault();
+        }
+
+        output.innerHTML += "<hr>";
+        document.getElementById('scroller').scrollTop = 100000;
+      }
+
+      onload = () => {
+        let formHeight = document.getElementById('f').clientHeight;
+        document.getElementById('scroller').style.height = (window.innerHeight - formHeight- 26) + "px";
+
+        preventDown = document.getElementById("boxDown").checked;
+        preventPress = document.getElementById("boxPress").checked;
+        preventUp = document.getElementById("boxUp").checked;
+      }
+
+      function togglePreventDown() {
+        preventDown = !preventDown;
+      }
+      function togglePreventPress() {
+        preventPress = !preventPress;
+      }
+      function togglePreventUp() {
+        preventUp = !preventUp;
+      }
+    </script>
+  </head>
+  <body>
+    <form id="f">
+      <input id="boxDown" type="checkbox" name="prevent" value="prevent" onclick="togglePreventDown();"> prevent down<br>
+      <input id="boxPress" type="checkbox" name="prevent" value="prevent" onclick="togglePreventPress();"> prevent press<br>
+      <input id="boxUp" type="checkbox" name="prevent" value="prevent" onclick="togglePreventUp();"> prevent up<br>
+    </form>
+    <div id="scroller">
+      <div id="output">
+      </div>
+    </div>
+  </body>
+</html>
