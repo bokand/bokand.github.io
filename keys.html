@@ -19,7 +19,7 @@
       let preventUp = false;
       onkeydown = (e) => {
         const output = document.getElementById("output");
-        output.innerHTML += 'DOWN: ' + e.key;
+        output.innerHTML += 'DOWN: ' + e.key + ' cancelable[' + e.cancelable + ']';
         if (preventDown) {
           output.innerHTML += ' #PREVENTED#';
           e.preventDefault();
@@ -30,7 +30,7 @@
       }
       onkeypress = (e) => {
         const output = document.getElementById("output");
-        output.innerHTML += 'PRESS: ' + e.key;
+        output.innerHTML += 'PRESS: ' + e.key + ' cancelable[' + e.cancelable + ']';
         if (preventPress) {
           output.innerHTML += ' #PREVENTED#';
           e.preventDefault();
@@ -41,7 +41,7 @@
       }
       onkeyup = (e) => {
         const output = document.getElementById("output");
-        output.innerHTML += 'UP: ' + e.key;
+        output.innerHTML += 'UP: ' + e.key + ' cancelable[' + e.cancelable + ']';
         if (preventUp) {
           output.innerHTML += ' #PREVENTED#';
           e.preventDefault();
