@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <style type="text/css">
+          #outer {
+            background: #fff;
+            position: absolute
+          }
+
+          #inner {
+            max-height: 300px;
+            max-width: 116px;
+            overflow-y: auto;
+            will-change: transform;
+          }
+
+          ::-webkit-scrollbar {
+            height: 16px;
+            width: 16px
+          }
+
+          ::-webkit-scrollbar-thumb {
+            background-color: grey;
+          }
+
+          /* An interesting background so we can tell we're scrolling */
+          #spacer {
+            height: 3000px;
+            width: 100px;
+            background-color: #FFF;
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black),
+                              linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);
+
+          }
+      </style>
+   </head>
+   <body>
+      <div id="outer">
+         <div id="inner">
+            <div id="spacer"></div>
+         </div>
+      <p>
+        Scroll the above box - scrolling will occur on the compositor thread.
+        When you click the mouse anywhere on the page, the scroller's style
+        will be changed so that it no longer requires a compositing layer for
+        scrolling. We force style computation to ensure the composited layer is
+        removed. Immediately after this, we reset style back to needing a
+        compositing layer.
+      </p>
+      <p>
+        The bug occurs because we create a new compositing layer which replaces
+        the compositor's ElementId-->LayerId mapping but only delete the old
+        one after this. When the old layer is deleted it removes the mapping
+        for the ElementId, thinking it still belongs to itself. Composited
+        scrolling now fails to commit scroll deltas to the new layer because it
+        can't find the layer from the ElementId.
+      </p>
+      </div>
+   <script>
+      addEventListener('click', () => {
+        let element = document.querySelector('#inner');
+
+        // Add style that will cause the PaintLayer and associated compositing
+        // layers to get deleted.
+        element.style.overflowY = 'visible';
+        element.style.willChange = 'auto';
+
+        // Force a style and layout recalc.
+        element.offsetHeight;
+
+        // Remove the style so that a new PaintLayer and compositing layers are
+        // added.
+        element.style.willChange = '';
+        element.style.overflowY = '';
+
+        // Add a visual indicator that something has changed.
+        document.getElementById("spacer").style.backgroundColor = "red";
+      });
+   </script>
+   </body>
+</html>
