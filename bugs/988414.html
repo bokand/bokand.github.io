@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>List item test</title>
+    <style>
+      .red { color: red; }
+      ul { list-style-position: inside; }
+      ul ul li { background-color: lightgrey; }
+    </style>
+    <script>
+      function on_click (event) {
+          tgt = event.target;
+
+          // tgt might be a child of the <li> element. Walk up until
+          // we find one. Give up early if we hit a <ul>.
+          while (tgt.tagName != "LI") {
+              tgt = tgt.parentElement
+              if (tgt === null) {
+                  return;
+              }
+          }
+
+          tgt.classList.toggle("red");
+          event.stopPropagation();
+      }
+
+      window.onload = function() {
+          for (ul of document.querySelectorAll("ul")) {
+              ul.addEventListener('click', on_click);
+          }
+      }
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li>
+        <ul>
+          <li>AAA</li>
+          <li class="red">BBB</li>
+          <li>CCC</li>
+        </ul>
+      </li>
+    </ul>
+  </body>
+</html>
