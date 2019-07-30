@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <title>Page Title</title>
+</head>
+
+<body id="root">
+
+    <input id="file" title="pick pick pick" type="file">
+    <br/>
+
+</body>
+<script>
+    var input = document.querySelector('input');
+    input.addEventListener('change', updateImageDisplay);
+    function updateImageDisplay() { 
+        console.log('changed');
+        var button = document.createElement('button');
+        var body = document.getElementById('root');
+        body.appendChild(button);
+    }
+</script>
+
+</html>
