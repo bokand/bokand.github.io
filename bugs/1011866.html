@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+	<title>Test case</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+
+		.container {
+			height: 100%;
+			width: 100%;
+			overflow: auto;
+		}
+
+		.content {
+			height: 2000px;
+			background: red;
+		}
+
+		.layer {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100px;
+			height: 200px;
+			background: yellow;
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="content">
+		1<br/>
+		2<br/>
+		3<br/>
+		4<br/>
+		5<br/>
+		<input type="checkbox">
+	</div>
+</div>
+<div class="layer"></div>
+</body>
+</html>
