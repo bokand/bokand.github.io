@@ -16,8 +16,9 @@ winPrint.print();
 winPrint.close(); 
 
 //you wont see this executed because the javascript print is blocking
-while (true) {
+function print() {
   console.log('still running js in background');
-  sleep(1000);
+  setTimeout(print, 1000);
 }
+print();
  </script>
