@@ -1,0 +1,23 @@
+<script>
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+var winPrint = window.open('', '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=0,status=0');
+winPrint.document.write('<title>Print Report</title><br /><br /> Hello World');
+winPrint.document.close();
+winPrint.focus();
+winPrint.print();
+winPrint.close(); 
+
+//you wont see this executed because the javascript print is blocking
+while (true) {
+  console.log('still running js in background');
+  sleep(1000);
+}
+ </script>
