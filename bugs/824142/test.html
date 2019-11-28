@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+  <meta name="viewport" content="width=device-width">
+</head>
+<input type="text" id="eid" class="form_input_1 marginLeft15 paddingLeft5 color333333" name="eid" size="16" maxlength="16" autocomplete="off" value="">
+
+<div id="log"></div>
+<script>
+  const i = document.getElementById('eid');
+  const log = document.getElementById('log');
+
+  /*
+ * return a copy of an object with only non-object keys
+ * we need this to avoid circular references
+ */
+  function simpleKeys (original) {
+    return Object.keys(original).reduce(function (obj, key) {
+      obj[key] = typeof original[key] === 'object' ? '{ ... }' : original[key];
+      return obj;
+    }, {});
+  }
+
+  function add(obj, str) {
+    const p = document.createElement('p');
+    const simple_obj = simpleKeys(obj);
+    p.innerText = str + ": " + JSON.stringify(simple_obj);
+    log.appendChild(p);
+    const hr = document.createElement('hr');
+    log.appendChild(hr);
+  }
+
+
+  i.addEventListener('input', (e) => {
+    console.log('input: ' + e);
+    add(e, 'input');
+  });
+  i.addEventListener('keydown', (e) => {
+    console.log('keydown: ' + e);
+    add(e, 'keydown');
+  });
+  i.addEventListener('keyup', (e) => {
+    console.log('keyup: ' + e);
+    add(e, 'keyup');
+  });
+  i.addEventListener('keypress', (e) => {
+    console.log('keypress: ' + e);
+    add(e, 'keypress');
+  });
+</script>
