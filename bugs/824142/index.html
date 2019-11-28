@@ -1,0 +1,1343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
+
+
+
+
+
+<html>
+<head>
+
+<meta name="keywords" content="page keywords catch" />
+<meta name="referrer" content="same-origin" />
+<link href="resources/images/favicon.ico" rel="Shortcut Icon">
+<link rel="stylesheet" type="text/css" href="resources/css/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery.datetimepicker.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/jquery.popup.css" />
+<script type="text/javascript" src="resources/js/commonValidation.js"></script>
+<script type="text/javascript" src="resources/js/jquery-2.2.0.js"></script>
+<script type="text/javascript" src="resources/js/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="resources/js/jquery.popup.js"></script>
+<script type="text/javascript" src="resources/js/jquery-mask.js"></script>
+<script type="text/javascript" src="resources/js/jquery-ui.js"></script>
+<script type="text/javascript"
+	src="resources/js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		
+		if($("#eidRadio").is(':checked')) {
+		    $("#eid").mask("?9999/99999/99999");
+		}
+		$("#dateTime").mask("?99/99/9999 99:99:99");
+		$("#pinCode").mask("?999999");
+		$("#mobileNum").mask("?9999999999");
+		$("#txtInput").mask("?999999");
+		$("#otpField").mask("?999999");
+		$("#otpField1").mask("?99999999");
+		$("#noteDiv").css("display", "");
+		$("#mobileDiv").css("display", "none");
+		//$("#otpField").attr('disabled', 'disabled');
+		//$("#saveBut").attr('disabled', 'disabled');
+
+		$('#dateTime').datetimepicker({
+			//format:'DD/MM/YYYY HH:mm:ss'
+			format : 'd.m.Y H:i:s'
+		});
+
+		$('#txtInput').bind("paste", function(e) {
+			e.preventDefault();
+		});
+		$('#txtCaptcha').bind("copy", function(e) {
+			e.preventDefault();
+		});
+		$('#name').bind("paste", function(e) {
+			e.preventDefault();
+		});
+		if (window.top !== window.self) {
+			window.location = 'accessDenied.html';
+		}
+		$("#name").keypress(function(event) {
+			if (!IsUrlReady(event)) {
+				event.preventDefault();
+			}
+		});
+		$("#txtInput").keypress(function(event) {
+			if (!IsCaptchaReady(event)) {
+				event.preventDefault();
+			}
+		});
+
+		$('#reset').click(function() {
+			$('#aadharForm')[0].reset();
+		});
+
+		$("#small").click(function(event) {
+			event.preventDefault();
+			$("body").animate({
+				"font-size" : "10px"
+			});
+
+		});
+
+		$("#medium").click(function(event) {
+			event.preventDefault();
+			$("body").animate({
+				"font-size" : "13px"
+			});
+
+		});
+
+		$("#large").click(function(event) {
+			event.preventDefault();
+			$("body").animate({
+				"font-size" : "16px"
+			});
+
+		});
+
+		$("#small,#medium,#large").click(function() {
+			$("#small,#medium,#large").removeClass("selected");
+			$(this).addClass("selected");
+
+		});
+
+		$('#selected_value').click(function() {
+
+			$('#result').empty();
+
+			var value = $("#select_option option:selected").val();
+
+			$('#result').append(value);
+
+			window.open(value, '_blank');
+
+		});
+			
+		var $radios = $('input:radio[id=uidRadio]');
+		if ($radios.is(':checked') === true) {
+			// $radios.filter('[value=Male]').prop('checked', true);
+			$radios.value = "uidRadio";
+			//validateEntryType($radios, 'rs');
+			validateEntryTypeAfter($radios, 'rs');
+		}
+		
+		var $radios = $('input:radio[id=vidRadio]');
+		if ($radios.is(':checked') === true) {
+			// $radios.filter('[value=Male]').prop('checked', true);
+			$radios.value = "vidRadio";
+			//validateEntryType($radios, 'rs');
+			validateEntryTypeAfter($radios, 'rs');
+		}
+
+		var $chk = $('input:checkbox[id=TOTP]');
+		if ($chk.is(':checked') === true) {
+			$(".otpBottomBox").css("display", "none");
+			$(".totpBottomBox").css("display", "block");       
+			$("#noteDiv").css("display", "none");  
+			$("#noteDiv1").css("display", "block");
+			//$(".buttonSet").css("display", "none");		
+			$(".otpButtonWrapper").css("display", "none");	
+		} 
+		
+		
+	});
+
+	
+	function IsUrlReady(e) {
+		var key = [ e.keyCode || e.which ];
+		var keychar = String.fromCharCode([ e.keyCode || e.which ])
+				.toLowerCase();
+
+		// 8 = backspace
+		// 9 = tab
+		//13 = enter key
+		//35 = end | #
+		//36 = home | $
+		//37 - (direction) left | %
+		//38 - (direction) up | &
+		//39 - (direction) right | '
+		//40 - (direction) down | (
+
+		if ((key == null) || (key == 0) || (key == 8) || (key == 9)
+				|| (key == 13) || (key == 27) || (key >= 35 && key <= 40)) {
+			var pattern = new RegExp("[#$%&\_-]");
+			return !pattern.test(keychar);
+		} else {
+			var pattern = new RegExp("[A-Za-z.'() ]");
+			return pattern.test(keychar);
+		}
+	}
+	function IsCaptchaReady(e) {
+		var key = [ e.keyCode || e.which ];
+		var keychar = String.fromCharCode([ e.keyCode || e.which ])
+				.toLowerCase();
+
+		// 8 = backspace
+		// 9 = tab
+		//13 = enter key
+		//35 = end | #
+		//36 = home | $
+		//37 - (direction) left | %
+		//38 - (direction) up | &
+		//39 - (direction) right | '
+		//40 - (direction) down | (
+
+		if ((key == null) || (key == 0) || (key == 8) || (key == 9)
+				|| (key == 13) || (key == 27) || (key >= 35 && key <= 40)) {
+			var pattern = new RegExp("['#$%&\(_-]");
+			return !pattern.test(keychar);
+		} else {
+			var pattern = new RegExp("[a-z0-9]");
+			return pattern.test(keychar);
+		}
+	}
+</script>
+<title>e-Aadhaar by Unique Identification Authority of India</title>
+</head>
+<body onload="DrawCaptcha();">
+
+	<div id="dialog" title="UIDAI CONSENT" style="display: none;">
+		<p>Dear Resident,</br> For helping you to avail Aadhaar Services, we would require your personal details such as Aadhaar Number or Enrolment ID, Name, Mobile Number etc.</br> Your personal details will help us for authentication </br></br>Please read the <a href="https://uidai.gov.in/your-aadhaar/help/faqs.html" target="_blank">Term & Conditions.</a></p>
+	</div>
+
+	<div class="main-wrapper">
+		<!--  Start Login Header  -->
+
+		
+
+
+
+
+
+<header>
+					    <div class="grey-bar">
+						<div class="container">
+							<div class="row paddingTop5">
+								<div class="top-lft">
+									<a href="https://uidai.gov.in/" class="color336699 fontWeightBold" style="text-decoration:none;">
+										<img class="floatLeft marginTop3 marginRight10" src="resources/images/Arrow_red.png" alt="Previous Arrow">UIDAI Home&nbsp;
+									
+										</a>
+                                        
+                                        <a href="https://resident.uidai.gov.in/" class="color336699 fontWeightBold" style="text-decoration:none;">
+										| &nbsp;Resident Portal
+									
+										</a>
+									</div>
+									<div class="f-right">
+										<!--top links starts-->
+										<div class="top-rit f-left">
+											<div class="ver-line f-left"></div>
+											<div class="font-reset f-left">
+												<ul>
+													<li>
+														<a class="color333333" href="https://uidai.gov.in/screen-reader.html">Screen Reader </a>
+													</li>
+													
+													<li>
+														<a class="color333333" href="#skiptocontent">Skip to Content </a>
+													</li>
+												</ul>
+											</div>
+											<div class="font-reset f-left">
+												<ul>
+													<li>
+														<a class="color333333" id="large" href="#" title="Increase size">A+ </a>
+													</li>
+													<li>
+														<a class="color333333" id="medium" title="Revert styles to default" href="#">A </a>
+													</li>
+													<li>
+														<a class="color333333 selected" id="small" title="Decrease size" href="#">A- </a>
+													</li>
+												</ul>
+											</div>
+											<div class="ver-line f-left"></div>
+											<div class="screen-reader f-left"></div>
+										</div>
+									</div>
+								</div>
+								<!--row-->
+							</div>
+							<!--container-->
+						</div>
+						<!--grey-bar-->
+						<div class="container">
+							<div class="row">
+								<a href="/eaadhaar">
+									<img class="uid-logo" src="resources/images/uidai-logo_en-GB.png" alt="Unique Identification Authority Of India">
+									</a>
+									<a href="/eaadhaar">
+										<img class="aad-logo" src="resources/images/aadhaar-logo.png" alt="Aadhaar">
+										</a>
+										<div class="adhaar-tag marginTop55">Mera 
+										
+											<span style="color: #db1f31;">Aadhaar</span>, Meri Pehchaan
+									
+										</div>
+									</div>
+								</div>
+						
+                        <div class="menu-row">
+									<div class="container">
+										<div class="mega-menu row">
+											<!--Main-menu starts-->
+											<div class="f-left">											
+													<ul class="uid-ul main_menu flexnav" >
+														<li class="main-mega-item">
+															<a class="item-101 fontSize15 firstMenu current deeper parent dropTrigger" href="#" >
+																<span> Download Aadhaar</span>
+															</a>
+														</li>
+																										
+													</ul>
+												
+											</div>
+											<!--Mega menu ends-->
+											<img class="floatRight searcButton" id="selected_value" src="resources/images/btn_go_normal.png" alt="Search Icon">
+												<div class="floatRight">
+													<select class="chosen-select" id="select_option">
+														<option>- Please Select a Service -</option>
+														
+															<option value="https://appointments.uidai.gov.in/easearch.aspx">Locate Enrolment Center</option>
+															<option value="https://resident.uidai.gov.in/find-uid-eid">Retrieve Lost UID/EID</option>
+															<option value="https://resident.uidai.gov.in/check-aadhaar-status">Check Aadhaar Status</option>
+															<option value="https://eaadhaar.uidai.gov.in/">Download Aadhaar</option>
+															<option value="https://resident.uidai.gov.in/get-aadhaar-no">Get Aadhaar Number on Mobile</option>
+															
+																<option value="https://ssup.uidai.gov.in/web/guest/update">Update Aadhaar Details (Online)</option>
+																<option value="https://ssup.uidai.gov.in/web/guest/check-status">Check Aadhaar Update Status</option>
+																<option value="https://uidai.gov.in/images/UpdateRequestFormV2.pdf">Download Aadhaar Update/Correction Form</option>
+																
+																	<option value="https://resident.uidai.gov.in/aadhaarverification">Verify Aadhar</option>
+																	<option value="https://resident.uidai.gov.in/verify-email-mobile">Verify Email / Mobile</option>
+																	<option value="https://resident.uidai.gov.in/biometric-lock">Lock / Unlock Biometrics</option>
+																	<option value="https://resident.uidai.gov.in/bank-mapper">Check Aadhaar and Bank Account Linking Status</option>
+																	<option value="https://resident.uidai.gov.in/notification-aadhaar">Aadhaar Notification</option>
+																	
+																		<option value="https://resident.uidai.gov.in/web/resident/file-complaint">File a Complaint</option>
+																		<option value="https://resident.uidai.gov.in/web/resident/complaint-status">Check Complaint Status</option>
+																	</select>
+																</div>
+                                                 
+                                                 <div class="floatRight">
+											
+													<ul class="uid-ul main_menu flexnav" >
+														<li class="main-mega-item">
+															<a class="item-101 current deeper parent mega-item-a dropTrigger" href="https://uidai.gov.in/your-aadhaar/help/faqs.html" target="_blank">
+																<span> FAQS</span>
+															</a>
+														</li>
+														<li class="main-mega-item dropMenu">
+															<a class="item-101 current deeper parent mega-item-a dropTrigger" href="https://uidai.gov.in/about-uidai/contact-us.html" target="_blank">
+																<span> CONTACTS</span>
+															</a>
+														</li>
+														<li class="main-mega-item dropMenu">
+															<a class="item-101 current deeper parent mega-item-a dropTrigger" href="https://uidai.gov.in/about-uidai/grievance-handling.html" target="_blank" >
+																<span> GRIEVANCE CENTER</span>
+															</a>
+														</li>
+													
+													</ul>
+												
+											</div>               
+															</div>
+														</div>
+													</div>
+						</header>
+												
+																														
+																						
+																												<div class="container">
+																													<div class="row borderBottom">
+																														
+																															<div class="aadharServiceHeadingLeftDiv">
+																																<h1 class="fontSize20 fontWeightNormal color336699 paddingTop5">
+																																	<img class="NotificationImg" src="resources/images/eaadhaar_head_icon.png" alt="Note">Download E-Aadhaar by using your Aadhaar, EID or VID
+																																
+																																	</h1>
+																																</div>
+																																
+																														</div>
+                                                                                                                        
+                                                                                                                 </div>   
+
+		
+		
+
+		<div class="container" id="skiptocontent">
+			<div id="errorMsg2" class="txtAlignCenter">
+				<div id="serverMessage"
+					class="hideDisplay serverMSG failure paddingAll5"></div>
+			</div>
+			<div id="loadingImg" class="hideDisplay txtAlignCenter">
+				<img src="resources/images/loading.gif" alt="Loading" width="20"
+					height="20"> Please Wait
+			</div>
+		</div>
+		
+		
+
+
+
+		<form id="aadharForm" name="aadharForm" action="generateEAadhaarLetter.html" method="post">
+			<input type="hidden" id="CSRFToken" name="CSRFToken"
+				value="bbe4d6fa-5059-49cb-86f9-9402fbc5c49f">
+			<div id="serverErrorMsg" style="text-align: center;">
+				
+			</div>
+
+			<div id="loadingImg" class="hideDisplay txtAlignCenter">
+				<img src="resources/images/loading.gif" alt="Loading" width="20"
+					height="20"> Please Wait
+			</div>
+
+			<div class="container">
+				<div class="width65 floatLeft">
+					<div class="width100 floatLeft marginBottom5 marginTop5">
+
+						<ul class="blackList paddingAll5 floatRight width70">
+							<li><a href="#" class="required"> Marked are mandatory
+									Fields</a></li>
+						</ul>
+					</div>
+
+					<div class="width100 backgroundffffff borderAll1pxe8eaec floatLeft"
+						id="">
+						<h2
+							class="fontSize15 fontWeightNormal color336699 backgroundf9fafb paddingAll8">Enter
+							your PersonalDetails</h2>
+
+
+
+						<!-- <div class="eid-text">
+								<strong>I have</strong><font color="red">*</font> Enrolment Id <input
+									type="radio" value="eidRadio" checked="checked" name="userid"
+									id="eidRadio" onclick="validateEntryType(this,'rs')">
+								Aadhaar <input type="radio" value="uidRadio" name="userid"
+									id="uidRadio" onclick="validateEntryType(this,'rs')"> <input
+									class="enrolmentIDInner" type="button" value="Reset"
+									onclick="reloadSession()">
+							</div> -->
+						
+					
+						
+
+							
+							
+							
+
+
+								<div class="row marginTop10 width53 marginZeroAuto" id="">
+									<div class="maxl">
+										<label class="radio inline"> <label
+											class="required color333333"> I Have </label>&nbsp;&nbsp;&nbsp;
+											<input type="radio" value="uidRadio" name="userid"
+											id="uidRadio" onclick="validateEntryType(this,'rs')">
+											<span> Aadhaar </span>
+										</label>
+											<label class="radio inline"> 
+											<input type="radio" value="vidRadio" name="userid"
+											id="vidRadio" onclick="validateEntryType(this,'rs')"
+											> <span> VID </span>
+										</label>
+										
+										<label class="radio inline"> <input type="radio"
+											value="eidRadio" checked="checked" name="userid"
+											id="eidRadio" onclick="validateEntryType(this,'rs')">
+											<span>Enrolment ID </span>
+										</label> <img class="infoIcon_1" id="helpText1"
+											src="resources/images/icon_info.png"
+											alt="Icon for Information" />
+									</div>
+
+								</div>
+							
+						
+                      	
+						<hr />
+
+
+
+						<div class="row marginTop25 marginBottom10 width95 marginZeroAuto"
+							id="">
+							
+							<div class="floatLeft">
+								<div class="field-1 marginTop10">
+									<label class="required color333333">Enrolment
+										ID/Aadhaar Number/VID </label>
+								</div>
+							</div>
+							
+							
+							
+							
+								
+
+								
+								
+								
+								
+								
+								
+
+									<div class="floatLeft" id="">
+										<input type="text" id="eid"
+											class="form_input_1 marginLeft15 paddingLeft5 color333333"
+											name="eid" size="16" maxlength="16" autocomplete="off"
+											value= > <br>
+
+									</div>
+									<div class="floatLeft" id="dateTimeDiv">
+										<input id="dateTime" type="text"
+											class="form_input_1 marginLeft5 paddingLeft5 color333333"
+											name="dateTime" size="19" class="width165" maxlength="19"
+											autocomplete="off" value=""> <img class="infoIcon_2"
+											src="resources/images/icon_info.png" alt="HELP"
+											id="helpText2" /> <br>
+										<div class="res-alert-msg marginLeft5 res-alert-msg-date"
+											style="display: none;">
+											<p class="alert-msg" style="color: red !important;">
+												<img alt="Warning" src="resources/images/small_warning.png">Incorrect
+												Date/Time (dd/mm/yyyy hh:mm:ss)
+											</p>
+										</div>
+										<div class="content-body-txt marginLeft5"
+											style="display: none;">
+											<p class="alert-msg colorcc6600 "
+												style="margin: 6px 0 0 223px;">Date/Time (dd/mm/yyyy
+												hh:mm:ss)</p>
+										</div>
+									</div>
+								
+							
+							<div class="floatLeft" id="floatLeftDiv">
+
+								<div class=" content-body-txt marginLeft15" id="eid_sugg">
+									<p class="alert-msg colorcc6600 "
+										style="margin: 6px 0 0 223px;">
+										Enter 14 digit <strong> ENO </strong> and 14 digit <strong>
+											 Date-Time </strong>stamp printed on the Enrolment Slip
+									</p>
+								</div>
+
+								<div class=" content-body-txt marginLeft15"
+									style="display: none;" id="uid_sugg">
+									<p class="alert-msg colorcc6600 "
+										style="margin: 6px 0 0 223px;">
+										Enter 12 Digit Aadhaar <strong> Number </strong> Printed on
+										the Aadhaar Card
+									</p>
+								</div>
+								<div style="clear: both;"></div>
+								<div class=" content-body-txt marginLeft15"
+									style="display: none;" id="vid_sugg">
+									<p class="alert-msg colorcc6600 "
+										style="margin: 6px 0 0 223px; ">Enter 16 Digit VID <strong> Number </strong>
+									</p>
+								</div>
+
+            
+								<div class="marginLeft15 floatLeft eidError"
+									style="display: none">
+									<p class="alert-msg"
+										style="margin: 6px 0 0 223px; color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">Incorrect
+										 EID! Enter 14 digit <strong> ENO </strong> and 14 digit <strong>
+											Date-Time </strong>stamp printed on the Enrolment Slip
+									</p>
+								</div>
+
+
+								<div class="marginLeft15 floatLeft uidError"
+									style="display: none">
+									<p class="alert-msg"
+										style="margin: 6px 0 0 223px; color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">Incorrect
+										UID! Enter your 12 digit Aadhaar number(1234/1234/1234)
+									</p>
+								</div>
+								
+								<div class="marginLeft15 floatLeft vidError"
+									style="display: none">
+									<p class="alert-msg"
+										style="margin: 6px 0 0 223px; color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">Incorrect
+										VID! Enter your 16 digit VID(1234/1234/1234/1234)
+									</p>
+								</div>
+
+								<div class="marginLeft15 floatLeft datetimeError"
+									style="display: none">
+									<p class="alert-msg"
+										style="margin: 6px 0 0 223px; color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">Please
+										enter valid date in (dd/mm/yyyy hh:mm:ss) format.
+									</p>
+								</div>
+								<div class="marginLeft15 floatLeft invalidDatetimeError"
+									style="display: none">
+									<p class="alert-msg"
+										style="margin: 6px 0 0 223px; color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">
+										Please enter valid Date.
+									</p>
+								</div>
+							</div>
+						</div>
+						
+
+						<div class="row marginTop10 marginBottom10 width95 marginZeroAuto"
+							id="">
+							
+							
+								<div class="floatLeft">
+									<div class="field-1 marginTop5">
+										<label class="required color333333">Full Name</label>
+									</div>
+								</div>
+								<div class="floatLeft" id="">
+									<input id="name" size="35"
+										class="form_input_2 marginLeft15 paddingLeft5 color333333"
+										name="name" value="" type="text" autocomplete="off"> <img
+										class="infoIcon_3" src="resources/images/icon_info.png"
+										alt="Icon for Information" id="helpText3" /> <br>
+
+
+
+									<div class="content-body-txt marginLeft15"
+										style="display: block;" id="userName_sugg">
+										<p class="alert-msg colorcc6600 " style="margin: 6px 0 0 0px;">Full
+											name as registered in your Aadhaar</p>
+									</div>
+
+
+
+								</div>
+							
+
+							<div class="marginLeft15 floatLeft userNameError"
+								style="display: none;">
+								<p class="alert-msg"
+									style="margin: 6px 0 0 223px; color: red !important;">
+									<img alt="Warning" src="resources/images/small_warning.png">
+									Please enter your correct Name as registered in your Aadhaar.
+								</p>
+							</div>
+
+						</div>
+						<div class="row marginTop10 marginBottom10 width95 marginZeroAuto"
+							id="">
+							<div class="floatLeft">
+								<div class="field-1 marginTop5">
+									<label class="required color333333">Pin Code</label>
+								</div>
+							</div>
+							
+							
+
+								<div class="floatLeft" id="">
+									<input id="pinCode"
+										class="form_input_1 marginLeft15 paddingLeft5 color333333"
+										name="pinCode" maxlength="6" value="" autocomplete="off"
+										style="width: 90px;" type="text"> <img
+										class="infoIcon_4" id="helpText4"
+										src="resources/images/icon_info.png"
+										alt="Icon for Information" /> <br>
+									<div class="res-alert-msg marginLeft15 pinCodeError"
+										style="display: none;">
+										<p class="alert-msg" style="color: red !important;">
+											<img alt="Warning" src="resources/images/small_warning.png">Please
+											enter correct Pin Code.
+										</p>
+									</div>
+									<div class=" content-body-txt colorcc6600 marginLeft15"
+										id="pinCode_sugg" style="display: block;">
+										<p class="alert-msg colorcc6600 " style="margin: 6px 0 0 0px;">
+											Pincode</p>
+									</div>
+								</div>
+							
+						</div>
+
+						<hr />
+						<div class="aui-layout positionRelative" id="">
+							<div class="aui-layout-content positionRelative-content " id="">
+								<div class="row marginBottom10 width95 marginZeroAuto" id="">
+									<div class="floatLeft">
+										<div class="field-1 marginTop20">
+											<label class="required color333333">Enter Security
+												Code</label>
+										</div>
+									</div>
+									<div class="floatLeft" id="">
+										<img id="imgCaptcha" name="imgCaptcha" alt="Image Captcha"
+											class="captcha" src=""> <span class="" id=""> <label
+											class="aui-field-label content-body-txt color999999">Unable
+												to View or Read? <span class="aui-label-required"><a
+													class="captcha-reload" onclick="DrawCaptcha();"
+													alt="refresh"
+													style="text-decoration: underline; cursor: pointer;">Try Another. 
+													</a><input type="hidden" name="imgText" id="imgText"></span>
+										</label> <span
+											class="aui-field-element  floatLeft marginLeft15 marginRight15"
+											id=""> <label class="aui-form-validator-stack-error"
+												id=""></label> <input
+												style="width: 95px; margin: 18px 0 0 0;"
+												class="form_input_1 paddingLeft5 color333333 aui-field-input aui-field-input-text aui-form-validator-error"
+												name="txtInput" id="txtInput" type="text" value="" size="10"
+												maxlength="6" aria-required="true" autocomplete="off">
+										</span>
+										</span> <br>
+										<div class="res-alert-msg marginLeft15 captchaError"
+											style="display: none;">
+											<p class="alert-msg" style="color: red !important;">
+												<img alt="Warning" src="resources/images/small_warning.png">
+												Please enter correct Captcha Code.
+											</p>
+										</div>
+										<div class=" content-body-txt colorcc6600 marginLeft15"
+											id="captcha_sugg" style="display: block;">
+											<p class="alert-msg colorcc6600 "
+												style="margin: 6px 0 0 0px;">Please enter 6 digit
+												Captcha Code.</p>
+										</div>
+									</div>
+									
+									
+								</div>
+							</div>
+
+							<hr />
+
+							
+
+							<div class="row marginTop15 marginBottom0 width95 marginZeroAuto"
+								id="">
+								<div class="floatLeft">
+									<div class="field-1 marginTop5">
+										<label class="required color333333">Do you have TOTP</label>
+									</div>
+								</div>
+
+								
+									
+
+									
+										<div class="floatLeft" id="">
+											<div class="cntr marginLeft15">
+												<label for="cbx" class="label-cbx"> <input id="TOTP"
+													type="checkbox" name="TOTP" value="TOTP" class="invisible"
+													onclick="checkboxTotp(this);"> <!-- <div class="checkbox">
+											<svg width="15px" height="15px" viewBox="0 0 20 20"> <path
+												d="M3,1 L17,1 L17,1 C18.1045695,1 19,1.8954305 19,3 L19,17 L19,17 C19,18.1045695 18.1045695,19 17,19 L3,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,3 L1,3 C1,1.8954305 1.8954305,1 3,1 Z"></path>
+											<polyline points="4 11 8 15 16 6"></polyline> </svg>
+										</div> --> <span class="color999999">Yes, I have TOTP.
+														Do not send me OTP. </span> <img class="infoIcon_5"
+													id="helpText5" src="resources/images/icon_info.png"
+													alt="Icon for Information" />
+												</label>
+											</div>
+											<br>
+										</div>
+									
+								
+
+
+
+							</div>
+
+							
+
+
+							<div id="mobileDiv" class="full-clear">
+								<div class="inn-row-1">
+									<div class="en-num-box">
+										<font class="f-name-text">Mobile number</font> <font
+											color="red">*</font>
+									</div>
+									<div class="r-input-col-2">
+										<input type="text" name="mobileNum" id="mobileNum"
+											autocomplete="off">
+									</div>
+									<div class="clear"></div>
+								</div>
+							</div>
+
+
+
+
+						</div>
+					</div>
+
+
+					<div class="textAlignCenter floatLeft width100 marginTop15"
+						id="resendOtpBut_wrapper" style="display: none;">
+						<input type="button" class="blueButton"
+							onclick="validatePersonalDetailsForResendOTP()"
+							value="Resend OTP" id="resendOtpBut" name="resendOtpBut">
+					</div>
+
+					<div
+						class="textAlignCenter floatLeft width100 marginTop15 otpButtonWrapper">
+						<input id="otpBut" name="otpBut" class="blueButton dialogClick"
+							value="Request OTP" type="button"
+							onclick="validatePersonalDetails()">
+					</div>
+
+					<div
+						class="row marginTop15 marginBottom15 floatLeft width100 errorClass"
+						id="noteDiv">
+						<p class="textAlignCenter colorcc6600 fontSize12">
+							Note : one-time password (OTP) will be sent to your <strong>
+								Registered Mobile Number.</strong> or in case you have m-Aadhaar you can
+							generate <strong>TOTP</strong>
+						</p>
+					</div>
+
+					<div
+						class="row marginTop15 marginBottom15 floatLeft width100 errorClass"
+						style="display: none;" id="noteDiv1">
+						<p class="textAlignCenter colorcc6600 fontSize12">
+							Note : By opting for TOTP you have requested not to send OTP to
+							your Mobile. If you wish to send request for OTP uncheck the TOTP
+							option. <strong>Enter TOTP generated in your m-Aadhaar
+								to download your Aadhaar.</strong>
+						</p>
+					</div>
+
+
+					<div
+						class="width100 backgroundffffff borderAll1pxe8eaec floatLeft marginTop20 otpBottomBox"
+						id="">
+						<h2
+							class="fontSize15 fontWeightNormal color336699 backgroundf9fafb paddingAll8">Login
+							using Aadhaar</h2>
+
+						<div
+							class="row marginTop15 marginBottom15 marginBottom10 width95 marginZeroAuto"
+							id="">
+							<div class="floatLeft">
+								<div class="field-1 marginTop5">
+									<label class="required color333333">Enter OTP</label>
+								</div>
+							</div>
+							
+							
+							<div class="floatLeft" id="">
+								<input id="otpField"
+									class="form_input_1 marginLeft15 paddingLeft5 color333333"
+									name="otpField" value="" style="width: 90px;" type="text"
+									maxlength="6" autocomplete="off" disabled="disabled"> <br>
+
+								<div class="res-alert-msg marginLeft15 otpError"
+									style="display: none;">
+									<p class="alert-msg" style="color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">
+										Please enter correct otp.
+									</p>
+								</div>
+								<div class=" content-body-txt colorcc6600 marginLeft15"
+									id="otp_sugg" style="display: block;">
+									<p class="alert-msg colorcc6600 " style="margin: 6px 0 0 0px;">
+										Please enter 6 digit OTP.</p>
+								</div>
+								</div>
+							
+							
+						</div>
+						<hr />
+						<div class="textAlignCenter width100 floatLeft marginTop15">
+							<input name="saveBut" id="saveBut" class="grayButtonDisable" disabled="disabled"
+								value="Download Aadhaar" type="button"
+								onClick="downloadLetter()">
+						</div>
+
+						<ul class="width95 floatRight textAlignRight marginRight10">
+
+							<li id="reset" onclick="reloadSession()">Cancel</li>
+						</ul>
+					</div>
+
+					<div
+						class="width100 backgroundffffff borderAll1pxe8eaec floatLeft marginTop20 totpBottomBox"
+						style="display: none;" id="">
+						<h2
+							class="fontSize15 fontWeightNormal color336699 backgroundf9fafb paddingAll8">Login
+							using Aadhaar</h2>
+
+						<div
+							class="row marginTop15 marginBottom15 marginBottom10 width95 marginZeroAuto"
+							id="">
+							<div class="floatLeft">
+								<div class="field-1 marginTop5">
+									<label class="required color333333">Enter TOTP</label>
+								</div>
+							</div>
+							<div class="floatLeft" id="">
+								<input type="text" id="otpField1"
+									class="form_input_1 marginLeft15 paddingLeft5 color333333"
+									name="otpField1" style="width: 90px;" autocomplete="off"
+									maxlength="8"> <br>
+
+								<div class="res-alert-msg marginLeft15 totpError"
+									style="display: none;">
+									<p class="alert-msg" style="color: red !important;">
+										<img alt="Warning" src="resources/images/small_warning.png">
+										Please enter correct TOTP.
+									</p>
+								</div>
+								<div class=" content-body-txt colorcc6600 marginLeft15"
+									id="totp_sugg" style="display: block;">
+									<p class="alert-msg colorcc6600 " style="margin: 6px 0 0 0px;">
+										Please enter 8 digit TOTP.</p>
+								</div>
+							</div>
+						</div>
+						<hr />
+						<div class="textAlignCenter width100 floatLeft marginTop15">
+							<input type="button" name="saveBut" id="saveButTotp"
+								class="greenButton" value="Download Aadhaar" type="submit"
+								onClick="validatePersonalDetails_TOTP()">
+						</div>
+
+						<ul class="width95 floatRight textAlignRight marginRight10">
+
+							<li id="reset" onclick="reloadSession()">Cancel</li>
+						</ul>
+					</div>
+				</div>
+				<div
+					class="width30 floatRight paddingRight10 paddingTop15 paddingBottom15 borderLeft1pxe8eaec paddingLeft10">
+					<h2 class="fontSize20 fontWeightBold color336699 marginBottom10">
+						About E-Aadhaar Portal
+						</h1>
+
+						<p class="marginBottom15">This portal is a single web window
+							from where residents can download the electronic copy of their
+							Aadhaar by providing their EID or UID.</p>
+
+						<h2 class="fontWeightNormal marginBottom5">
+							FAQs:
+							</h1>
+							<ul class="faqList">
+
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What is e-Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">Is e-Aadhaar equally valid like physical
+										copy of Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What should I know before Downloading
+										Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What is EID?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What is UID?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">How can Resident download e-Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">Why is Registered Mobile mandatory for
+										downloading Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What is TOTP? </a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">Why to use TOTP?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">How TOTP is generated?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">How to configure?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What supporting software needed to open
+										e-Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">What Is the Password of e-Aadhaar?</a></li>
+								<li><a
+									href="https://uidai.gov.in/your-aadhaar/help/faqs.html"
+									target="_blank">How to validate digital signatures in
+										e-Aadhaar?</a></li>
+
+
+							</ul>
+
+							<h2 class="fontWeightNormal marginBottom5 marginTop20">
+								View Demo:
+								</h1>
+
+								<p class="fontSize14">How to Download Aadhaar</p>
+
+								<iframe width="100%" height="100%"
+									src="https://www.youtube.com/embed/FBLL9NJ-jnQ" frameborder="0"
+									allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+								<p class="floatRight clear-div">
+									<a href="https://www.youtube.com/embed/FBLL9NJ-jnQ"
+										target="_blank">View on YouTube</a>.
+								</p>
+								<p class="fontSize14 clear-div">Aadhaar TOTP</p>
+
+								<iframe width="100%" height="100%"
+									src="https://www.youtube.com/embed/xgxqvNHMZe0" frameborder="0"
+									allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+								<p class="floatRight">
+									<a href="https://www.youtube.com/embed/xgxqvNHMZe0"
+										target="_blank">View on YouTube</a>.
+								</p>
+				</div>
+
+
+				<!--<div class="class="width30 floatLeft paddingAll20 backgrounda3d9e8">
+
+<p class="standeredPara marginTop10 marginLeft15 marginRight80">
+										Aadhaar Enrolment is free of cost. You can enrol for Aadhaar at any Aadhaar Enrolment Center in the country. To enrol you are required to visit an Enrolment Centre. At the centre fill and submit the Enrolment Form (which asks for minimal demographic information such as name, age/DoB, gender, address, mobile number and email), get your Biometric data captured and submit the requisite <strong class="darkBlue"><a href="resources/pdf/valid_documents_list.pdf" target="_blank">documents</a></strong>. The biometric data comprises of facial photograph+ ten fingerprints + two iris scans.</p>
+
+</div>-->
+			</div>
+
+
+
+		<input type="hidden" name="CSRFToken" value="bbe4d6fa-5059-49cb-86f9-9402fbc5c49f" />
+</form>
+		 
+       
+	</div>
+	
+
+	<!--  End Middle Content  -->
+
+	<!--  Start Footer  -->
+
+	<!-- Footer Code Begin -->
+
+<div class="footer-sec-main">
+
+
+		<footer class="bottom-footer">
+			<div class="row container foot-sec-menu"></div>
+			<div class="copyright-wrapper">
+				<!--copyright-wrapper starts-->
+				<div class="copyright-box">
+					<!--copyright-box start-->
+					<div class="copy-info f-left cia">
+						<p class="floatLeft clear-div">
+						<ul class="foot-nav marginTop5 floatLeft leftFooter">
+							<li><a href="https://uidai.gov.in/media-center/aadhaar-in-news/aadhaar-in-prints.html" target="_blank">News </a> &nbsp;|&nbsp;</li>
+							<li><a href="https://uidai.gov.in/resources/uidai-documents/tenders.html" target="_blank">Tenders </a> &nbsp;|&nbsp;</li>
+							<li><a href="https://uidai.gov.in/about-uidai/right-to-information.html" target="_blank">RTI </a>&nbsp;|&nbsp;</li>
+							<!-- <li><a href="mailto:help@uidai.gov.in">Help </a>&nbsp;|&nbsp;</li> -->
+							<li><a href="https://uidai.gov.in/website-policies.html" target="_blank">Website Policy </a>&nbsp;|&nbsp;</li>
+							<li><a href="https://ras.gov.in/providefeedbackuidai" target="_blank">Feedback </a></li>
+
+						</ul>
+						</p>
+						<p class="floatLeft clear-div">
+							<a href="javascript:void(0)"
+								class="marginTop5 floatLeft marginLeft3"><strong>Copyright
+									&copy; 2013 UIDAI All Rights Reserved </strong>  This website is best
+								viewed in 1366x768 screen resolution.&nbsp; Supports:&nbsp; Firefox 5.0+&nbsp; Google Chrome 5.0+&nbsp; InternetExplorer 11.0+ </a>
+						</p>
+					</div>
+					<div class="copy-info f-right">
+						<p class="floatRight clear-div">
+						<ul class="foot-nav marginTop5 floatRight leftFooter">
+							<li><a target="_blank" href="https://www.india.gov.in/"
+								class="fontWeightBold">National Portal </a> &nbsp;|&nbsp;</li>
+							<li><a target="_blank" href="https://www.gst.gov.in/"
+								class="fontWeightBold">My Gov </a></li>
+
+
+						</ul>
+						</p>
+
+						<p class="floatRight clear-div">
+						<ul class="foot-nav">
+							<li><a href="#">Version &nbsp;1.0,</a></li>
+							<li><a href="#">March, 2018 </a></li>
+
+						</ul>
+						</p>
+					</div>
+				</div>
+				<!--copyright-box ends-->
+			</div>
+
+		</footer>
+	</div>
+
+
+<!-- Footer Code End -->
+
+
+
+
+
+
+
+	<!--  End Footer  -->
+
+
+
+
+
+
+
+	<div class="helpBox1" id="helpbox1"
+		style="position: absolute; top: 363px; left: 702px; display: none;"></div>
+	<div class="helpBox2" id="helpbox2"
+		style="position: absolute; top: 363px; left: 702px; display: none;"></div>
+	<div class="helpBox3" id="helpbox3"
+		style="position: absolute; top: 363px; left: 702px; display: none;"></div>
+	<div class="helpBox4" id="helpbox4"
+		style="position: absolute; top: 363px; left: 702px; display: none;"></div>
+	<div class="helpBox5" id="helpbox5"
+		style="position: absolute; top: 363px; left: 702px; display: none;"></div>
+
+	<script type="text/javascript">
+		initToolTip();
+	</script>
+
+	
+	<div class="overlay" id="overlay" style="display: none;"></div>
+	<div class="box" id="box" align="left">
+		<a class="boxclose" id="boxclose"></a>
+		<h2>Steps to Validate Digital Signatures</h2>
+		<Strong style="font-size: 1.2em">Computer must be connected
+			to internet while validating digital signature.</Strong>
+		<ol>
+			<li>Right click on the 'validity unknown' icon and click on
+				'Validate Signature'.</li>
+			<li>You will get the signature validation status window, click
+				on 'Signature Properties'.</li>
+			<li>Click on 'Show Certificate..'</li>
+			<li>Verify that there is a certification path named 'NIC sub-CA
+				for NIC 2011, National Informatics Center'. This identifies 'NIC
+				sub-CA for NIC 2011, National Informatics Center' as the owner of
+				the digital certificate that has been used when signing the
+				document.</li>
+			<li>Mark the certification path named 'NIC sub-CA for NIC 2011,
+				National Informatics Center', click the 'Trust' tab and then 'Add to
+				Trusted Identities'.</li>
+			<li>Answer 'OK' to any security question that follows.</li>
+			<li>Check(&#x2713;) the field for 'Use this certificate as a
+				trusted root' and click 'OK' twice to close this and the next
+				window.</li>
+			<li>Click 'Validate Signature' to execute the validation.</li>
+		</ol>
+
+		<B>Note: </B>- Once 'NIC sub-CA for NIC 2011, National Informatics
+		Center' has been as a Trusted Identity, any subsequent documents with
+		digital signatures from CCA will be validated automatically when
+		opened.
+
+	</div>
+	<div class="otpBox" id="otpBox" align="left">
+		<h2>One Time Password</h2>
+		<br>
+		<div style="display: inline; color: red; font-size: 1.2em;"
+			id="otpMessage"></div>
+		<br> <br>
+		<ol>
+			<li>If you have access to this mobile number, Please press <B><U>'Confirm'</U></B>
+				button .
+			</li>
+			<li>Else press <B><U>'Cancel'</U></B> button and Use EID to
+				download e-Aadhaar letter
+			</li>
+
+		</ol>
+		<br>
+		<center>
+			<input type="button" value="Confirm" id="otpConfirmButton"
+				onclick="sendOTPtoRegisteredMobile()" class="confirmbtn" /> <input
+				type="button" value="Cancel" id="otpBoxclose" class="confirmbtn" onclick="reloadSession()" />
+		</center>
+	</div>
+	
+	
+
+	<!--Bug ID: 27605 
+		 Desctiption: Resend OTP Functionality in eAadhaar **/  -->
+
+	<div class="otpBox" id="resendOtpBox" align="left">
+		<h2>One Time Password</h2>
+		<br>
+		<div style="display: inline; color: red; font-size: 1.2em;"
+			id="resendOTPMessage"></div>
+		<br> <br>
+		<ol>
+			<li>If you have access to this mobile number, Please press <B><U>'Confirm'</U></B>
+				button .
+			</li>
+			<li>Else press <B><U>'Cancel'</U></B> button and Use EID to
+				download e-Aadhaar letter
+			</li>
+
+		</ol>
+		<br>
+		<center>
+			<input type="button" value="Confirm" id="resendotpConfirmButton"
+				onclick="resendOTPtoRegisteredMobile()" class="confirmbtn" /> <input
+				type="button" value="Cancel" id="resendOTPBoxClose"
+				class="confirmbtn" />
+		</center>
+	</div>
+	<!-- <div class="videoBox" id="videoBox" align="left">
+			<h2>How to validate digital signatures in e-Aadhaar?</h2>
+			<a class="boxclose" id="videoBoxClose"></a>
+			<div id="videoPlayerDiv"></div>
+		</div> -->
+	<!-- The JavaScript -->
+
+	<script type="text/javascript">
+		$(function() {
+			$('#activator').click(function() {
+				$('#overlay').fadeIn('fast', function() {
+					$('#box').animate({
+						'top' : '90px'
+					}, 500);
+				});
+			});
+			$('#boxclose').click(function() {
+				$('#box').animate({
+					'top' : '-700px'
+				}, 500, function() {
+					$('#overlay').fadeOut('fast');
+				});
+			});
+			$('#otpBoxclose').click(function() {
+				$('#otpBox').animate({
+					'top' : '-700px'
+				}, 500, function() {
+					$('#overlay').fadeOut('fast');
+				});
+				document.getElementById("otpBut").disabled = false;
+			});
+			$('#resendOTPBoxClose').click(function() {
+				$('#resendOtpBox').animate({
+					'top' : '-700px'
+				}, 500, function() {
+					$('#overlay').fadeOut('fast');
+				});
+				document.getElementById("otpBut").disabled = true;
+				document.getElementById("resendOtpBut").disabled = false;
+			});
+			$('#videoActivator')
+					.click(
+							function() {
+								if (navigator.userAgent.indexOf('Chrome') != -1) {//Chrome
+									document.getElementById("videoPlayerDiv").innerHTML = "<video width='600' height='360' controls><source src='resources/how_to_validate_digital_Signature.webm' type='video/webm' /></video>";
+
+								} else {
+									document.getElementById("videoPlayerDiv").innerHTML = "<video width='600' height='400' controls><source src='resources/how_to_validate_digital_Signature.mp4' type='video/mp4' /><source src='resources/how_to_validate_digital_Signature.webm' type='video/webm' /></video>"
+								}
+								$('#overlay').fadeIn('fast', function() {
+									$('#videoBox').animate({
+										'top' : '90px'
+									}, 500);
+								});
+							});
+			$('#videoBoxClose').click(function() {
+				$('#videoBox').animate({
+					'top' : '-700px'
+				}, 500, function() {
+					$('#overlay').fadeOut('fast');
+				});
+				document.getElementById("videoPlayerDiv").innerHTML = "";
+			});
+		});
+	</script>
+	
+
+
+
+	</div>
+	<div class="p_anch" style="display: none;">
+		<a href="#" class="lal js__p_start">click</a>
+	</div>
+
+	<div class="popup js__popup js__slide_top">
+		<a href="#" class="p_close js__p_close" title=""> <span></span><span></span>
+		</a>
+		<div class="p_content">
+			<!--  <a href="https://uidai.gov.in/images/MyAadhaarFilm_Contest_TC.pdf"
+				target="_blank"><img style="float: left;" width="" alt=""
+				src="https://uidai.gov.in/images/contest_alert_popup_combine_without_slice_02.gif" /></a>
+			<a
+				href="https://uidai.gov.in/images/AadhaarMakesItEasy_Terms_Conditions.pdf"
+				target="_blank"><img style="float: left;" width="" alt=""
+				src="https://uidai.gov.in/images/contest_alert_popup_combine_without_slice_03.gif" /></a>
+			-->
+			<img class="bannerImg" alt="Banner"
+				src="https://uidai.gov.in/images/eAadhaar_password_change_pop_up_banner.jpg"
+				alt="New e-Aadhaar password will be of 8 characters Ã¢â¬â first four letters of your name in UPPERCASE and year of birth in YYYY format."
+				title="New e-Aadhaar password will be of 8 characters Ã¢â¬â first four letters of your name in UPPERCASE and year of birth in YYYY format." />
+			<!-- <div class="popup-cnt">
+						<h3>The E-Aadhaar letter pdf password will be of 8 characters </h3>
+
+		<p>Combination of the first 4 letters of name in CAPITAL and the year of birth(YYYY).</p>
+		 
+		<h4>For Example,</h4>
+		 <ul>
+			<li>If the name appears on the aadhaar card as SURESH KUMAR and year of birth (YYYY) is 1990 then the password would be SURE1990</li>
+	
+			<li>If the name appears on the aadhaar card as SAI KUMAR and year of birth (YYYY) is 1990 then the password would be SAIK1990</li>
+	
+			<li>If the name appears on the aadhaar card as P. Kumar and year of birth (YYYY) is 1990 then the password would be P.KU1990</li>
+	
+			<li>InCase name only contains length less than four character like RIA and YOB 1990, then password will be RIA1990</li>
+		</ul>
+			</div> -->
+		</div>
+		<!--<a href="https://uidai.gov.in/images/aadhaar_star_contest_terms_conditions_08042017.pdf" style="    font-size: 14px; margin: 0 0 0 10px;text-decoration: none;" target="_blank">Download Contest Rules and Regulations</a>-->
+	</div>
+
+	<!-- <a style="font-size: 14px; margin: 0 0 0 10px; text-decoration: none;"
+		href="https://uidai.gov.in/images/aadhaar_star_contest_terms_conditions_08042017.pdf"
+		target="_blank">Download Contest Rules and Regulations</a> -->
+	<br />
+	</div>
+
+
+
+       <script type="text/javascript">
+		$(document).ready(function() {
+			$(".js__p_start, .js__p_another_start").simplePopup();
+			$(".js__p_start").click();
+		});
+	</script>
+    
+    
+    
+     
+
+	<!-- <script type="text/javascript">
+		$(document).ready(function() {
+			$(".js__p_start, .js__p_another_start").simplePopup();
+			$(".js__p_start").click();
+		});
+	</script> -->
+
+
+</body>
+</html>
