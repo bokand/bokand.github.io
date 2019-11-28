@@ -31,19 +31,23 @@
 
 
   i.addEventListener('input', (e) => {
-    console.log('input: ' + e);
+    console.log('input: ');
+    console.log(e);
     add(e, 'input');
   });
   i.addEventListener('keydown', (e) => {
-    console.log('keydown: ' + e);
+    console.log('keydown: ');
+    console.log(e);
     add(e, 'keydown');
   });
   i.addEventListener('keyup', (e) => {
-    console.log('keyup: ' + e);
+    console.log('keyup:');
+    console.log(e);
     add(e, 'keyup');
   });
   i.addEventListener('keypress', (e) => {
-    console.log('keypress: ' + e);
+    console.log('keypress: ')
+    console.log(e);
     add(e, 'keypress');
   });
 </script>
