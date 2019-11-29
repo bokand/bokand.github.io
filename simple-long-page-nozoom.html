@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+<style>
+  body {
+    height: 800vh;
+    background: repeating-linear-gradient(
+      0deg,
+      lightgrey,
+      lightgrey 200px,
+      grey 200px,
+      grey 400px
+    );
+  }
+</style>
+<script>
+  function handle(e) {
+    var touches = "[ ";
+    for(t of e.changedTouches) {
+      touches += t.identifier + " ";
+    }
+    touches += "]";
+
+    const log = e.type + " change: " + touches;
+
+    console.log(log);
+    document.body.innerHTML += "<br>" + log;
+  }
+
+  addEventListener('touchstart', handle, {passive:true});
+  addEventListener('touchend', handle, {passive:true});
+  //addEventListener('touchmove', handle, {passive:true});
+  addEventListener('touchcancel', handle, {passive:true});
+</script>
