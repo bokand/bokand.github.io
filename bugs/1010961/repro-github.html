@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      .diffbar {
+        height: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff
+      }
+
+      .is-stuck .diffbar {
+        height: auto;
+        padding-top: 8px;
+        padding-bottom: 0
+      }
+
+      .pr-toolbar {
+        position: sticky;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body style="height: 10000px">
+    <div class="pr-toolbar js-sticky" style="position: sticky;">
+      <div style="width:100px; height: 20px; background-color: red" class="diffbar">
+      </div>
+    </div>
+    <script src="https://github.githubassets.com/assets/frameworks-e4aa17e0.js"></script>
+  </body>
+</html>
