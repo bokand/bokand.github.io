@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width">
+<p>
+  This page holds a reference to its opener. Opener's current location is:
+  <div id="location">
+    Initializing...
+  </div>
+</p>
+<script>
+  onload = () => {
+    let opener = window.opener;
+    setInterval(() => {
+      try {
+        document.getElementById('location').innerText = opener.location.href;
+      } catch (e) {
+        document.getElementById('location').innerText = e;
+      }
+
+    }, 1000);
+  };
+</script>
