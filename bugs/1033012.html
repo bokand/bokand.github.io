@@ -1,0 +1,32 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+	position:relative;
+	height:3000px;
+}
+.space{
+	height:30px;
+	width:30px;	
+}
+.outer{
+	position:absolute;
+	right:-50px;
+	width:100px;
+	height:100px;
+	background:blue;
+}
+</style>
+<body>
+<div class="space">1</div>
+<div class="space">2</div>
+<div class="space">3</div>
+<div class="space">4</div>
+<div class="space">5</div>
+<div class="space">6</div>
+
+<div class="outer"></div>
+
+<div onclick="window.scroll(0, 30);">Scroll</div>
+</body>
+</html>
