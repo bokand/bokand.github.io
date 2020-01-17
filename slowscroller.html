@@ -57,6 +57,7 @@
 
     <script>
       let shoudJank = false;
+      let shouldSpin = true;
       let spinnerDegrees = 0;
       const jankMs = 1000;
 
@@ -92,14 +93,21 @@
           scroller.classList = 'fast';
       }
 
+      function spinnerChanged() {
+        shouldSpin = spinnerButton.checked;
+        spin();
+      }
+
       function spin() {
         spinnerDegrees = (spinnerDegrees + 3) % 360;
         spinner.style.transform = 'rotateZ(' + spinnerDegrees + 'deg)';
-        requestAnimationFrame(spin);
+        if (shouldSpin)
+          requestAnimationFrame(spin);
       }
 
       addEventListener('load', () => {
         jankButton = document.getElementById('jankbutton');
+        spinnerButton = document.getElementById('spinbutton');
         slowScrollerButton = document.getElementById('slowbutton');
         spinner = document.getElementById('spinner');
         scroller = document.getElementById('scroller');
@@ -110,10 +118,11 @@
 
         jankButton.onchange = jankChanged;
         slowScrollerButton.onchange = scrollerChanged;
+        spinnerButton.onchange = spinnerChanged;
 
         jankChanged();
         scrollerChanged();
-        spin();
+        spinnerChanged();
       });
     </script>
   </head>
@@ -128,6 +137,7 @@
     </div>
     <input id="jankbutton" type="checkbox">Introduce Periodic Jank</input>
     <input id="slowbutton" type="checkbox" checked>Slow Scroller</input>
+    <input id="spinbutton" type="checkbox" checked>Activity Spinner</input>
     <div id="spinner"></div>
   </body>
 </html>
