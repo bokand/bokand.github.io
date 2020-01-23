@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css">
+<style>
+*
+{
+	box-sizing: border-box;
+}
+
+html
+{
+	margin-left: 200px;
+	margin-right: -200px;
+}
+body
+{
+	font: 14px sans-serif;
+}
+p.space
+{
+	padding-bottom: 150px;
+}
+
+aside
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 10px;
+	background: #eeeeee;
+	touch-action: pan-y;
+	overflow-y: auto;
+	width: 59px;
+}
+aside.a1
+{
+	height: 100vh;
+	border: 2px solid red;
+}
+aside.a2
+{
+	left: 60px;
+	bottom: 0;
+	border: 2px solid skyblue;
+}
+aside.a3
+{
+	left: 120px;
+	height: 200px;
+	border: 2px solid green;
+}
+</style>
+</head>
+<body>
+
+<p>Main content</p>
+<p class="space">more content</p>
+<p class="space">more content</p>
+<p class="space">more content</p>
+<p class="space">more content</p>
+<p class="space">more content</p>
+<p class="space">more content</p>
+<p>end content</p>
+
+<aside class="a1">
+	A1
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p>end</p>
+</aside>
+<aside class="a2">
+	A2
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p class="space">more</p>
+	<p>end</p>
+</aside>
+<aside class="a3">
+	A3
+</aside>
+
+<script>
+window.addEventListener("resize", function () {
+	document.querySelector(".a3").innerHTML += "<br>" + document.documentElement.clientHeight;
+	document.querySelector(".a3").style.height = document.documentElement.clientHeight + "px";
+});
+</script>
+
+</body>
+</html>
