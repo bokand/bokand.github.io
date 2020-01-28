@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+.wrapper {
+  position: relative;
+  top: 0px;
+}
+
+.sampleBox {
+  position: relative;
+  left: 0px;
+  width: 400px;
+  background-color: rgb(245, 170, 140);
+  border: 2px solid rgb(201, 126, 17);
+  padding: 4px;
+  margin-bottom: 6px;
+}
+
+#box {
+  height: 160px;
+}
+</style>
+</head>
+<body>
+
+
+<main>
+<div class="wrapper">
+  <div class="sampleBox" id="box">Some good Ads.
+  </div>
+</div>
+</main>
+<script>
+setTimeout(() => {
+let observers;
+
+startup = () => {
+  let wrapper = document.querySelector(".wrapper");
+
+  let observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: []
+  };
+
+  observerOptions.threshold = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+  observers = new IntersectionObserver(intersectionCallback, observerOptions);
+  observers.observe(document.querySelector("#box"));
+
+}
+
+intersectionCallback = (entries) => {
+  entries.forEach((entry) => {
+    if(entry.intersectionRect.height == 0){
+      alert("Found: Jun Kokatsu");
+
+    }else{
+      alert("Nothing Found");
+    }
+
+    observers.unobserve(document.querySelector("#box"));
+  });
+}
+
+startup();
+}, 500);
+</script>
+
+
+</body>
+</html>
