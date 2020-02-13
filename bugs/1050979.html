@@ -1,50 +1,56 @@
-<html lang="en-US" edition="" class="touch"><head>
-  <title>Quick, Draw!</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-</head>
-<body style="
-    margin: 0;
-    padding: 0;
-    overflow: hidden;">
-<div id="content-wrapper" style="
-    position: absolute;
-    min-width: 300px;
-    min-height: 300px;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;">
-<div id="splashview" style="
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;">
-    <div class="ui bl" style="
-    left: 32px;
-    bottom: 22px;
-    max-width: calc(45% - 32px);
-    position: absolute;">
-        <a href="https://experiments.withgoogle.com/ai">
-          <div class="corp-logo" style="
-            background-color: red;
-            background-repeat: no-repeat;
-            background-size: contain;
-            width: 495px;
-            height: 30px;"></div>
-        </a>
+<html lang="en-US" edition="" class="touch">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  </head>
+  <body style="margin: 0;
+              padding: 0;
+              overflow: hidden;">
+    <div id="content-wrapper" style="
+        position: absolute;
+        min-width: 300px;
+        min-height: 300px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;">
+      <div id="splashview" style="
+                                  width: 100%;
+                                  height: 100%;
+                                  text-align: center;
+                                  position: absolute;
+                                  display: flex;
+                                  flex-direction: column;
+                                  align-items: center;
+                                  justify-content: space-around;">
+        <div class="ui br" id="privacy-link" style="
+                                                    font-size: 13px;
+                                                    width: 120px;
+                                                    color: #dedede;
+                                                    text-align: right;
+                                                    font-family: 'Karla', sans-serif;
+                                                    right: 32px;
+                                                    bottom: 22px;
+                                                    max-width: calc(45% - 32px);
+                                                    position: absolute;">
+          <select id="select-locale" style="visibility: visible;margin-bottom: 15px;height: 26px;width: 170px;padding: 0;">
+              <option value="en_US">English</option>
+              <option value="ar">Arabic</option>
+              <option value="de">German</option>
+              <option value="es">Spanish (Spain)</option>
+              <option value="es_US">Spanish</option>
+              <option value="fr">French</option>
+              <option value="it">Italian</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="pt_BR">Portuguese (Brazil)</option>
+              <option value="pt_PT">Portuguese (Portugal)</option>
+              <option value="ru">Russian</option>
+              <option value="zh_CN">Chinese (Simplified)</option>
+              <option value="zh_HK">Chinese (Hong Kong)</option>
+              <option value="zh_TW">Chinese (Taiwan)</option>
+          </select>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</body>
-<script>
-  window.onclick = () => {
-    document.getElementsByTagName('a')[0].scrollIntoView();
-    console.log("content-wrapper Scroll Width: " + document.getElementById('content-wrapper').scrollWidth);
-    console.log("corp-logo Client Width: " + document.querySelector('.corp-logo').clientWidth);
-  };
-</script>
+  </body>
 </html>
