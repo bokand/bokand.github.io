@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 THIS PAGE WILL SELF NAVIGATE IN A MOMENT
-<a id="link" href="destination-nav.html">Don't wait!</a>
+<a id="link" href="destination-nav.html#:~:text=HERE">Don't wait!</a>
 <script>
   setTimeout(() => {
-    document.getElementById("link").click();
+    history.forward();
+    setTimeout( () => {
+      document.getElementById("link").click();
+    });
   }, 5000);
 </script>
