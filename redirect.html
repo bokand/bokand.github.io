@@ -5,8 +5,13 @@
     font-size: xx-large;
   }
 </style>
-<a href="js-raf-redirect.html">JS Redirect After RAF</a>
+<script>
+  function openNew() {
+    window.open("js-redirect.html", "_blank", "noopener");
+  }
+</script>
 
-<a href="js-redirect.html">JS Redirect immediate</a>
-
-<a href="meta-redirect.html">Meta refresh</a>
+<p><a href="js-raf-redirect.html">JS Redirect After RAF</a></p>
+<p><a href="js-redirect.html">JS Redirect immediate</a></p>
+<p><a href="meta-redirect.html">Meta refresh</a></p>
+<p><a href="" onclick="openNew();">Window Open + JS Redirect</a></p>
