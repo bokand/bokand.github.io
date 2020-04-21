@@ -11,7 +11,12 @@
   }
 
   function openBlank() {
-    window.open("", "_blank", "noopener");
+    const win = window.open("", "_blank", "");
+    //newWin.document.write('<meta http-equiv="Refresh" content="0; URL=textbox.html#:~:text=fasd-,asdlfkjalksdfjalskdjflaksdjflkasjd">');
+    //requestAnimationFrame(() => {
+      win.document.write('<meta name=\"referrer\" content=\"no-referrer\"><meta http-equiv=\"refresh\" content=\"0; url=http://bokand.github.io/textbox.html#:~:text=fasd-,asdlfkjalksdfjalskdjflaksdjflkasjd\">');
+      win.document.close();
+    //});
   }
 </script>
 
@@ -19,4 +24,4 @@
 <p><a href="js-redirect.html">JS Redirect immediate</a></p>
 <p><a href="meta-redirect.html">Meta refresh</a></p>
 <p><a href="" onclick="openNew();">Window Open + JS Redirect</a></p>
-<p><a href="" onclick="openBlank();">Window Open Blank</a></p>
+<p><a href="" onclick="openBlank();">Window Open Blank doc.write meta refresh</a></p>
