@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Chrome_onorientationchange_Bug</title>
+    <meta name="description" content="Bug on Mobile chrome 43.0.2357.93 (Official Build) (32 bit) - Nexus7 2012" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <style type="text/css">
+    .page-wrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #BADA55;
+    }
+    
+    .results {
+        display: inline-block;
+        padding: 1em;
+        background: #C0FFEE;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <div class="results"></div>
+    </div>
+    <script type="text/javascript">
+    window.onload = function() {
+        var pageWrapper = document.querySelector('.page-wrapper'),
+            results = document.querySelector('.results'),
+            updateResultInfo,
+            getBounds;
+
+        getBounds = function(el) {
+            var forcePaint = el.offsetHeight,
+                bounds = el.getBoundingClientRect();
+
+            return {
+                width: bounds.width,
+                height: bounds.bottom
+            };
+        },
+
+        updateResultInfo = function() {
+            results.innerHTML = 'width: ' + getBounds(pageWrapper).width + '<br/>height: ' + getBounds(pageWrapper).height;
+        };
+
+        window.addEventListener('orientationchange', function() {
+            updateResultInfo();
+        });
+
+        updateResultInfo();
+    };
+
+    </script>
+</body>
+</html>
