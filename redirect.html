@@ -9,9 +9,14 @@
   function openNew() {
     window.open("js-redirect.html", "_blank", "noopener");
   }
+
+  function openBlank() {
+    window.open("", "_blank", "noopener");
+  }
 </script>
 
 <p><a href="js-raf-redirect.html">JS Redirect After RAF</a></p>
 <p><a href="js-redirect.html">JS Redirect immediate</a></p>
 <p><a href="meta-redirect.html">Meta refresh</a></p>
 <p><a href="" onclick="openNew();">Window Open + JS Redirect</a></p>
+<p><a href="" onclick="openBlank();">Window Open Blank</a></p>
