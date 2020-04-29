@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <style>
+      html,body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      #container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+      }
+      #left {
+        flex: 0 0 40%;
+      }
+      #right {
+        display: flex;
+        flex-flow: column;
+        flex: 1;
+        padding: 5px;
+      }
+      #scroller {
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+      }
+      #spacer {
+        background: linear-gradient(59deg, rgba(2,0,36,1) 0%, rgba(9,121,116,1) 36%, rgba(0,212,255,1) 100%);
+        width: 800%;
+        height: 800%;
+      }
+      .ta-region {
+        border: 1px solid black;
+        background-color: lightgrey;
+        width: 150px;
+        height: 100px;
+        position: relative;
+        top: 100px;
+        left: 10px;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      #ta-none {
+        touch-action: none;
+      }
+      #ta-pany {
+        touch-action: pan-y;
+      }
+      #ta-panx {
+        touch-action: pan-x;
+      }
+      h1 {
+        text-align: center;
+      }
+      #prevent-default-options {
+        border: 1px solid black;
+        border-radius: 5px;
+        margin-top: 5px;
+      }
+      @media (pointer: coarse) {
+        [type="checkbox"]{
+          width: 2em;
+          height: 2em;
+        }
+        [type="radio"]{
+          width: 2em;
+          height: 2em;
+        }
+        #log {
+          font-size: xx-small;
+        }
+        .text {
+          display:none;
+        }
+      }
+      #option-grid {
+        display: grid;
+        grid-template-columns: 100px 2em 2em 2em 2em;
+      }
+      .option-label {
+        transform: translateX(1.5em) rotateZ(-70deg);
+        transform-origin: bottom left;
+      }
+      .handler-label {
+        display: flex;
+        align-items: center;
+      }
+      #move-options {
+        margin-top: 5px;
+      }
+      .option-line {
+        display: flex;
+        align-items: center;
+      }
+      .collapsed {
+        display: none;
+      }
+      #log-container {
+        display:flex;
+        flex-flow: column;
+        flex: 1;
+      }
+      #log {
+        flex: 1;
+        resize: none;
+      }
+      #log-options {
+        display:flex;
+        align-items: center;
+      }
+      #clear-on-touch {
+        margin-left: 20px;
+      }
+      .option-box {
+        border: 1px solid black;
+        border-radius: 5px;
+        margin-top: 5px;
+        padding: 5px;
+      }
+      .compositingOn {
+        will-change: transform;
+      }
+      .compositingOff #spacer{
+        clip-path: circle(95%);
+      }
+    </style>
+    <script>
+      const event_handler_names = [ 'scroll',
+                                    'wheel',
+                                    'touchstart',
+                                    'touchmove',
+                                    'touchend',
+                                    'touchcancel',
+                                    'pointerdown',
+                                    'pointermove',
+                                    'pointerup',
+                                    'pointercancel'];
+      const labels = ['', 'log', 'passive', 'capture', 'preventDefault'];
+      const options = labels.slice(1);
+      const option_elements = [];
+
+      function init() {
+        const grid = document.getElementById('option-grid');
+
+        const stored_options_str = window.localStorage.getItem('options');
+        const option_values = [];
+        if (stored_options_str) {
+          const value_strings = stored_options_str.split(',');
+          for (let str of value_strings) {
+            option_values.push(str == '1' ? true : false);
+          }
+        }
+
+        for (let l of labels) {
+          const label = document.createElement('div');
+          label.classList.add('option-label');
+          label.innerText = l;
+          grid.appendChild(label);
+        }
+
+        for (let eh of event_handler_names) {
+          const label = document.createElement('div');
+          label.classList.add('handler-label');
+          label.innerText = eh;
+          grid.appendChild(label);
+          for (let o of options) {
+            const checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute('id', 'eh-option-' + eh + '-' + o);
+            checkbox.addEventListener('click', resetHandlers);
+            if (option_values.shift())
+              checkbox.setAttribute('checked', '');
+
+            option_elements.push(checkbox);
+            grid.appendChild(checkbox);
+          }
+        }
+
+        const toggleBtn = document.getElementById('toggle-options');
+        toggleBtn.addEventListener('click', () => {
+          const options = document.getElementById('options');
+          options.classList.toggle('collapsed');
+        });
+
+        const clearLogBtn = document.getElementById('clear-log-button');
+        const logTextarea = document.getElementById('log');
+        clearLogBtn.addEventListener('click', () => {
+          log.value = "";
+        });
+
+        const additional_options = ['moveCancelAll',
+                                    'moveCancelFirst',
+                                    'moveCancelSecond',
+                                    'alternatePreventDefaults',
+                                    'compositingAuto',
+                                    'compositingOn',
+                                    'compositingOff',
+                                    'clear-on-touch']
+        for (let e of additional_options) {
+          const element = document.getElementById(e);
+          option_elements.push(element);
+          if (option_values.shift())
+            element.setAttribute('checked', '');
+
+          element.addEventListener('click', resetHandlers);
+        }
+
+        resetHandlers();
+      }
+      addEventListener('load', init);
+
+      let numMoves = {
+        pointer: 0,
+        touch: 0
+      };
+
+      let firstEventTimestamp = 0;
+      function firstTouch(event) {
+        const logTextarea = document.getElementById('log');
+        if (document.getElementById('clear-on-touch').checked)
+          logTextarea.value = '';
+        if (event.type == 'pointerdown') {
+          numMoves.pointer = 0;
+        } else if (event.type == 'touchstart') {
+          numMoves.touch = 0;
+        }
+      }
+
+      function resetHandlers() {
+        // Easiest way to remove old event listeners is just creating a new
+        // scroller and replacing the old one.
+        const scroller = document.getElementById('scroller');
+        const scrollLeft = scroller.scrollLeft;
+        const scrollTop = scroller.scrollTop;
+        const new_scroller = document.createElement('div');
+        while (scroller.childNodes.length) {
+          new_scroller.appendChild(scroller.firstChild);
+        }
+
+        const scroller_parent = scroller.parentNode;
+        scroller.remove();
+        new_scroller.setAttribute('id', 'scroller');
+        scroller_parent.appendChild(new_scroller);
+        new_scroller.scrollLeft = scrollLeft;
+        new_scroller.scrollTop = scrollTop;
+
+        const compositing_on = document.getElementById('compositingOn').checked;
+        const compositing_off = document.getElementById('compositingOff').checked;
+        if (compositing_on)
+          new_scroller.classList.add('compositingOn');
+        else if (compositing_off)
+          new_scroller.classList.add('compositingOff');
+
+        for (let handler of event_handler_names) {
+          const value_log = document.getElementById(`eh-option-${handler}-log`).checked;
+          const value_passive = document.getElementById(`eh-option-${handler}-passive`).checked;
+          const value_capture = document.getElementById(`eh-option-${handler}-capture`).checked;
+          const value_preventDefault = document.getElementById(`eh-option-${handler}-preventDefault`).checked;
+
+          new_scroller.addEventListener(handler, ((doLog, doPreventDefault, event) => {
+            const isPointerMove = event.type == event.type == 'pointermove';
+            const isTouchMove = event.type == 'touchmove';
+            const isStart = event.type == 'touchstart' || event.type == 'pointerdown';
+            if (isStart)
+              firstTouch(event);
+            else if (isTouchMove) {
+              numMoves.touch += 1;
+            } else if (isPointerMove) {
+              numMoves.pointer += 1;
+            }
+
+            const logTextarea = document.getElementById('log');
+            if (doLog && logTextarea.value == '') {
+              firstEventTimestamp = event.timeStamp;
+            }
+
+            let shouldPrevent = false;
+            if (doPreventDefault) {
+              if (!isTouchMove && !isPointerMove) {
+                event.preventDefault();
+              } else {
+                const moveCancelAll = document.getElementById('moveCancelAll').checked;
+                const moveCancelFirst = document.getElementById('moveCancelFirst').checked;
+                const moveCancelSecond = document.getElementById('moveCancelSecond').checked;
+
+                const moves = isTouchMove ? numMoves.touch : numMoves.pointer;
+
+                if (moveCancelAll ||
+                    moveCancelFirst && moves == 1 ||
+                    moveCancelSecond && moves > 1) {
+                  shouldPrevent = true;
+                }
+
+                const alternatePreventDefault = document.getElementById('alternatePreventDefaults').checked;
+                if (alternatePreventDefault && Math.floor(moves / 10) % 2 == 1) {
+                  shouldPrevent = !shouldPrevent;
+                }
+
+                if (shouldPrevent)
+                  event.preventDefault();
+              }
+            }
+
+            if (doLog)
+              logEvent(event, shouldPrevent);
+
+          }).bind({}, value_log, value_preventDefault), { passive: value_passive, capture: value_capture });
+        }
+
+        let update_option_string = '';
+        for (let element of option_elements) {
+          if (update_option_string.length > 0)
+            update_option_string += ',';
+
+          update_option_string += element.checked ? "1" : "0";
+        }
+        localStorage.setItem('options', update_option_string);
+      }
+
+      function logEvent(e, triedPrevent) {
+        const logTextarea = document.getElementById('log');
+        if (logTextarea.value == '') {
+          logTextarea.value += '[time_ms] - eventname - preventDefaulted?\n';
+        }
+        const dt = Math.round(event.timeStamp - firstEventTimestamp);
+        const ts = ('00000' + dt).substr(-5);
+        logTextarea.value += `[${ts}]-${e.type}`;
+        if (event.defaultPrevented)
+          logTextarea.value += ' - defaultPrevented!';
+        else if (triedPrevent) {
+          logTextarea.value += ' - PreventBlocked!';
+        }
+        logTextarea.value += '\n';
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="left">
+        <div id="scroller">
+          <div id="spacer">
+            <div id="ta-none" class="ta-region">touch-action:none</div>
+            <div id="ta-pany" class="ta-region">touch-action:pan-y</div>
+            <div id="ta-panx" class="ta-region">touch-action:pan-x</div>
+          </div>
+        </div>
+      </div>
+      <div id="right">
+        <div class="text">
+          <h1>Scrolling Test</h1>
+          <p>
+            Test scrolling on the left pane - event details will be printed in the log below.
+          </p>
+          <p>
+            Hover over options below for details (Coming Soon!)
+          </p>
+        </div>
+        <button id="toggle-options">Toggle Options</button>
+        <div id="options" class="option-box">
+          <div id="option-grid">
+          </div>
+        </div>
+
+        <div class="option-box">
+          <div id="move-options">
+            <div>*move preventDefaults in:</div>
+            <div class="option-line">
+              <input type="radio" id="moveCancelAll" name="moveCancellation" checked><label for="moveCancelAll">All</label>
+              <input type="radio" id="moveCancelFirst" name="moveCancellation"><label for="moveCancelFirst">First</label>
+              <input type="radio" id="moveCancelSecond" name="moveCancellation"><label for="moveCancelSecond">Second+</label>
+            </div>
+          </div>
+          <div class="option-line">
+            <input type="checkbox" id="alternatePreventDefaults"><label for="alternatePreventDefaults">Alternate every 10</label>
+          </div>
+        </div>
+
+        <div class="option-box">
+            <div>Force Compositing:</div>
+            <div class="option-line">
+              <input type="radio" id="compositingAuto" name="forceCompositing" checked><label for="compositingAuto">auto</label>
+              <input type="radio" id="compositingOn" name="forceCompositing"><label for="compositingOn">on</label>
+              <input type="radio" id="compositingOff" name="forceCompositing"><label for="compositingOff">off</label>
+            </div>
+        </div>
+
+        <div id="log-container">
+          <div>Event Log:</div>
+          <div id="log-options">
+            <button id="clear-log-button">Clear</button>
+            <input type="checkbox" id="clear-on-touch"><label for="clear-on-touch">ClearOnTouch</label>
+          </div>
+          <textarea id="log" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
