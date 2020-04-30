@@ -223,7 +223,7 @@
       let firstEventTimestamp = 0;
       function firstTouch(event) {
         const logTextarea = document.getElementById('log');
-        if (document.getElementById('clear-on-touch').checked)
+        if (event.type == 'pointerdown' && document.getElementById('clear-on-touch').checked)
           logTextarea.value = '';
         if (event.type == 'pointerdown') {
           numMoves.pointer = 0;
@@ -333,10 +333,12 @@
       function logEvent(e, triedPrevent) {
         const logTextarea = document.getElementById('log');
         if (logTextarea.value == '') {
-          logTextarea.value += '[time_ms] - eventname - preventDefaulted?\n';
+          logTextarea.value = '[time_ms] - eventname - preventDefaulted?\n';
         }
         const dt = Math.round(event.timeStamp - firstEventTimestamp);
         const ts = ('00000' + dt).substr(-5);
+
+        console.log(`[${ts}]-${e.type}`);
         logTextarea.value += `[${ts}]-${e.type}`;
         if (event.defaultPrevented)
           logTextarea.value += ' - defaultPrevented!';
