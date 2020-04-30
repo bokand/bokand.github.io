@@ -126,7 +126,7 @@
         will-change: transform;
       }
       .compositingOff #spacer{
-        clip-path: circle(95%);
+        clip-path: circle(70%);
       }
     </style>
     <script>
@@ -339,7 +339,6 @@
         const dt = Math.round(event.timeStamp - firstEventTimestamp);
         const ts = ('00000' + dt).substr(-5);
 
-        console.log(`[${ts}]-${e.type}`);
         logTextarea.value += `[${ts}]-${e.type}`;
         if (event.defaultPrevented)
           logTextarea.value += ' - defaultPrevented!';
