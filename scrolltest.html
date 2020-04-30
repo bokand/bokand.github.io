@@ -216,7 +216,8 @@
 
       let numMoves = {
         pointer: 0,
-        touch: 0
+        touch: 0,
+        wheel: 0
       };
 
       let firstEventTimestamp = 0;
@@ -263,32 +264,39 @@
           const value_preventDefault = document.getElementById(`eh-option-${handler}-preventDefault`).checked;
 
           new_scroller.addEventListener(handler, ((doLog, doPreventDefault, event) => {
+            const logTextarea = document.getElementById('log');
+            if (doLog && logTextarea.value == '') {
+              firstEventTimestamp = event.timeStamp;
+              numMoves.wheel = 0;
+            }
+
             const isPointerMove = event.type == event.type == 'pointermove';
             const isTouchMove = event.type == 'touchmove';
+            const isWheel = event.type == 'wheel';
             const isStart = event.type == 'touchstart' || event.type == 'pointerdown';
+
             if (isStart)
               firstTouch(event);
             else if (isTouchMove) {
               numMoves.touch += 1;
             } else if (isPointerMove) {
               numMoves.pointer += 1;
-            }
-
-            const logTextarea = document.getElementById('log');
-            if (doLog && logTextarea.value == '') {
-              firstEventTimestamp = event.timeStamp;
+            } else if (event.type == 'wheel') {
+              numMoves.wheel += 1;
             }
 
             let shouldPrevent = false;
             if (doPreventDefault) {
-              if (!isTouchMove && !isPointerMove) {
-                event.preventDefault();
+              if (!isTouchMove && !isPointerMove && !isWheel) {
+                shouldPrevent = true;
               } else {
                 const moveCancelAll = document.getElementById('moveCancelAll').checked;
                 const moveCancelFirst = document.getElementById('moveCancelFirst').checked;
                 const moveCancelSecond = document.getElementById('moveCancelSecond').checked;
 
-                const moves = isTouchMove ? numMoves.touch : numMoves.pointer;
+                const moves = isTouchMove
+                    ? numMoves.touch
+                    : isWheel ? numMoves.wheel : numMoves.pointer;
 
                 if (moveCancelAll ||
                     moveCancelFirst && moves == 1 ||
@@ -300,11 +308,11 @@
                 if (alternatePreventDefault && Math.floor(moves / 10) % 2 == 1) {
                   shouldPrevent = !shouldPrevent;
                 }
-
-                if (shouldPrevent)
-                  event.preventDefault();
               }
             }
+
+            if (shouldPrevent)
+              event.preventDefault();
 
             if (doLog)
               logEvent(event, shouldPrevent);
