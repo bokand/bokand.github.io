@@ -1,0 +1,112 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <style>
+      body {
+        margin: 0;
+      }
+      .bar {
+        position: absolute;
+        opacity: 0.8;
+        box-sizing: border-box;
+        border: 2px solid black;
+      }
+      #vw {
+        background-color: coral;
+        top: 45vh;
+        left: 0;
+        width: 100vw;
+        height: 10vh;
+      }
+      #vh {
+        background-color: firebrick;
+        left: 75vw;
+        top: 0;
+        width: 10vh;
+        height: 100vh;
+      }
+      #options {
+        position: absolute;
+      }
+      .option-box {
+        border: 1px solid black;
+        border-radius: 5px;
+        margin-top: 5px;
+        padding: 5px;
+      }
+      @media (pointer: coarse) {
+        [type="checkbox"]{
+          width: 2em;
+          height: 2em;
+        }
+        [type="radio"]{
+          width: 2em;
+          height: 2em;
+        }
+      }
+      #voverflower {
+        width: 10px;
+        height: 500vh;
+        position: absolute;
+        left: 0;
+        top: 0;
+        visibility: hidden;
+      }
+      #hoverflower {
+        height: 10px;
+        width: 500vw;
+        position: absolute;
+        left: 0;
+        top: 0;
+        visibility: hidden;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script>
+      function $(elementId) {
+        return document.getElementById(elementId);
+      }
+      function refresh() {
+        $('voverflower').classList.add('hidden');
+        $('hoverflower').classList.add('hidden');
+
+        if ($('optOverflowV').checked) {
+          $('voverflower').classList.remove('hidden');
+        }
+        if ($('optOverflowH').checked) {
+          $('hoverflower').classList.remove('hidden');
+        }
+      }
+
+      addEventListener('load', () => {
+        for (opt of document.querySelectorAll('input')) {
+          opt.addEventListener('click', refresh);
+        }
+
+        refresh();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="options">
+      <div class="option-box">
+        <div>
+          <input type="checkbox" id="optOverflowV" name="optOverflow">
+          <label for="optOverflowV">Vertical Overflow</label>
+        </div>
+        <div>
+          <input type="checkbox" id="optOverflowH" name="optOverflow">
+          <label for="optOverflowH">Horizontal Overflow</label>
+        </div>
+      </div>
+    </div>
+    <div class="bar" id="vw"></div>
+    <div class="bar" id="vh"></div>
+
+    <div id="voverflower"></div>
+    <div id="hoverflower"></div>
+  </body>
+</html>
