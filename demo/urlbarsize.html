@@ -74,6 +74,13 @@
       left: 0px;
       right: 100px;
     }
+    .innerHeightLog {
+      position: fixed;
+      right: 100px;
+      width: 160px;
+      height: 20px;
+      background-color: chartreuse;
+    }
   </style>
   <script>
     function $(name) {
@@ -84,6 +91,7 @@
       $('.fixedvh .textfixed').innerText = 'viewport-unit position:fixed (' + $('.bar.fixedvh').clientHeight + 'px)';
       $('.abspercent .textabs').innerText = 'percentage-based position:absolute (' + $('.bar.abspercent').clientHeight + 'px)';
       $('.absvh .textabs').innerText = 'viewport-unit position:absolute (' + $('.bar.absvh').clientHeight + 'px)';
+      $('.innerHeightLog').innerText = 'innerHeight: ' + window.innerHeight + 'px';
     }
     function resized() {
       var console = document.getElementById('console');
@@ -113,8 +121,10 @@
 <div style="right: 25px" class="bar fixedvh"><div class="textfixed">viewport-unit position:fixed</div></div>
 <div style="right: 50px" class="bar abspercent"><div class="textabs">percentage-based position:absolute</div></div>
 <div style="right: 75px" class="bar absvh"><div class="textabs">viewport-unit position:absolute</div></div>
+<div class="innerHeightLog"></div>
 <div id="consoleContainer">
   <div id="console">
+  <br>
     OnResize handler calls will be displayed below with window.innerWidth and documentElement.clientHeight<br><br>
   </div>
 </div>
