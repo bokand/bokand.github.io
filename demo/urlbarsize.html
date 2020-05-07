@@ -60,6 +60,15 @@
       transform-origin: left bottom 0;
     }
 
+    #consoleContainer {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      height: 100%;
+      z-index: -1;
+      background-color: lightgrey;
+    }
+
     #console {
       position: absolute;
       left: 0px;
@@ -102,8 +111,10 @@
 <div style="right: 25px" class="bar fixedvh"><div class="textfixed">viewport-unit position:fixed</div></div>
 <div style="right: 50px" class="bar abspercent"><div class="textabs">percentage-based position:absolute</div></div>
 <div style="right: 75px" class="bar absvh"><div class="textabs">viewport-unit position:absolute</div></div>
-<div id="console">
-  OnResize handler calls will be displayed below with window.innerWidth and documentElement.clientHeight<br><br>
+<div id="consoleContainer">
+  <div id="console">
+    OnResize handler calls will be displayed below with window.innerWidth and documentElement.clientHeight<br><br>
+  </div>
 </div>
 </body>
 </html>
