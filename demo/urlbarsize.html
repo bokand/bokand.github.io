@@ -67,9 +67,19 @@
     }
   </style>
   <script>
+    function $(name) {
+      return document.querySelector(name);
+    }
+    function updateText() {
+      $('.fixedpercent .textfixed').innerText = 'percentage-based position:fixed (' + $('.bar.fixedpercent').clientHeight + 'px)';
+      $('.fixedvh .textfixed').innerText = 'viewport-unit position:fixed (' + $('.bar.fixedvh').clientHeight + 'px)';
+      $('.abspercent .textabs').innerText = 'percentage-based position:absolute (' + $('.bar.abspercent').clientHeight + 'px)';
+      $('.absvh .textabs').innerText = 'viewport-unit position:absolute (' + $('.bar.absvh').clientHeight + 'px)';
+    }
     function resized() {
       var console = document.getElementById('console');
       console.innerHTML += "*Resize! window.innerHeight: " + window.innerHeight + ",  documentElement.clientHeight: " + document.documentElement.clientHeight + "<br>";
+      updateText();
     }
     var fullscreen = false;
     addEventListener("load", function() {
@@ -81,6 +91,7 @@
 
         fullscreen = !fullscreen;
       });
+      updateText();
     });
   </script>
 </head>
