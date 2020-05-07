@@ -90,6 +90,7 @@
       console.innerHTML += "*Resize! window.innerHeight: " + window.innerHeight + ",  documentElement.clientHeight: " + document.documentElement.clientHeight + "<br>";
       updateText();
     }
+
     var fullscreen = false;
     addEventListener("load", function() {
       document.documentElement.addEventListener("click", function() {
@@ -101,6 +102,7 @@
         fullscreen = !fullscreen;
       });
       updateText();
+      setInterval(updateText, 500);
     });
   </script>
 </head>
