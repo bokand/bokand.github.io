@@ -77,12 +77,14 @@
     .innerHeightLog {
       position: fixed;
       right: 100px;
-      width: 160px;
+      width: 180px;
       height: 20px;
       background-color: chartreuse;
     }
   </style>
   <script>
+    const spinner = ['/', '-', '\\', '|'];
+    let spinnerIx = 0;
     function $(name) {
       return document.querySelector(name);
     }
@@ -91,7 +93,8 @@
       $('.fixedvh .textfixed').innerText = 'viewport-unit position:fixed (' + $('.bar.fixedvh').clientHeight + 'px)';
       $('.abspercent .textabs').innerText = 'percentage-based position:absolute (' + $('.bar.abspercent').clientHeight + 'px)';
       $('.absvh .textabs').innerText = 'viewport-unit position:absolute (' + $('.bar.absvh').clientHeight + 'px)';
-      $('.innerHeightLog').innerText = 'innerHeight: ' + window.innerHeight + 'px';
+      $('.innerHeightLog').innerText = 'innerHeight: ' + window.innerHeight + 'px ' + spinner[spinnerIx];
+      spinnerIx = (spinnerIx+1) % spinner.length;
     }
     function resized() {
       var console = document.getElementById('console');
