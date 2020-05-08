@@ -54,6 +54,9 @@
       #ta-panx {
         touch-action: pan-x;
       }
+      .ta-none {
+        touch-action: none;
+      }
       h1 {
         text-align: center;
       }
@@ -211,6 +214,7 @@
         }
 
         resetHandlers();
+        initTouchActionHandlers();
       }
       addEventListener('load', init);
 
@@ -348,6 +352,46 @@
         logTextarea.value += '\n';
       }
 
+      function $(elementId) {
+        return document.getElementById(elementId);
+      }
+
+      function initTouchActionHandlers() {
+        const addOnTouchStart = $('ta-none-on-touchstart');
+        const addOnTouchMove = $('ta-none-on-firsttouchmove');
+        const addOnTouchMove5 = $('ta-none-on-fifthtouchmove');
+
+        addOnTouchStart.addEventListener('touchstart', () => { addOnTouchStart.classList.add('ta-none');});
+        addOnTouchStart.addEventListener('touchend', () => { addOnTouchStart.classList.remove('ta-none');});
+
+        addOnTouchMove.addEventListener('touchstart', () => { addOnTouchMove.count = 0; });
+        addOnTouchMove.addEventListener('touchmove', () => { addOnTouchMove.count++; if (addOnTouchMove.count == 1){addOnTouchMove.classList.add('ta-none');} });
+        addOnTouchMove.addEventListener('touchend', () => { addOnTouchMove.classList.remove('ta-none'); });
+
+        addOnTouchMove5.addEventListener('touchstart', () => { addOnTouchMove5.count = 0; });
+        addOnTouchMove5.addEventListener('touchmove', () => { addOnTouchMove5.count++; if (addOnTouchMove5.count == 5){addOnTouchMove5.classList.add('ta-none');} });
+        addOnTouchMove5.addEventListener('touchend', () => { addOnTouchMove5.classList.remove('ta-none'); });
+
+        const removeOnTouchStart = $('ta-none-removed-by-touchstart');
+        const removeOnTouchMove = $('ta-none-removed-by-first-touchmove');
+        const removeOnTouchMove5 = $('ta-none-removed-by-fifth-touchmove');
+
+        removeOnTouchStart.classList.add('ta-none');
+        removeOnTouchMove.classList.add('ta-none');
+        removeOnTouchMove5.classList.add('ta-none');
+
+        removeOnTouchStart.addEventListener('touchstart', () => { removeOnTouchStart.classList.remove('ta-none'); })
+        removeOnTouchStart.addEventListener('touchend', () => { removeOnTouchStart.classList.add('ta-none'); })
+
+        removeOnTouchMove.addEventListener('touchstart', () => { removeOnTouchMove.count = 0; })
+        removeOnTouchMove.addEventListener('touchmove', () => { removeOnTouchMove.count++; if (removeOnTouchMove.count == 1) {removeOnTouchMove.classList.remove('ta-none');} })
+        removeOnTouchMove.addEventListener('touchend', () => { removeOnTouchMove.classList.add('ta-none'); })
+
+        removeOnTouchMove5.addEventListener('touchstart', () => { removeOnTouchMove5.count = 0; })
+        removeOnTouchMove5.addEventListener('touchmove', () => { removeOnTouchMove5.count++; if (removeOnTouchMove5.count == 5) {removeOnTouchMove5.classList.remove('ta-none');} })
+        removeOnTouchMove5.addEventListener('touchend', () => { removeOnTouchMove5.classList.add('ta-none'); })
+      }
+
     </script>
   </head>
   <body>
@@ -358,6 +402,14 @@
             <div id="ta-none" class="ta-region">touch-action:none</div>
             <div id="ta-pany" class="ta-region">touch-action:pan-y</div>
             <div id="ta-panx" class="ta-region">touch-action:pan-x</div>
+
+            <div id="ta-none-on-touchstart" class="ta-region">touchstart adds touch-action:none</div>
+            <div id="ta-none-on-firsttouchmove" class="ta-region">first touchmove adds touch-action:none</div>
+            <div id="ta-none-on-fifthtouchmove" class="ta-region">fifth touchmove adds touch-action:none</div>
+
+            <div id="ta-none-removed-by-touchstart" class="ta-region">touchstart removes touch-action:none</div>
+            <div id="ta-none-removed-by-first-touchmove" class="ta-region">first touchmove removes touch-action:none</div>
+            <div id="ta-none-removed-by-fifth-touchmove" class="ta-region">fifth touchmove removes touch-action:none</div>
           </div>
         </div>
       </div>
