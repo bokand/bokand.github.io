@@ -125,6 +125,15 @@
 
                 contentbox.innerText = "Scale: " + Number((window.visualViewport.scale).toFixed(2)) + "\n";
                 contentbox.innerText = "documentElement.clientHeight: " + document.documentElement.clientHeight + "\n";
+                contentbox.innerText += "window.visualViewport: ";
+                if (typeof(window.visualViewport) == 'undefined') {
+                  contentbox.innerText += "UNSUPPORTED\n";
+                } else {
+                  infobox.style.left = visualViewport.pageLeft + "px";
+                  infobox.style.top = visualViewport.pageTop + "px";
+                  contentbox.innerText += visualViewport.offsetLeft + ", " + visualViewport.offsetTop + "\n";
+                  contentbox.innerText += "visualViewport size: " + visualViewport.width + ", " + visualViewport.height + "\n";
+                }
                 var layoutRect = document.documentElement.getBoundingClientRect();
                 contentbox.innerText += "Layout Viewport Pos: " + truncate(-layoutRect.left) + ", " + truncate(-layoutRect.top) + "\n";
                 contentbox.innerText += "window.scroll(X,Y): " + window.scrollX + ", " + window.scrollY + "\n";
