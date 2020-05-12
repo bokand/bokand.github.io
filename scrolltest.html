@@ -310,7 +310,8 @@
                 }
 
                 const alternatePreventDefault = document.getElementById('alternatePreventDefaults').checked;
-                if (alternatePreventDefault && Math.floor(moves / 50) % 2 == 1) {
+                const alternateNum = document.getElementById('alternateNumber').value;
+                if (alternatePreventDefault && Math.floor(moves / alternateNum) % 2 == 1) {
                   shouldPrevent = !shouldPrevent;
                 }
               }
@@ -439,7 +440,7 @@
             </div>
           </div>
           <div class="option-line">
-            <input type="checkbox" id="alternatePreventDefaults"><label for="alternatePreventDefaults">Alternate every 10</label>
+            <input type="checkbox" id="alternatePreventDefaults"><label for="alternatePreventDefaults">Alternate every <input id="alternateNumber" type="number" min="1" max="100" value="10"></label>
           </div>
         </div>
 
