@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script type="text/javascript" src="./raphael.js"></script>
+    </head>
+    <body>
+        If you touch and drag the circles, you will not scroll the page. If you touch and drag anything else, you will scroll the page.
+        <div id="container" style="height: 300px; width: 300px; background-color: #BBB;"></div>
+        <div style="background-color: orange; height: 110vh; width: 110vw;">I give the page overflow</div>
+        <script type="text/javascript">
+            // var draggable = true;
+            var container = document.getElementById("container");
+            var paper = Raphael(container, 300, 300);
+            
+            paper.setStart();
+            
+            var display = paper.circle( 0, 0, 10 ).attr( { fill : 'blue', cursor : 'move', stroke : 'black' } );
+            var halo    = paper.circle( 0, 0, 54 - 10 * 2 ).attr( { fill : 'blue', opacity: 0.4, cursor : 'move', stroke : 'none' } );
+            var set     = paper.setFinish();
+            
+            set.attr( { 'cx' : 150, 'cy' : 150 } );
+            
+            set.drag(function() {}, function() {}, function() {});
+        </script>
+        <script type="text/javascript">
+            document.addEventListener("touchstart", function(e){
+                console.log("touched", e.target);
+            });
+        </script>
+    </body>
+</html>
