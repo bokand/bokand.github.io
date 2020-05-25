@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      body,html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      portal  {
+        transition-property: transform;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-in-out;
+
+        transform: scale(0.2);
+        width: 100%;
+        height: 100%;
+      }
+      portal.activating {
+        transform: scale(1);
+      }
+    </style>
+    <script>
+      onload = () => {
+        const p = document.getElementById("myportal");
+        p.addEventListener('click', () => {
+          p.classList.add('activating');
+        });
+
+        p.addEventListener('transitionend', () => {
+          p.activate();
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <portal id="myportal" src="portal-inner.html"></portal>
+  </body>
+</html>
