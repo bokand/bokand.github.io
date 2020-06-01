@@ -1,0 +1,38 @@
+<html>
+<head>
+  <style>
+ .textfield.empty:not(:focus):before {
+    content: 'Edit this text';
+   opacity: 30%;
+  }
+</style>
+  
+</head>
+<body>
+  <span class='textfield empty' data-empty-type='span' contenteditable='true' ></span>
+</body>
+</html>
+
+<!-- 
+In Chrome >= 83, attempting to edit the contenteditable span above results in 
+unexpected behavior.
+
+In prior versions, this CSS styling has been used to display placeholder text in a contenteditable
+span when the span does not have focus.  Removed for simplicity is code that would clear the empty class
+styling if the user were to add content to the span, eliminating the placeholder text.
+
+Expected behavior:  A single click will place an active text cursor in the span and hide placeholder text.
+The user would be able to edit text within the span. This works as expected in versions of Chrome prior to 83.
+
+Actual behavior: On first click, the text disappears as usual, but no insertion point text cursor appears.
+No text entry can be made into the span.
+
+On second click, the expected cursor reappears and the span is editable.
+
+If the user makes subsequent clicks on a blank span, the text will alternately appear and disappear, and ultimately after about 5 clicks,
+the browser will crash with an 'Aw, Snap!' message and error code RESULT_CODE_UNINSTALL_USER_CANCEL.
+
+
+
+
+ -->
