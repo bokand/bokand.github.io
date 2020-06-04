@@ -9,7 +9,12 @@
       }
     </style>
     <script>
-      alert("loading inner!");
+      let constraints = {audio: true, video:true};
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+
+      }).catch((err) => {
+
+      });
     </script>
   </head>
   <body>
