@@ -15,6 +15,15 @@
       }).catch((err) => {
 
       });
+
+      addEventListener('portalactivate', e => {
+        let constraints = {audio: true, video:true};
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+
+        }).catch((err) => {
+
+        });
+      });
     </script>
   </head>
   <body>
