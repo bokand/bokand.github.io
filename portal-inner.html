@@ -10,18 +10,20 @@
     </style>
     <script>
       let constraints = {audio: true, video:true};
+      console.log("REQUESTING MEDIA PERM");
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-
+          console.log("GOT MEDIA PERMISSION");
       }).catch((err) => {
-
+          console.log("FAILED MEDIA PERMISSION");
       });
 
       addEventListener('portalactivate', e => {
+        console.log("ACTIVATE");
         let constraints = {audio: true, video:true};
         navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-
+          console.log("GOT MEDIA PERMISSION");
         }).catch((err) => {
-
+          console.log("FAILED MEDIA PERMISSION");
         });
       });
     </script>
