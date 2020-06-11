@@ -9,10 +9,23 @@
 
       body {
         height: 110vh;
+        margin: 0;
+      }
+
+      button {
+        width: 100%;
       }
 
       div {
         margin-top: 10px;
+      }
+
+      #instructions {
+        margin-left: 8px;
+      }
+
+      #instructions.hidden {
+        display: none;
       }
 
       #log {
@@ -24,10 +37,19 @@
       .blockOverscroll {
         overscroll-behavior: none;
       }
+
+      @media (pointer: coarse) {
+        [type="checkbox"]{
+          width: 2em;
+          height: 2em;
+        }
+      }
     </style>
     <script>
       let boxTouchmoves;
+      let boxTouchmovesAll;
       let boxOverscrollBehavior;
+      let instructions;
       let log;
       let numTouchmoves = 0;
 
@@ -44,11 +66,9 @@
         ++numTouchmoves;
         let canceled = false;
 
-        if (boxTouchmoves.checked) {
-          if (numTouchmoves > 10) {
-            event.preventDefault();
-            canceled = true;
-          }
+        if ((boxTouchmoves.checked && numTouchmoves > 10) || boxTouchmovesAll.checked) {
+          event.preventDefault();
+          canceled = true;
         }
 
         logEvent(event, canceled);
@@ -72,7 +92,9 @@
 
       onload = () => {
         boxTouchmoves = document.getElementById("checkboxTouchmoves");
+        boxTouchmovesAll = document.getElementById("checkboxTouchmovesAll");
         boxOverscrollBehavior = document.getElementById("checkboxOverscrollBehavior");
+        instructions = document.getElementById('instructions')
         log = document.getElementById("log");
 
         boxTouchmoves.addEventListener('click', reset);
@@ -84,33 +106,56 @@
         document.documentElement.addEventListener('touchmove',
                                                   moveHandler,
                                                   {passive: false});
+
+        if (window.localStorage.getItem('instructionsHidden'))
+          instructions.classList.add('hidden');
+
+        document.getElementById("toggle-instructions").addEventListener('click', () => {
+          instructions.classList.toggle('hidden');
+          localStorage.setItem('instructionsHidden', instructions.classList.contains('hidden'));
+        });
       };
     </script>
   </head>
 
   <body>
-    <p>
-      Use this page to test the effect of overscrolling on cancellability of touchmoves.
-    </p>
+    <div style="margin-top: 0">
+      <button id="toggle-instructions">Toggle Instructions</button>
+    </div>
+    <div id="instructions">
+      <p>
+        Use this page to test the effect of overscrolling on cancellability of touchmoves.
+      </p>
 
-    <p>
-      The first checkbox will add a touchmove handler that allows the first 10
-      touchmoves to be scrolled and then starts calling preventDefault on the
-      remaining events until the touch gesture ends. Note that scrolling cannot
-      be blocked once started unless you start to overscroll. (e.g. try
-      scrolling until the 10+ touch move, then hit the extent). preventDefault
-      on an overscrolling touchmove will block overscroll glow and
-      pull-to-refresh effects.
-    </p>
+      <p>
+        The first checkbox will call preventDefault on all touchmoves after the
+        10th until the touch gesture ends. Note that scrolling cannot be blocked
+        once started...unless you start to overscroll. (e.g. try scrolling until
+        the 10+ touch move, then hit the extent). Today, this allows blocking
+        overscroll glow and pull-to-refresh effects.
+      </p>
 
-    <p>
-      The second checkbox adds |overscroll-behavior:none| on the
-      documentElement, using CSS to prevent browser overscroll actions like
-      pull-to-refresh and the overscroll glow.
-    </p>
+      <p>
+        The second checkbox unconditionally preventDefaults all touchmoves. The
+        first touchmove is always blocking and will remain so, thus this will
+        continue to allow preventing overscroll effects if the first touchmove
+        would overscroll.
+      </p>
+
+      <p>
+        The third checkbox adds |overscroll-behavior:none| on the
+        documentElement, using CSS to prevent browser overscroll actions like
+        pull-to-refresh and the overscroll glow.
+      </p>
+    </div>
+
     <div>
       <input type="checkbox" id="checkboxTouchmoves">
       <label for="checkboxTouchmoves">preventDefault after 10th touchmove</label>
+    </div>
+    <div>
+      <input type="checkbox" id="checkboxTouchmovesAll">
+      <label for="checkboxTouchmovesAll">preventDefault all touchmoves</label>
     </div>
     <div>
       <input type="checkbox" id="checkboxOverscrollBehavior">
