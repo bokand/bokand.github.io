@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      html {
+        overflow-x: hidden;
+      }
+
+      body {
+        height: 110vh;
+      }
+
+      div {
+        margin-top: 10px;
+      }
+
+      #log {
+        width: 80%;
+        height: 40%;
+        font-size: xx-small;
+      }
+
+      .blockOverscroll {
+        overscroll-behavior: none;
+      }
+    </style>
+    <script>
+      let boxTouchmoves;
+      let boxOverscrollBehavior;
+      let log;
+      let numTouchmoves = 0;
+
+      function logEvent(event, canceled) {
+        let line = `${numTouchmoves} move preventDefaulted[${canceled}] isCancellable[${event.cancelable}]`
+        let curLog = log.value;
+        log.value = line + '\n' + curLog;
+      }
+
+      function moveHandler(event) {
+        if (event.target == log)
+          return;
+
+        ++numTouchmoves;
+        let canceled = false;
+
+        if (boxTouchmoves.checked) {
+          if (numTouchmoves > 10) {
+            event.preventDefault();
+            canceled = true;
+          }
+        }
+
+        logEvent(event, canceled);
+      }
+
+      function startHandler(event) {
+        if (event.target == log)
+          return;
+
+        numTouchmoves = 0;
+        log.value = '';
+      }
+
+      function reset() {
+        document.documentElement.classList.remove('blockOverscroll');
+
+        if (boxOverscrollBehavior.checked) {
+          document.documentElement.classList.add('blockOverscroll');
+        }
+      }
+
+      onload = () => {
+        boxTouchmoves = document.getElementById("checkboxTouchmoves");
+        boxOverscrollBehavior = document.getElementById("checkboxOverscrollBehavior");
+        log = document.getElementById("log");
+
+        boxTouchmoves.addEventListener('click', reset);
+        boxOverscrollBehavior.addEventListener('click', reset);
+
+        document.documentElement.addEventListener('touchstart',
+                                                  startHandler,
+                                                  {passive: false});
+        document.documentElement.addEventListener('touchmove',
+                                                  moveHandler,
+                                                  {passive: false});
+      };
+    </script>
+  </head>
+
+  <body>
+    <p>
+      Use this page to test the effect of overscrolling on cancellability of touchmoves.
+    </p>
+
+    <p>
+      The first checkbox will add a touchmove handler that allows the first 10
+      touchmoves to be scrolled and then starts calling preventDefault on the
+      remaining events until the touch gesture ends. Note that scrolling cannot
+      be blocked once started unless you start to overscroll.
+    </p>
+
+    <p>
+      The second checkbox adds |overscroll-behavior:none| on the
+      documentElement, using CSS to prevent browser overscroll actions like
+      pull-to-refresh and the overscroll glow.
+    </p>
+    <div>
+      <input type="checkbox" id="checkboxTouchmoves">
+      <label for="checkboxTouchmoves">preventDefault after 10th touchmove</label>
+    </div>
+    <div>
+      <input type="checkbox" id="checkboxOverscrollBehavior">
+      <label for="checkboxOverscrollBehavior">Set overscroll-behavior: none</label>
+    </div>
+    <div>Event Log:</div>
+    <textarea id="log" readonly></textarea>
+
+  </body>
+</html>
