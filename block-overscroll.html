@@ -16,7 +16,7 @@
       }
 
       #log {
-        width: 80%;
+        width: 90%;
         height: 40%;
         font-size: xx-small;
       }
@@ -32,7 +32,7 @@
       let numTouchmoves = 0;
 
       function logEvent(event, canceled) {
-        let line = `${numTouchmoves} move preventDefaulted[${canceled}] isCancellable[${event.cancelable}]`
+        let line = `${numTouchmoves} move prevented[${canceled}] cancelable[${event.cancelable}]`
         let curLog = log.value;
         log.value = line + '\n' + curLog;
       }
@@ -97,7 +97,10 @@
       The first checkbox will add a touchmove handler that allows the first 10
       touchmoves to be scrolled and then starts calling preventDefault on the
       remaining events until the touch gesture ends. Note that scrolling cannot
-      be blocked once started unless you start to overscroll.
+      be blocked once started unless you start to overscroll. (e.g. try
+      scrolling until the 10+ touch move, then hit the extent). preventDefault
+      on an overscrolling touchmove will block overscroll glow and
+      pull-to-refresh effects.
     </p>
 
     <p>
