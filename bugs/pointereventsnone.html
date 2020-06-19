@@ -32,6 +32,9 @@
         width: 800%;
         height: 800%;
       }
+      .unhittestable {
+        pointer-events: none;
+      }
       #overlay {
         left: 100px;
         top: 100px;
@@ -40,9 +43,15 @@
         position: fixed;
         background-color: blue;
         opacity: 0.3;
-        pointer-events: none;
         will-change: transform;
         z-index: 1;
+      }
+      #child {
+        margin: 100px;
+        width: 50%;
+        height: 50%;
+        background-color: red;
+        pointer-events: auto;
       }
       .ta-region {
         border: 1px solid black;
@@ -161,6 +170,10 @@
 
       function init() {
         const grid = document.getElementById('option-grid');
+
+        document.getElementById("penone").addEventListener('click', () => {
+          document.getElementById("overlay").classList.toggle('unhittestable');
+        });
 
         const stored_options_str = window.localStorage.getItem('options');
         const option_values = [];
@@ -405,10 +418,13 @@
         removeOnTouchMove5.addEventListener('touchend', () => { removeOnTouchMove5.classList.add('ta-none'); })
       }
 
+
     </script>
   </head>
   <body>
-    <div id="overlay">
+    <input type="checkbox" id="penone" checked><label for="penone">pointer-events:none</label>
+    <div id="overlay" class="unhittestable">
+      <div id="child"></div>
     </div>
     <div id="container">
       <div id="left">
