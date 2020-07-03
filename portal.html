@@ -31,11 +31,16 @@
         p.addEventListener('transitionend', () => {
           p.activate();
         });
+
+        const t = document.getElementById("top");
+        t.addEventListener('click', () => {
+          window.internals.setPageScaleFactor(3);
+        });
       }
     </script>
   </head>
   <body>
-    CLICK THE BOX BELOW TO ACTIVATE THE PORTAL!
+    <p id="top">CLICK THE BOX BELOW TO ACTIVATE THE PORTAL!</p>
     <portal id="myportal" src="portal-inner.html"></portal>
   </body>
 </html>
