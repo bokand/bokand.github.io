@@ -25,7 +25,8 @@
       onload = () => {
         const p = document.getElementById("myportal");
         p.addEventListener('click', () => {
-          p.classList.add('activating');
+          p.activate();
+          //p.classList.add('activating');
         });
 
         p.addEventListener('transitionend', () => {
