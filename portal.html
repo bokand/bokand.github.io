@@ -25,7 +25,10 @@
       onload = () => {
         const p = document.getElementById("myportal");
         p.addEventListener('click', () => {
-          p.activate();
+          document.body.style.backgroundColor = "red";
+          setTimeout( () => {
+            p.activate();
+          }, 2000);
           //p.classList.add('activating');
         });
 
