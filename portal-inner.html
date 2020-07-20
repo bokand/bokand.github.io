@@ -18,7 +18,10 @@
       //    console.log("FAILED MEDIA PERMISSION");
       //});
 
-      //addEventListener('portalactivate', e => {
+      addEventListener('portalactivate', e => {
+        let predecessor = e.adoptPredecessor(document);
+        document.body.insertBefore(predecessor, document.body.firstChild)
+      });
       //  console.log("ACTIVATE");
       //  let constraints = {audio: true, video:true};
       //  navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
