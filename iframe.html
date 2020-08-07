@@ -14,11 +14,9 @@ top of body blah blkjadflkjalekfasldfjksalkdjflaksdjflksajdlkajsdflkjlaksjdfalks
 </p>
 <img src="./iframe-fling_files/catburger.jpg">
 <br>
-<iframe id="firstframe" width="400" height="400" scrolling="yes"></iframe>
+<iframe id="firstframe" width="400" height="400" scrolling="yes" src="https://bokan-nodejs-playground.ue.r.appspot.com/hello.html"></iframe>
 <br>
 <img src="./iframe-fling_files/catburger.jpg">
-<br>
-<iframe src="https://news.ycombinator.com" width="50%" height="400" scrolling="yes"></iframe>
 <br>
 <img src="./iframe-fling_files/catburger.jpg">
 <br>
@@ -26,36 +24,6 @@ top of body blah blkjadflkjalekfasldfjksalkdjflaksdjflksajdlkajsdflkjlaksjdfalks
 <br>
 <img src="./iframe-fling_files/catburger.jpg">
 <a href="nested.html">Next page</a>
-
-<script>
-function unloadHandler() {
-  console.log('TEST');
-  var iframe = document.createElement('iframe');
-  iframe.src = 'data:text/html;charset=utf-8,HELLO';
-  document.body.appendChild(iframe);
-}
-
-window.addEventListener('beforeunload', function() {
-  console.log('main window unload!');
-});
-document.getElementById('firstframe').addEventListener('unload', unloadHandler);
-//var oReq = new XMLHttpRequest();
-//oReq.addEventListener("abort", function() {
-//  console.log('ABORTED!!!');
-//  var iframe = document.createElement('iframe');
-//  iframe.name = 'i';
-//  iframe.src = 'data:text/html;charset=utf-8,HELLO';
-//
-//  document.body.appendChild(iframe);
-//  var a = document.createElement('a');
-//  a.href = 'about:blank';
-//  a.target = 'i';
-//  a.click();
-//  d = iframe.contentDocument;
-//});
-//oReq.open("GET", "https://html.spec.whatwg.org/");
-//oReq.send();
-</script>
 
 
 </body></html>
