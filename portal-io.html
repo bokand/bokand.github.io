@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width">
     <style>
       body,html {
-        width: 100%;
+        width: 200%;
         height: 300%;
         margin: 0;
       }
@@ -25,6 +25,9 @@
 
     </style>
     <script>
+        document.onvisibilitychange = () => {
+          console.log("Changed! [" + window.location.search + "]: visibilityState: " + document.visibilityState + " Hidden: " + document.hidden);
+        };
     </script>
   </head>
   <body>

@@ -21,6 +21,7 @@
       function rafTicker() {
         if (performance.now() - startTime > kIntervalMs) {
           startTime = performance.now();
+          console.log("[" + window.location.search + "]: RAF-based tick");
           toggleScroll();
         }
         requestAnimationFrame(rafTicker);
@@ -29,6 +30,7 @@
       onload = async () => {
         if (window.location.search == '?scrolltoggle') {
           window.setInterval(() => {
+            console.log("[" + window.location.search + "]: SetInterval-based tick");
             toggleScroll();
           }, 1000);
         } else if (window.location.search == '?rafbased') {
@@ -47,6 +49,10 @@
 
         const garfield = document.getElementById("garfield");
         observer.observe(garfield);
+
+        document.onvisibilitychang = () => {
+          console.log("Changed [" + window.location.search + "]: visibilityState: " + document.visibilityState + " Hidden: " + document.hidden);
+        };
       };
     </script>
   </head>
