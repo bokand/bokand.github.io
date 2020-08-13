@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=1200,initial-scale=0.5">
+    <style>
+      body,html {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <script>
+      function toggleScroll() {
+        // Toggle back and forth between fully scrolled and at top.
+        const max = document.scrollingElement.scrollHeight -
+                    document.scrollingElement.clientHeight;
+        window.scrollTo(0, max - window.scrollY);
+      }
+
+      const kIntervalMs = 1000;
+      let startTime = 0;
+      function rafTicker() {
+        if (performance.now() - startTime > kIntervalMs) {
+          startTime = performance.now();
+          toggleScroll();
+        }
+        requestAnimationFrame(rafTicker);
+      }
+
+      onload = async () => {
+        if (window.location.search == '?scrolltoggle') {
+          window.setInterval(() => {
+            toggleScroll();
+          }, 1000);
+        } else if (window.location.search == '?rafbased') {
+          requestAnimationFrame(rafTicker);
+        }
+
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 1.0
+        };
+        const observer = new IntersectionObserver((entries, observer) => {
+              const state = entries[0].isIntersecting ? "Visible" : "Not Visible";
+              console.log("[" + window.location.search + "]: " + state);
+            }, options);
+
+        const garfield = document.getElementById("garfield");
+        observer.observe(garfield);
+      };
+    </script>
+  </head>
+  <body>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <img id="garfield" src="iframe-fling_files/catburger.jpg">
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+    <p>HELLO, I'M A PORTAL.</p>
+  </body>
+</html>

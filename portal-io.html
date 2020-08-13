@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      body,html {
+        width: 100%;
+        height: 300%;
+        margin: 0;
+      }
+      portal  {
+        transform: scale(0.3);
+        transform-origin: top left;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .container {
+        margin: 20px;
+        display: inline-block;
+        width: 30vw;
+        height: 30vh;
+        overflow: hidden;
+      }
+
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+    <p>
+      Open the console: both portals will print out IntersectionObserver
+      callbacks for the cat image with the root element.
+    </p>
+    <div>
+      <div class="container">
+        <portal src="portal-io-inner.html?scrolltoggle"></portal>
+      </div>
+      <div class="container">
+        <portal src="portal-io-inner.html?static"></portal>
+      </div>
+      <div class="container">
+        <portal src="portal-io-inner.html?rafbased"></portal>
+      </div>
+    </div>
+  </body>
+</html>
