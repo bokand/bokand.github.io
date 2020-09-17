@@ -30,9 +30,16 @@
       //    console.log("FAILED MEDIA PERMISSION");
       //  });
       //});
+
+      onload = () => {
+        setInterval( () => {
+          document.getElementById("widthLabel").innerText = "Width: " + document.documentElement.clientWidth;
+        }, 1000);
+      }
     </script>
   </head>
   <body>
+    <p id="widthLabel">Width: </p>
     <p>HELLO, I'M A PORTAL.</p>
     <p>HELLO, I'M A PORTAL.</p>
     <p>HELLO, I'M A PORTAL.</p>
