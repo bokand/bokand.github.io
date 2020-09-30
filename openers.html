@@ -5,7 +5,11 @@
     margin:20px;
   }
 </style>
-
+<script>
+  function popup() {
+    window.open("https://wikipedia.org", "", "noopener");
+  }
+</script>
 <p>
   <a href="openers-popup.html" target="persistent">Open persistent popup</a>
 </p>
@@ -41,4 +45,7 @@
 </p>
 <p>
   <a href="https://google.com" target="_self" rel="noopener">target="_self" rel="noopener"</a>
+</p>
+<p>
+  <a href="#" onclick="popup();">window.open("", "", "noopener")</a>
 </p>
