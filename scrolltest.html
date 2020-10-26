@@ -345,6 +345,9 @@
         const ts = ('00000' + dt).substr(-5);
 
         logTextarea.value += `[${ts}]-${e.type}`;
+        if (event.type == 'wheel') {
+          logTextarea.value += `(${e.deltaX},${e.deltaY})`;
+        }
         if (event.defaultPrevented)
           logTextarea.value += ' - defaultPrevented!';
         else if (triedPrevent) {
