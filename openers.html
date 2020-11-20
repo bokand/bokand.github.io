@@ -9,6 +9,10 @@
   function popup() {
     window.open("https://wikipedia.org", "", "noopener");
   }
+
+  function openerPopup() {
+    window.openedPopup = window.open('openers-popup.html');
+  }
 </script>
 <p>
   <a href="openers-popup.html" target="persistent">Open persistent popup</a>
@@ -48,6 +52,9 @@
 </p>
 <p>
   <a href="#" onclick="popup();">window.open("", "", "noopener")</a>
+</p>
+<p>
+  <a href="#" onclick="openerPopup();">window.open("")</a>
 </p>
 <p>
   <a href="#:~:text=Test%20text">SameDocument TextFragment</a>
