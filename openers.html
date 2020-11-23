@@ -7,11 +7,11 @@
 </style>
 <script>
   function popup() {
-    window.open("https://wikipedia.org", "", "noopener");
+    window.open("https://bokan-nodejs-playground.ue.r.appspot.com/text-frag-opener.html", "", "noopener");
   }
 
   function openerPopup() {
-    window.openedPopup = window.open('openers-popup.html');
+    window.openedPopup = window.open('https://bokan-nodejs-playground.ue.r.appspot.com/text-frag-opener.html');
   }
 </script>
 <p>
@@ -51,10 +51,10 @@
   <a href="https://google.com" target="_self" rel="noopener">target="_self" rel="noopener"</a>
 </p>
 <p>
-  <a href="#" onclick="popup();">window.open("", "", "noopener")</a>
+  <a href="#" onclick="popup();">Cross-origin window.open("", "", "noopener")</a>
 </p>
 <p>
-  <a href="#" onclick="openerPopup();">window.open("")</a>
+  <a href="#" onclick="openerPopup();">Cross-origin window.open("")</a>
 </p>
 <p>
   <a href="#:~:text=Test%20text">SameDocument TextFragment</a>
