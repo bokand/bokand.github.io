@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<link rel="prerender" href="https://reddit.com">
+
+<a href="https://reddit.com">REDDIT PRERENDER</a>
+
+<br>
+<br>
+<br>
+<br>
+
+<button id="btn">Alert And Redirect</button>
+
+<script>
+  document.getElementById('btn').addEventListener('click', () => {
+    setTimeout(() => { window.location = 'https://reddit.com'; }, 20);
+    alert('You can checkout any time you like, but you can never leave');
+  });
+</script>
