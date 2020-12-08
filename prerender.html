@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 
-<link rel="prerender" href="https://reddit.com">
+<!--<link rel="prerender" href="https://reddit.com">-->
+<link rel="prerender" href="file:///home/bokan/bokand.github.io/slowscroller.html">
 
-<a href="https://reddit.com">REDDIT PRERENDER</a>
+<!--<a href="https://reddit.com">REDDIT PRERENDER</a>-->
+<a href="file:///home/bokan/bokand.github.io/slowscroller.html">SLOW SCROLLER PRERENDER</a>
 
 <br>
 <br>
@@ -13,8 +15,8 @@
 
 <script>
   document.getElementById('btn').addEventListener('click', () => {
-    //setTimeout(() => { window.location = 'https://reddit.com'; }, 20);
-    window.location = 'https://reddit.com';
+    setTimeout(() => { console.log("NAV"); window.location = 'https://reddit.com'; }, 20);
+    //window.location = 'https://reddit.com';
     alert('You can checkout any time you like, but you can never leave');
   });
 </script>
