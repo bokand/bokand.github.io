@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--<link rel="prerender" href="https://reddit.com">-->
-<link rel="prerender" href="https://bokand.github.io/slowscroller.html">
+<!--<link rel="prerender" href="https://bokand.github.io/slowscroller.html">-->
 
 <!--<a href="https://reddit.com">REDDIT PRERENDER</a>-->
 <a href="https://bokand.github.io/slowscroller.html">SLOW SCROLLER PRERENDER</a>
@@ -17,6 +17,12 @@
   //document.getElementById('btn').addEventListener('click', () => {
     //setTimeout(() => { console.log("NAV"); window.location = 'https://reddit.com'; }, 20);
     //window.location = 'https://reddit.com';
-    alert('You can checkout any time you like, but you can never leave');
+    //alert('You can checkout any time you like, but you can never leave');
   //});
+  if (document.prerendering) {
+    document.onprerenderingchange = () => {
+      console.log("FIRED EVENT");
+      setTimeout( () => { document.body.style.backgroundColor = "red"; }, 2000);
+    }
+  }
 </script>
