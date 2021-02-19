@@ -118,6 +118,12 @@
 
         fullscreen = !fullscreen;
       });
+
+      visualViewport.addEventListener('resize', () => {
+        var console = document.getElementById('console');
+        console.innerHTML += "*VV Resize: + " visualViewport.height<br>";
+        updateText();
+      });
       updateText();
       setInterval(updateText, 500);
     });
