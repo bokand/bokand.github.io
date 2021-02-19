@@ -19,7 +19,8 @@
     //window.location = 'https://reddit.com';
     //alert('You can checkout any time you like, but you can never leave');
   //});
-  if (document.prerendering) {
+  if (typeof(document.prerendering) != 'undefined') {
+    console.log("REGISTERED EVENT");
     document.onprerenderingchange = () => {
       console.log("FIRED EVENT");
       setTimeout( () => { document.body.style.backgroundColor = "red"; }, 2000);
