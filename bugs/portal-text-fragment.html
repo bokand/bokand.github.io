@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      body,html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      portal  {
+        margin-left: 100px;
+        margin-top: 100px;
+        width: 300px;
+        height: 500px;
+      }
+      portal.activating {
+        transform: scale(1);
+      }
+    </style>
+    <script>
+      onload = () => {
+        const p = document.getElementById("myportal");
+        p.addEventListener('click', () => {
+          document.body.style.backgroundColor = "red";
+          setTimeout( () => {
+            p.activate();
+          }, 2000);
+          //p.classList.add('activating');
+        });
+
+        p.addEventListener('transitionend', () => {
+          p.activate();
+        });
+
+        //const t = document.getElementById("top");
+        //t.addEventListener('click', () => {
+        //  window.internals.setPageScaleFactor(3);
+        //});
+      }
+    </script>
+  </head>
+  <body>
+    <portal id="myportal" src="portal-inner.html#:~:text=This%20is%20a%20test"></portal>
+  </body>
+</html>
