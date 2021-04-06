@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+  </head>
+
+  <body>
+    <div id="console">
+      <div class="entry">Events:</div>
+    </div>
+  </body>
+
+  <script>
+    const elemConsole = document.getElementById('console');
+    function log(s) {
+      const time = new Date().toLocaleTimeString();
+      const str = `[${time}] ${s}`;
+      const entry = elemConsole.firstElementChild.cloneNode();
+      entry.innerText = str;
+      elemConsole.appendChild(entry);
+    }
+
+    window.addEventListener('load', () => {
+      log(`Load Event - document.prerendering[${document.prerendering}]`);
+    });
+
+    document.addEventListener('prerenderingchange', () => {
+      log(`Prerendering change - document.prerendering[${document.prerendering}]`);
+    });
+
+    window.setInterval(() => {
+      log(`Tick - document.prerendering[${document.prerendering}]`);
+    }, 1000);
+
+  </script>
+</html>
