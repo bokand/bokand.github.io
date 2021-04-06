@@ -25,7 +25,7 @@
           return;
         }
 
-        const url = new URL('https://example.com?sefli:~:wololo#bleh:~:test&text=foo&blah&text=bar');
+        const url = new URL(performance.getEntriesByType("navigation")[0].name);
         const delimiter_ix = url.hash.indexOf(':~:');
         if (delimiter_ix == -1)
           return;
