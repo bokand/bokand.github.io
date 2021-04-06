@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test passing a text fragment into an iframe</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      iframe {
+        width: 50vw;
+        height: 50vh;
+        margin-left: 25vw;
+        margin-top: 25vh;
+      }
+    </style>
+    <script>
+      addEventListener('load', () => {
+        if (!document.fragmentDirective) {
+          console.log("Fragment Directive Unsupported");
+          return;
+        }
+
+        // Extract fragment directive. Use the performance API since it's
+        // stripped from the Document's URL.
+        if (performance.getEntriesByType("navigation")[0].name == "") {
+          console.log("No URL in performance API - locally hosted?");
+          return;
+        }
+
+        const url = new URL('https://example.com?sefli:~:wololo#bleh:~:test&text=foo&blah&text=bar');
+        const delimiter_ix = url.hash.indexOf(':~:');
+        if (delimiter_ix == -1)
+          return;
+
+        const frag_directive = url.hash.substr(delimiter_ix + 3);
+        const directives = frag_directive.split('&');
+        const text_directives = [];
+        for (directive of directives) {
+          if (directive.startsWith('text='))
+            text_directives.push(directive);
+        }
+
+        if (text_directives.length <= 0)
+          return;
+
+        const message = {
+          "directive": text_directives.join('&')
+        };
+
+        console.log(`Sending: ${message.directive}`);
+        frames[0].postMessage(message, "*");
+
+      });
+    </script>
+
+  </head>
+
+  <body>
+    <iframe src="iframe-inner.html"></iframe>
+  </body>
+</html>
