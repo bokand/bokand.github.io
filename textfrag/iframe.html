@@ -13,6 +13,10 @@
     </style>
     <script>
       addEventListener('load', () => {
+        document.getElementById("btn").addEventListener('click', () => {
+          frames[0].location = "iframe-inner.html#test:~:text=dates%20to%202006"
+        });
+
         if (!document.fragmentDirective) {
           console.log("Fragment Directive Unsupported");
           return;
@@ -49,11 +53,13 @@
         frames[0].postMessage(message, "*");
 
       });
+
     </script>
 
   </head>
 
   <body>
     <iframe src="iframe-inner.html"></iframe>
+    <button id="btn">Navigate to TextFrag</button>
   </body>
 </html>

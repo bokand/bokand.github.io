@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Test passing a text fragment into a cross-origin iframe</title>
+    <title>Test passing a text fragment into an iframe</title>
     <meta name="viewport" content="width=device-width">
     <style>
       iframe {
@@ -13,6 +13,10 @@
     </style>
     <script>
       addEventListener('load', () => {
+        document.getElementById("btn").addEventListener('click', () => {
+          frames[0].location = "https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html#test:~:text=dates%20to%202006"
+        });
+
         if (!document.fragmentDirective) {
           console.log("Fragment Directive Unsupported");
           return;
@@ -49,11 +53,13 @@
         frames[0].postMessage(message, "*");
 
       });
+
     </script>
 
   </head>
 
   <body>
     <iframe src="https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html"></iframe>
+    <button id="btn">Navigate to TextFrag</button>
   </body>
 </html>
