@@ -17,6 +17,10 @@
           frames[0].location = "https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html#test:~:text=dates%20to%202006"
         });
 
+        document.getElementById("btnLocationReplace").addEventListener('click', () => {
+          frames[0].location.replace("#test:~:text=dates%20to%202006");
+        });
+
         if (!document.fragmentDirective) {
           console.log("Fragment Directive Unsupported");
           return;
@@ -61,6 +65,7 @@
   <body>
     <iframe src="https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html"></iframe>
     <button id="btn">Navigate to TextFrag</button>
+    <button id="btnLocationReplace">Navigate to TextFrag</button>
     <div>
       My life for Aiur!
     </div>
