@@ -3,9 +3,16 @@
   window.addEventListener('message', (e) => {
     const str = e.data.directive;
     console.log("Received: " + str);
-    window.location.hash = ':~:' + str;
+    console.log("${setter}");
+    ${setter}
+  });
+  window.addEventListener('load', () => {
+    document.getElementById('btn').addEventListener('click', () => {
+      window.top.location = 'https://bokand.github.io/textfrag/iframe-xorigin.html#:~:text=Wololo';
+    });
   });
 </script>
+<button id="btn">Navigate Outer</button>
 <p>
   "Never Gonna Give You Up" appeared on Astley's 1987 debut album Whenever You Need Somebody.[5] The song, his solo debut single, was a number-one hit on several international charts, including the Billboard Hot 100, Hot Adult Contemporary Tracks, and the UK Singles Chart. The accompanying music video, Astley's first, features him performing the song while dancing.[6] It has since become a popular song on the Internet, particularly after it was featured in the 2005 "Charlie Has Cancer" episode of It's Always Sunny in Philadelphia.
 </p>

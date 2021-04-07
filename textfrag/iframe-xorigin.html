@@ -17,10 +17,6 @@
           frames[0].location = "https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html#test:~:text=dates%20to%202006"
         });
 
-        document.getElementById("btnLocationReplace").addEventListener('click', () => {
-          frames[0].location.replace("#test:~:text=dates%20to%202006");
-        });
-
         if (!document.fragmentDirective) {
           console.log("Fragment Directive Unsupported");
           return;
@@ -64,12 +60,10 @@
   </head>
 
   <body>
-    <iframe src="https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html"></iframe>
+    <iframe src="https://bokan-nodejs-playground.ue.r.appspot.com/bokand/textfrag/iframe-inner.html"></iframe>
     <button id="btn">Navigate to TextFrag</button>
-    <button id="btnLocationReplace">Navigate to TextFrag with location.replace</button>
-    <iframe src="https://bokan-nodejs-playground.ue.r.appspot.com/textfrag-iframe-inner.html?location-replace"></iframe>
     <div>
-      My life for Aiur!
+      Rogan! Wololo!
     </div>
   </body>
 </html>
