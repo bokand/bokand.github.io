@@ -45,8 +45,15 @@
         if (text_directives.length <= 0)
           return;
 
+        let method;
+        if (new URL(document.URL).searchParams.has('locationReplace'))
+          method = 'locationReplace';
+        else
+          method = 'locationHash';
+
         const message = {
-          "directive": text_directives.join('&')
+          "directive": text_directives.join('&'),
+          "method": method
         };
 
         console.log(`Sending: ${message.directive}`);

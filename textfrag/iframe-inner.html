@@ -3,12 +3,14 @@
   window.addEventListener('message', (e) => {
     const str = e.data.directive;
     console.log("Received: " + str);
-    if (new URL(document.URL).searchParams.has('locationReplace')) {
+    if (e.data.method == 'locationReplace') {
       console.log("Using location.replace()");
       window.location.replace('#:~:' + str);
-    } else {
+    } else if (e.data.method == 'locationHash') {
       console.log("Using location.hash");
       window.location.hash = ':~:' + str;
+    } else {
+      console.error('Unknown method', e.data.method);
     }
   });
   window.addEventListener('load', () => {
