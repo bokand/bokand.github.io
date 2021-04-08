@@ -3,8 +3,13 @@
   window.addEventListener('message', (e) => {
     const str = e.data.directive;
     console.log("Received: " + str);
-    console.log("${setter}");
-    ${setter}
+    if (new URL(document.URL).searchParams.has('locationReplace')) {
+      console.log("Using location.replace()");
+      window.location.replace('#:~:' + str);
+    } else {
+      console.log("Using location.hash");
+      window.location.hash = ':~:' + str;
+    }
   });
   window.addEventListener('load', () => {
     document.getElementById('btn').addEventListener('click', () => {
