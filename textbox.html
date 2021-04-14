@@ -17,7 +17,20 @@
     }
   </style>
   <script>
-	
+    window.onload = () => {
+      document.getElementById('replaceState').addEventListener('click', () => {
+        let str = window.location.href;
+        const hash_ix = str.indexOf('#');
+        if (hash_ix > 0)
+          str = str.substr(0, hash_ix);
+
+        window.history.replaceState({}, '', `${str}#stateReplaced`);
+      });
+
+      document.getElementById('back').addEventListener('click', () => {
+        history.back();
+      });
+    };
   </script>
 </head>
 
@@ -26,6 +39,9 @@
     <textarea></textarea>
     This is some content
     asldkfj<br>
+    <a href="#target">Fragmetn Nav</a>
+    <button id="replaceState">history.replaceState</button>
+    <button id="back">history.back</button>
     asdklfjal<br>
     asdfkljasldk<br>
     asdfkljasld<br>
@@ -110,7 +126,10 @@
     fasd<br>
     fsa<br>
     d<br>
+    <p id="target">
     fas<br>
+    </p>
+
     df<br>
     asd<br>
     fasd<br>
