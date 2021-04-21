@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Navigations Between X-Origin frames</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+      iframe {
+        width: 50vw;
+        height: 25vh;
+        margin-left: 25vw;
+        margin-top: 10vh;
+      }
+      p {
+        margin-top: 80vh;
+        margin-bottom: 80vh;
+      }
+    </style>
+    <script>
+      addEventListener('load', () => {
+        document.getElementById("btn").addEventListener('click', () => {
+          frames[0].location = "https://bokan-nodejs-playground.ue.r.appspot.com/bokand/nav/inner.html#target"
+        });
+    </script>
+
+  </head>
+
+  <body>
+    <iframe name="inner" src="https://bokan-nodejs-playground.ue.r.appspot.com/bokand/nav/inner.html"></iframe>
+    <div>
+      <button id="btn">Navigate to Fragment</button>
+      <div><a href="#target2" target="inner">Navigate to Fragment</a></div>
+      <div><a href="https://bokand.github.io/openers.html" target="inner">Navigate to bokand.github.io origin</a></div>
+      <div><a href="https://bokan-nodejs-playground.ue.r.appspot.com/bokand/nav/inner.html" target="inner">Navigate to appspot origin</a></div>
+    </div>
+    <p id="target">Target 1</p>
+    <p id="target2">Target 2</p>
+  </body>
+</html>
