@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html>
-
-<head>
+<html><head>
   <link rel="manifest" href="textbox_manifest.json">
   <style>
     .content {
@@ -12,7 +10,7 @@
     .textbox {
       float: right;
     }
-    ::target-text {
+    .one ::target-text {
       background-color: rgba(255, 0, 0, 1);
     }
   </style>
@@ -42,10 +40,12 @@
     <a href="#target">Fragmetn Nav</a>
     <button id="replaceState">history.replaceState</button>
     <button id="back">history.back</button>
-    asdklfjal<br>
+      <div class="one">
+          <a href="#">Link1</a><span> and PlainText (red ::target-text)</span></div><br>
     asdfkljasldk<br>
     asdfkljasld<br>
     asdfkljasldk<br>
+      <div class="two"><a href="#">Link2</a> and PlainText</div>
     asdfkljasdl<br>
     asdfkjal<br>
     asdkfjlaksd<br>
@@ -102,7 +102,7 @@
     df<br>
     asd<br>
     fasd<br>
-    <input type="text" value="akdlafjfafalfjalfjlafjlaflajladjflakflakflkadlfkaflksdjllfajkdlafjfalfjallajlaklalalafklajalaflsdasdfasdfasdfadsdfsdfsdfasdfdsasdfadjadkfjsdfjsdfjsdkfjskdfjskdfjskdfjskdfjskdjsfkjdsfdfjsdkfjskdfjskdfjskdskfdjsfkjdfksjdfksjdfjsdksfjkdfj" >
+    <input type="text" value="akdlafjfafalfjalfjlafjlaflajladjflakflakflkadlfkaflksdjllfajkdlafjfalfjallajlaklalalafklajalaflsdasdfasdfasdfadsdfsdfsdfasdfdsasdfadjadkfjsdfjsdfjsdkfjskdfjskdfjskdfjskdfjskdjsfkjdsfdfjsdkfjskdfjskdfjskdskfdjsfkjdfksjdfksjdfjsdksfjkdfj">
     fsa<br>
     d<br>
     fas<br>
@@ -138,5 +138,6 @@
     <textarea></textarea>
     <br>
     <br>
-</body>
-</html>
+
+
+</body></html>
