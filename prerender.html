@@ -7,33 +7,33 @@
   <!--<a href="https://news.ycombinator.com">HackerNews PRERENDER</a>-->
   <head>
     <script>
-      addEventListener('load', () => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('prerender')) {
-          const prerender_url = params.get('prerender');
-          console.log("Triggering prerender of: " + prerender_url);
-          let rules = document.createElement('script');
-          rules.setAttribute('type', 'speculationrules');
-          const content =
-              `{
-                "prerender":[
-                  {
-                    "source": "list",
-                    "urls": ["${prerender_url}"]
-                  }
-                ]
-              }`;
-          rules.innerHTML = content;
-          document.head.appendChild(rules);
-        }
-      });
+      //addEventListener('load', () => {
+      //  const params = new URLSearchParams(window.location.search);
+      //  if (params.has('prerender')) {
+      //    const prerender_url = params.get('prerender');
+      //    console.log("Triggering prerender of: " + prerender_url);
+      //    let rules = document.createElement('script');
+      //    rules.setAttribute('type', 'speculationrules');
+      //    const content =
+      //        `{
+      //          "prerender":[
+      //            {
+      //              "source": "list",
+      //              "urls": ["${prerender_url}"]
+      //            }
+      //          ]
+      //        }`;
+      //    rules.innerHTML = content;
+      //    document.head.appendChild(rules);
+      //  }
+      //});
     </script>
     <script type="speculationrules">
     {
       "prerender":[
         {
           "source": "list",
-          "urls": ["https://bokand.github.io/prerender-inner.html"]
+          "urls": ["https://bokand.github.io/textbox.html"]
         }
       ]
     }
