@@ -31,6 +31,10 @@
       document.getElementById('back').addEventListener('click', () => {
         history.back();
       });
+      setTimeout( () => {
+        //document.getElementById("form").submit();
+        //console.log("SUBMITTED");
+      }, 2000);
     };
   </script>
 </head>
@@ -38,6 +42,10 @@
 <body>
   <div class="content">
     <textarea></textarea>
+    <form id="form" method="post" action="http://bokand.github.io/textbox.html">
+      <input type="text" name="nameText" id="name">
+      <input type="submit" value="POST">
+    </form>
     This is some content
     asldkfj<br>
     <a href="#target">Fragmetn Nav</a>
