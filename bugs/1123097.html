@@ -1,0 +1,45 @@
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1.0, user-scalable=no">
+          <title>Facebook</title></head>
+    <script>
+        function init() {
+            const scaling = 2;
+
+            var width = window.innerWidth * scaling;
+            var height = window.innerHeight * scaling;
+
+            // content contains scrollable content
+            var content = document.getElementById("content");
+            content.style.width = width.toString() + 'px';
+            content.style.height = (height + 1).toString() + 'px';
+
+            // root scroller is scrollable and is exactly the same size as the viewport
+            var rootscroller = document.getElementById("rootscroller");
+            rootscroller.style.width = width.toString() + 'px';
+            rootscroller.style.height = height.toString() + 'px';
+
+            // background should be hidden by rootscroller
+            var background = document.getElementById("background");
+            background.style.width = width.toString() + 'px';
+            background.style.height = height.toString() + 'px';
+
+            // main is scaled
+            var main = document.getElementById("main");
+            main.style.transform = 'scale(' + (1 / scaling).toString() + ')';
+        }
+    </script>
+  <body onload="init()">
+
+    <div id="main" style="position: absolute; top: 0px; left: 0px">
+
+        <div id="background" style="top: 0px; left: 0px; position: absolute; background-color: green;">
+
+            <div id="rootscroller" style="top: 0px; left: 0px; overflow: scroll">
+                <div id="content" style="height: 997px; width: 10px; background-color: red"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+  </body>
