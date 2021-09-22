@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  height: 100%;
+  overflow-y: scroll;
+}
+header {
+  position: relative;
+}
+.wrapper {
+  position: relative;
+  height: 2000px;
+}
+.content {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+  background: #fff;
+}
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="wrapper">
+      <div class="content">
+        Can touch-drag this square to scroll the page, but touch-dragging the background does not work in Firefox
+      </div>
+      <div class="background"></div>
+    </div>
+  </header>
+
+
+
+</body></html>
