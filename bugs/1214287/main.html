@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <div class="fuwari">
+      <code>documentElement</code>: <span class="html-scrollTop">0</span>
+      <br>
+      <code>body</code>: <span class="body-scrollTop">300</span>
+      <br>
+      <code>scrollingElement</code>: <span class="scrolling-scrollTop">300</span>
+    </div>
+    <div id="middle">
+      <code>middle</code>
+    </div>
+
+    <script>
+      function updateTop(event) {
+        var elHtmlTop = document.querySelector('.html-scrollTop');
+        var elBodyTop = document.querySelector('.body-scrollTop');
+        var elScrollingTop = document.querySelector('.scrolling-scrollTop');
+        elHtmlTop.innerHTML = document.documentElement.scrollTop;
+        elBodyTop.innerHTML = document.body.scrollTop;
+        elScrollingTop.innerHTML = document.scrollingElement && document.scrollingElement.scrollTop;
+      }
+
+      document.onscroll = updateTop;
+      updateTop();
+
+      history.scrollRestoration = 'manual';
+      location.hash = "middle"
+      document.scrollingElement.scrollTop -=
+        window.innerHeight / 2 -
+        document.getElementById("middle").getBoundingClientRect().top -
+        document.getElementById("middle").getBoundingClientRect().height / 2
+    </script>
+    <style id="jsbin-css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 2000px;
+      }
+      .fuwari {
+        position: fixed;
+        left: 300px;
+      }
+      #middle {
+        position: absolute;
+        top: 300px;
+      }
+    </style>
+  </body>
+</html>
