@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
+  <head>
+    <style id="jsbin-css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 2000px;
+      }
+      .fuwari {
+        position: fixed;
+        left: 300px;
+      }
+      #middle {
+        position: absolute;
+        top: 300px;
+      }
+    </style>
+  </head>
   <body>
     <div class="fuwari">
       <code>documentElement</code>: <span class="html-scrollTop">0</span>
@@ -21,33 +38,22 @@
         elHtmlTop.innerHTML = document.documentElement.scrollTop;
         elBodyTop.innerHTML = document.body.scrollTop;
         elScrollingTop.innerHTML = document.scrollingElement && document.scrollingElement.scrollTop;
+        console.log("ScrollUpdated: " + document.scrollingElement.scrollTop);
       }
 
       document.onscroll = updateTop;
       updateTop();
 
       history.scrollRestoration = 'manual';
+      console.log("Setting Hash...");
       location.hash = "middle"
-      document.scrollingElement.scrollTop -=
-        window.innerHeight / 2 -
-        document.getElementById("middle").getBoundingClientRect().top -
-        document.getElementById("middle").getBoundingClientRect().height / 2
+      console.log("Current Offset: " + document.scrollingElement.scrollTop);
+      console.log("Modifying scroll top...");
+      document.scrollingElement.scrollTop = 1;
+        //window.innerHeight / 2 -
+        //document.getElementById("middle").getBoundingClientRect().top -
+        //document.getElementById("middle").getBoundingClientRect().height / 2
+      console.log("Current Offset: " + document.scrollingElement.scrollTop);
     </script>
-    <style id="jsbin-css">
-      html {
-        height: 100%;
-      }
-      body {
-        height: 2000px;
-      }
-      .fuwari {
-        position: fixed;
-        left: 300px;
-      }
-      #middle {
-        position: absolute;
-        top: 300px;
-      }
-    </style>
   </body>
 </html>
