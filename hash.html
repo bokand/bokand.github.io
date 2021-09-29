@@ -18,6 +18,7 @@
 <body>
   <p id="target">Test</p>
   <script>
+    history.scrollRestoration = 'manual';
     console.log("Offset Before: " + window.scrollY);
     location.hash = 'target';
     console.log("Offset After: " + window.scrollY);
