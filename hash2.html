@@ -1,0 +1,99 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title></title>
+  <style id="compiled-css" type="text/css">
+      html {
+  height: 100%;
+}
+body {
+  height: 200vh;
+}
+.fuwari {
+  position: fixed;
+  left: 300px;
+}
+#first {
+  position: absolute;
+  top: 20vh;
+}
+#second {
+  position: absolute;
+  top: 100vh;
+}
+  </style>
+
+</head>
+<body>
+    <div class="fuwari">
+  <code>body</code>: <span class="body-scrollTop"></span>
+  <br>
+  <code>scrollingElement</code>: <span class="scrolling-scrollTop"></span>
+  <br>
+  <code>scrollingElement history</code>: <span class="html-scrollTop"></span>
+</div>
+
+<div id="first">
+  <code>first</code>
+</div>
+
+<div id="second">
+  <code>second</code>
+</div>
+
+<script type="text/javascript">
+// ?hash=first#second
+// ?manual&hash=first#second
+// ?manual#second
+// ?scroll#second
+// ?manual&scroll#second
+// ?manual&hash=first&scroll#second
+// ?manual&hash=first&scroll
+
+let elHtmlTop = document.querySelector('.html-scrollTop');
+let elBodyTop = document.querySelector('.body-scrollTop');
+let elScrollingTop = document.querySelector('.scrolling-scrollTop');
+
+elBodyTop.innerHTML = document.body.scrollTop;
+elScrollingTop.innerHTML = document.scrollingElement && document.scrollingElement.scrollTop;
+elHtmlTop.innerHTML = readablescrollingElement(document.scrollingElement.scrollTop);
+
+debugger;
+document.onscroll = updateTop;
+let params = new URLSearchParams(window.location.search)
+if (params.has('manual'))
+{
+  history.scrollRestoration = 'manual'
+}
+
+if (params.has('hash') && params.get('hash')!=0)
+{
+  location.hash = params.get('hash')
+}
+
+if (params.has('scroll'))
+{
+  document.scrollingElement.scrollTop -= window.innerHeight / 2 - document.getElementById("second").getBoundingClientRect().top - document.getElementById("second").getBoundingClientRect().height / 2
+}
+
+function updateTop(event) {
+  elBodyTop.innerHTML = document.body.scrollTop;
+  elScrollingTop.innerHTML = document.scrollingElement && document.scrollingElement.scrollTop;
+  elHtmlTop.innerHTML += " / "+readablescrollingElement();
+}
+
+function readablescrollingElement() {
+  switch(true) {
+    case (Math.abs(document.getElementById("first").getBoundingClientRect().top)<1):
+      return "first";
+      break
+    case (Math.abs(document.getElementById("second").getBoundingClientRect().top)<1):
+      return "second";
+      break
+    case (Math.abs(window.innerHeight / 2 - document.getElementById("second").getBoundingClientRect().top - document.getElementById("second").getBoundingClientRect().height / 2)<1):
+      return "scroll";
+      break
+    default:
+      return document.scrollingElement.scrollTop;
+  }
+}
+</script>
+</body></html>
