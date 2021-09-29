@@ -44,8 +44,9 @@
       document.onscroll = updateTop;
       updateTop();
 
-      history.scrollRestoration = 'manual';
+      //history.scrollRestoration = 'manual';
       console.log("Setting Hash...");
+      //onload = () => {
       location.hash = "middle"
       console.log("Current Offset: " + document.scrollingElement.scrollTop);
       console.log("Modifying scroll top...");
@@ -54,6 +55,7 @@
         //document.getElementById("middle").getBoundingClientRect().top -
         //document.getElementById("middle").getBoundingClientRect().height / 2
       console.log("Current Offset: " + document.scrollingElement.scrollTop);
+      //}
     </script>
   </body>
 </html>

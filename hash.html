@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    body {
+    height: 4000px;
+  }
+
+  p {
+    position: absolute;
+    top: 2000px;
+  }
+  </style>
+</head>
+<body>
+  <p id="target">Test</p>
+  <script>
+    console.log("Offset Before: " + window.scrollY);
+    location.hash = 'target';
+    console.log("Offset After: " + window.scrollY);
+  </script>
+</body>
+</html>
