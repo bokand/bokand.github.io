@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<script>
+  onload = () => {
+    let popup = window.open('temp2.html', "awindow");
+    popup.document.write("HELLO"); 
+    popup.window.history.replaceState({}, "Some Title", 'temp2.html');
+  };
+</script>
