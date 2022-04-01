@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <style>
+      body {
+        margin: 0px;
+      }
+
+      iframe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      #footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 50%;
+        padding: 8px;
+        box-sizing: border-box;
+        background-color: #0074D9;
+        color: hsla(208, 100%, 85%, 1.0);
+        opacity: 0.95;
+      }
+
+      a {
+        color: #FF851B;
+      }
+    </style>
+    <script>
+      window.addEventListener("load", function() {
+        if (typeof(document.rootScroller) === 'undefined')
+          console.log("ROOT SCROLLER NOT SUPPORTED");
+        else
+          document.rootScroller = document.querySelector("iframe");
+      });
+    </script>
+  </head>
+
+  <body>
+    <iframe src="implicit-iframe-inner.html">
+    </iframe>
+    <div id="footer">
+      This position: fixed box is in the iframe document.
+    </div>
+  </body>
