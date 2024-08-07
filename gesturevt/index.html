@@ -74,6 +74,7 @@
     position: absolute;
     left: 0;
     top: 0;
+    perspective: 800px;
   }
 
   /* The screen that's moved by an active gesture */
@@ -163,13 +164,13 @@
 
   @keyframes spin {
     to {
-      transform: rotateX(15deg) rotateY(45deg);
+      transform: rotateY(-45deg) rotateX(5deg) scale(0.9);
     }
   }
 
   @keyframes spinend {
     to {
-      transform: rotateX(30deg) rotateY(280deg) scale(0.5);
+      transform: rotateY(-110deg) rotateX(15deg) scale(0.8);
     }
   }
 
