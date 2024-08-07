@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<script type="module" crossorigin src="/gesturevt/assets/index-62fa6fb8.js"></script>
+<script type="module" crossorigin src="/gesturevt/assets/index-8282027d.js"></script>
 
 <meta name="viewport" content="width=device-width, minimum-scale=1">
 
@@ -33,6 +33,16 @@
     color: #a7cdc8;
     will-change: transform;
     
+  }
+
+  dialog {
+    position: fixed;
+    inset: 10px;
+    width: auto;
+    height: auto;
+    background-color:darkslateblue;
+    color: rgb(210, 230, 138);
+    padding: 2em;
   }
 
   :root {
@@ -163,6 +173,20 @@
       transform: rotateX(30deg) rotateY(280deg) scale(0.5);
     }
   }
+
+  @keyframes fade {
+    to {
+      opacity: 0.5;
+      transform: translateX(10vw);
+    }
+  }
+
+  @keyframes fadeend {
+    to {
+      opacity: 0;
+      transform: translateX(20vw);
+    }
+  }
 </style>
 
 <div id="progressScroller" class="scroller">
@@ -178,3 +202,37 @@
      <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="round"/>
     </svg>
 </div>
+<dialog>
+  <div style="height: 100%; display: flex; flex-direction: column; font-size: large">
+    <h2>
+      Gesture View Transitions - Customization Demo
+    </h2>
+    <p>
+      This demo is intended to simulate how the web might feel if individual
+      pages were to customize the back-navigation animation within their origin.
+    </p>
+    <p>
+      Swipe left to navigate back. To avoid accidentally triggering the Android
+      OS back gesture, a simulated back-swipe is accepted from anywhere on the
+      screen. Only the left back is implemented.
+    </p>
+    <p>
+      Pages are represented by static images that endlessly cycle. Navigations
+      that cross an origin use a back swipe similar to Chrome's built-in default
+      back transition. Each "origin" provides its own custom back-animation:
+    </p>
+    <ul>
+      <li>CNN: A faulty override, does nothing.</li>
+      <li>GMail: shrink into inbox - slide in settings pannel.</li>
+      <li>MDN: Subtle swipe and fade out</li>
+      <li>Wikipedia: An "annoying" override - pages rotate around</li>
+    </ul>
+    <button style="height: 100px; margin-top: auto; background-color: #ccd7ff;" onclick="closeModal();">Start Demo!</button>
+  </div>
+</dialog>
+<script>
+  document.querySelector('dialog').showModal();
+  function closeModal() {
+    document.querySelector('dialog').close();
+  }
+</script>
